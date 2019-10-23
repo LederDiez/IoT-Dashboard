@@ -1,0 +1,79 @@
+<div id="login">
+	<div class="login-logo" style="text-align: center;">
+		<a onclick="loadView('login');" class="navbar-brand"><b>LOGO</b></a>
+		<!--
+        <a onclick="loadView('login');" title="Inicio">
+            <img src="./assets/images/Logo1.png" alt="LOGO">
+        </a>
+        -->
+	</div>
+	<div class="m-b-lg">
+		<div class="wrapper text-center">
+			<strong>Inicia sesión</strong>
+		</div>
+		<form class="form-validation ng-pristine ng-invalid ng-invalid-required" autocomplete="on" action="" onSubmit="send_login(); return false">
+			<div class="list-group list-group-sm">
+				<div class="list-group-item">
+					<input
+							id="mail_login"
+							type="text"
+							name="Email"
+							placeholder="Email"
+							class="form-control no-border ng-pristine ng-untouched ng-invalid ng-invalid-required"
+							required
+					>
+				</div>
+				<div class="list-group-item">
+					<input
+							id="password_login"
+							type="password"
+							name="password"
+							placeholder="Contraseña"
+							class="form-control no-border ng-pristine ng-untouched ng-invalid ng-invalid-required"
+							required
+					>
+				</div>
+			</div>
+			<div class="checkbox m-b-md m-t-none">
+				<label class="i-checks">
+					<input type="checkbox" name="check" class="ng-pristine ng-untouched ng-valid">
+					<i></i> Recordarme
+				</label>
+			</div>
+			<button type="submit" class="btn btn-lg btn-primary btn-block">Iniciar sesión</button>
+			<div class="text-center m-t m-b">
+				<a onclick="loadView('recover');">¿Olvidaste la contraseña?</a>
+			</div>
+				<div class="line line-dashed"></div>
+				<p class="text-center">
+					<small>¿No tienes una cuenta?</small>
+				</p>
+				<a class="btn btn-lg btn-default btn-block" onclick="loadView('register');">Crea una cuenta</a>
+		</form>
+		<script>
+            function send_login() {
+                Pace.restart();
+				
+				let mail 	 = $('#mail_login').val();
+				let password = $('#password_login').val();
+
+				if (window.AndroidInterface) {	
+					AndroidInterface.showToast('Hello Android!');
+				}
+				$.post("./api/user", {
+					page  : 'login',
+					mail  : mail.replace(/ /g, ""),
+					pass1 : password
+				},
+				function (response, status) {
+					requestsProcess(status, response);
+				});
+            }
+		</script>
+	</div>
+	<div class="text-center ng-scope">
+		<p class="ng-scope">
+			<small class="text-muted">Leder Diez © 2019</small>
+		</p>
+	</div>
+</div>

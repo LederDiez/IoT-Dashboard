@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es" xml:lang="es">
+<head>
+	<title>Inicio</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="theme-color" content="#4285f4">
+  <meta name="msapplication-navbutton-color" content="#4285f4">
+  <meta name="apple-mobile-web-app-status-bar-style" content="#4285f4">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+	<meta name="description" content="Plataforma administrativa de IoT">
+	<meta name="keywords"
+    content="Inicio, IoT, Internet Of Things, cloud, platform, esp8266, arduino, Leder Diez, Internet de las cosas"
+	>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+	<meta name="application-name" content="Administracion">
+
+	<link rel="stylesheet" href="/css/pace/red/pace.min.css">
+	<link rel="stylesheet" href="/css/animate.min.css">
+	<link rel="stylesheet" href="/css/font-awesome/font-awesome.min.css">
+	<link rel="stylesheet" href="/css/normalize/normalize.min.css">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+	<link rel="stylesheet" href="/css/toastr/toastr.min.css">
+</head>
+<body class="ng-scope">
+	<div class="app-scope">
+		<div class="container w-xxl w-auto-xs ng-scope"></div>
+	</div>
+	<script src="/js/jquery/jquery.min.js"></script>
+	<script src="/js/pace/pace.js"></script>
+	<script src="/js/toastr/toastr.min.js"></script>
+	<script type="text/javascript">
+    toastr.options = {
+      "closeButton": true,
+      "debug": false,
+      "newestOnTop": false,
+      "progressBar": false,
+      "positionClass": "toast-top-left",
+      "preventDuplicates": false,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000"
+    };
+
+    let pages = [];
+    let lastPage = "something";
+		function loadView(page) {
+      let container = $('.container');
+      if ($("#" + page).length ) {
+        if (lastPage !== page) {
+          for (let i = 0; i < pages.length; i++) {
+            if (pages[i] !== page) {
+              $("#" + pages[i]).css( "display", "none" );
+            } else {
+              $("#" + pages[i]).css( "display", "block" );
+            }
+          }
+          $('.' + lastPage).parent().removeClass( "active" );
+          $('.' + page).parent().addClass( "active" );
+          lastPage = page;
+        }
+      } else {
+        Pace.restart();
+        $.ajax({url: "/" + page + ".html",
+          success: function(result) {
+            $(container).append(result);
+            pages.push(page);
+            for (let i = 0; i < pages.length; i++) {
+              if (pages[i] !== page) {
+                $("#" + pages[i]).css( "display", "none" );
+              }
+            }
+            $('.' + lastPage).parent().removeClass( "active" );
+            $('.' + page).parent().addClass( "active" );
+            lastPage = page;
+          }, error: function () {
+            toastr.error('Tenemos problemas para procesar las peticiones.', 'Error!');
+          }
+        });
+			}
+		}
+    loadView("login");
+    function requestsProcess (status, response) {
+      if (response.status == "success") {
+        toastr.success(response.message, response.title);
+      } else if (response.status == "error") {
+        toastr.error(response.message, response.title);
+      } else {
+        toastr.error('Tenemos problemas para procesar las peticiones.', 'Error!');
+        return;
+      }
+      if (response.action == "show") {
+        setTimeout( function() {
+          loadView(response.toShow);
+        }, 1000);
+      } else if (response.action == "redirect") {
+        setTimeout( function() {
+          window.location.replace(response.redirectTo);
+        }, 1000);
+      } else if (response.action == "reload") {
+        setTimeout( function() {
+          window.location.reload();
+        }, 1000);
+      }
+    }
+	</script>
+</body>
+</html>

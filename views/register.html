@@ -1,0 +1,67 @@
+<div id="register">
+	<div class="login-logo" style="text-align: center;">
+		<a onclick="loadView('login');" class="navbar-brand"><b>LOGO</b></a>
+		<!--
+        <a onclick="loadView('login');" title="Inicio">
+            <img src="./assets/images/Logo1.png" alt="LOGO">
+        </a>
+        -->
+	</div>
+	<div class="m-b-lg">
+		<div class="wrapper text-center">
+			<strong>Regístrese para comenzar</strong>
+		</div>
+		<form onsubmit="send_register(); return false;" autocomplete="on" class="form-validation ng-pristine ng-invalid ng-invalid-required ng-valid-minlength ng-valid-maxlength ng-valid-email">
+			<div class="list-group">
+				<div class="list-group-item">
+					<input id="user_register" type="text" name="usuario" placeholder="Nombre de usuario" minlength="1" maxlength="25" required class="form-control no-border ng-pristine ng-untouched ng-invalid ng-invalid-required ng-valid-minlength ng-valid-maxlength">
+				</div>
+				<div class="list-group-item">
+					<input id="mail_register" type="email" name="email" placeholder="Email" required class="form-control no-border ng-pristine ng-untouched ng-valid-email ng-invalid ng-invalid-required">
+				</div>
+				<div class="list-group-item">
+					<input id="pass1_register" type="password" name="password" placeholder="Contraseña" minlength="6" required class="form-control no-border ng-pristine ng-untouched ng-invalid ng-invalid-required ng-valid-minlength">
+				</div>
+				<div class="list-group-item">
+					<input id="pass2_register" type="password" name="con_password" placeholder="Confirma tu contraseña" minlength="6" required class="form-control no-border ng-pristine ng-untouched ng-invalid ng-invalid-required ng-valid-minlength">
+				</div>
+			</div>
+			<button type="submit" class="btn btn-lg btn-primary btn-block">Crear cuenta</button>
+			<div class="line line-dashed"></div>
+			<p class="text-center">
+				<small>¿Ya tienes una cuenta?</small>
+			</p>
+			<a class="btn btn-lg btn-default btn-block" onclick="loadView('login');">Inicia sesión</a>
+		</form>
+		<script>
+			function send_register() {
+                Pace.restart();
+				
+				let user  = $('#user_register').val();
+                let mail  = $('#mail_register').val();
+                let pass1 = $('#pass1_register').val();
+				let pass2 = $('#pass2_register').val();
+				
+                if (pass1 === pass2) {
+                    $.post("./api/user", {
+						page  : 'register',
+						user  : user,
+						mail  : mail.replace(/ /g, ""),
+						pass1 : pass1,
+						pass2 : pass2
+					},
+					function (response, status) {
+						requestsProcess(status, response);
+					});
+                } else {
+                    toastr.error('Las contraseñas no coinciden.', 'Error!');
+				}
+            }
+		</script>
+	</div>
+	<div class="text-center ng-scope">
+		<p class="ng-scope">
+			<small class="text-muted">Leder Diez © 2019</small>
+		</p>
+	</div>
+</div>

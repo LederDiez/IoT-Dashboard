@@ -1,0 +1,543 @@
+<div id="dashboard">
+    <style>
+        .gauge-content {
+            margin-left: auto;
+            margin-right: auto;
+            width: 270px;
+            height: 200px;
+        }
+        .graphic-container {
+            margin-left: auto;
+            margin-right: auto;
+            height: 311px;
+        }
+    </style>
+    <section class="content-header">
+        <h1>Dashboard
+            <small>Control panel</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li class="active">Dashboard</li>
+        </ol>
+    </section>
+    <section id="dashboard_contend" class="content">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                <div class="box box-solid">
+                    <div class="box-header">
+                        <h3 class="box-title">Voltaje de fase</h3>
+                        <div class="box-tools pull-right"></div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <div id="container-volt" class="gauge-content"></div>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                <div class="box box-solid">
+                    <div class="box-header">
+                        <h3 class="box-title">Corriente de fase</h3>
+                        <div class="box-tools pull-right"></div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <div id="container-current" class="gauge-content"></div>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                <div class="box box-solid">
+                    <div class="box-header">
+                        <h3 class="box-title">Frecuencia de fase</h3>
+                        <div class="box-tools pull-right"></div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <div id="container-freq" class="gauge-content"></div>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-solid">
+                    <div class="box-header">
+                        <h3 class="box-title">Potencia aparente</h3>
+                        <div class="box-tools pull-right"></div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <div id="container-ap" class="graphic-container"></div>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-solid">
+                    <div class="box-header">
+                        <h3 class="box-title">Potencia activa</h3>
+                        <div class="box-tools pull-right"></div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <div id="container-ac" class="graphic-container"></div>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+        </div>
+    </section>
+    <script type="text/javascript">
+
+        let AP = Highcharts.stockChart('container-ap', {
+            time: {
+                useUTC: false
+            },
+            rangeSelector: {
+                buttons: [{
+                    count: 1,
+                    type: 'minute',
+                    text: '1 M'
+                }, {
+                    count: 5,
+                    type: 'minute',
+                    text: '5 M'
+                }, {
+                    count: 10,
+                    type: 'minute',
+                    text: '10 M'
+                }, {
+                    type: 'all',
+                    text: 'Todo'
+                }],
+                inputEnabled: false,
+                selected: 0
+            },
+            exporting: {
+                enabled: false
+            },
+            yAxis: {
+                title: {
+                    text: ''
+                },
+                plotLines: [{
+                    value: 30,
+                    color: 'red',
+                    dashStyle: 'shortdash',
+                    width: 2,
+                    label: {
+                        text: 'Último cuarto hasta maximo'
+                    }
+                }, {
+                    value: 20,
+                    color: 'yellow',
+                    dashStyle: 'shortdash',
+                    width: 2,
+                    label: {
+                        text: 'Última mitad hasta maximo'
+                    }
+                }]
+            },
+            series: [{
+                name: 'Random data',
+                data: (function () {
+                    // generate an array of random data
+                    let data = [],
+                        time = (new Date()).getTime(),
+                        i;
+
+                    for (i = -999; i <= 0; i += 1) {
+                        data.push([
+                            time + i * 1000,
+                            0
+                            //Math.round(Math.random() * 100)
+                        ]);
+                    }
+                    return data;
+                }())
+            }]
+        });
+        let AC = Highcharts.stockChart('container-ac', {
+            time: {
+                useUTC: false
+            },
+            rangeSelector: {
+                buttons: [{
+                    count: 1,
+                    type: 'minute',
+                    text: '1 M'
+                }, {
+                    count: 5,
+                    type: 'minute',
+                    text: '5 M'
+                }, {
+                    count: 10,
+                    type: 'minute',
+                    text: '10 M'
+                }, {
+                    type: 'all',
+                    text: 'Todo'
+                }],
+                inputEnabled: false,
+                selected: 0
+            },
+            exporting: {
+                enabled: false
+            },
+            yAxis: {
+                title: {
+                    text: ''
+                },
+                plotLines: [{
+                    value: 30,
+                    color: 'red',
+                    dashStyle: 'shortdash',
+                    width: 2,
+                    label: {
+                        text: 'Último cuarto hasta maximo'
+                    }
+                }, {
+                    value: 20,
+                    color: 'yellow',
+                    dashStyle: 'shortdash',
+                    width: 2,
+                    label: {
+                        text: 'Última mitad hasta maximo'
+                    }
+                }]
+            },
+            series: [{
+                name: 'Random data',
+                data: (function () {
+                    // generate an array of random data
+                    let data = [],
+                        time = (new Date()).getTime(),
+                        i;
+
+                    for (i = -999; i <= 0; i += 1) {
+                        data.push([
+                            time + i * 1000,
+                            0
+                            //Math.round(Math.random() * 100)
+                        ]);
+                    }
+                    return data;
+                }())
+            }]
+        });
+
+        let gaugeVoltsOptions = {
+            chart: {
+                type: 'solidgauge'
+            },
+            title: null,
+            pane: {
+                center: ['50%', '85%'],
+                size: '140%',
+                startAngle: -90,
+                endAngle: 90,
+                background: {
+                    backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || '#EEE',
+                    innerRadius: '60%',
+                    outerRadius: '100%',
+                    shape: 'arc'
+                }
+            },
+            tooltip: {
+                enabled: false
+            },
+            // the value axis
+            yAxis: {
+                stops: [
+                    [0.1, '#55BF3B'], // green
+                    [0.8, '#DDDF0D'], // yellow
+                    [0.9, '#DF5353'] // red
+                ],
+                lineWidth: 0,
+                minorTickInterval: null,
+                tickAmount: 2,
+                title: {
+                    y: -70
+                },
+                labels: {
+                    y: 16
+                }
+            },
+            plotOptions: {
+                solidgauge: {
+                    dataLabels: {
+                        y: 5,
+                        borderWidth: 0,
+                        useHTML: true
+                    }
+                }
+            }
+        };
+        let gaugeAmpsOptions = {
+            chart: {
+                type: 'solidgauge'
+            },
+            title: null,
+            pane: {
+                center: ['50%', '85%'],
+                size: '140%',
+                startAngle: -90,
+                endAngle: 90,
+                background: {
+                    backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || '#EEE',
+                    innerRadius: '60%',
+                    outerRadius: '100%',
+                    shape: 'arc'
+                }
+            },
+            tooltip: {
+                enabled: false
+            },
+            // the value axis
+            yAxis: {
+                stops: [
+                    [0.1, '#55BF3B'], // green
+                    [0.5, '#DDDF0D'], // yellow
+                    [0.9, '#DF5353'] // red
+                ],
+                lineWidth: 0,
+                minorTickInterval: null,
+                tickAmount: 2,
+                title: {
+                    y: -70
+                },
+                labels: {
+                    y: 16
+                }
+            },
+            plotOptions: {
+                solidgauge: {
+                    dataLabels: {
+                        y: 5,
+                        borderWidth: 0,
+                        useHTML: true
+                    }
+                }
+            }
+        };
+        let gaugeFreqOptions = {
+            chart: {
+                type: 'solidgauge'
+            },
+            title: null,
+            pane: {
+                center: ['50%', '85%'],
+                size: '140%',
+                startAngle: -90,
+                endAngle: 90,
+                background: {
+                    backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || '#EEE',
+                    innerRadius: '60%',
+                    outerRadius: '100%',
+                    shape: 'arc'
+                }
+            },
+            tooltip: {
+                enabled: false
+            },
+            // the value axis
+            yAxis: {
+                stops: [
+                    [0.1, '#55BF3B'] // green
+                ],
+                lineWidth: 0,
+                minorTickInterval: null,
+                tickAmount: 2,
+                title: {
+                    y: -70
+                },
+                labels: {
+                    y: 16
+                }
+            },
+            plotOptions: {
+                solidgauge: {
+                    dataLabels: {
+                        y: 5,
+                        borderWidth: 0,
+                        useHTML: true
+                    }
+                }
+            }
+        };
+        
+        let chartvolt = Highcharts.chart('container-volt', Highcharts.merge(gaugeVoltsOptions, {
+            exporting: {
+                enabled: false
+            },
+            yAxis: {
+                min: 0,
+                max: 200,
+                title: {
+                    text: 'Voltios'
+                }
+            },
+            credits: {
+                enabled: false
+            },
+            series: [{
+                name: 'Voltios',
+                data: [0],
+                dataLabels: {
+                    format: '<div style="text-align:center"><span style="font-size:25px;color:' +
+                        ((Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black') + '">{y}</span><br/>' +
+                        '<span style="font-size:12px;color:silver">V</span></div>'
+                },
+                tooltip: {
+                    valueSuffix: ' V'
+                }
+            }]
+        }));
+        let chartcurrent = Highcharts.chart('container-current', Highcharts.merge(gaugeAmpsOptions, {
+            exporting: {
+                enabled: false
+            },
+            yAxis: {
+                min: 0,
+                max: 100,
+                title: {
+                    text: 'Amperios'
+                }
+            },
+            credits: {
+                enabled: false
+            },
+            series: [{
+                name: 'Amperios',
+                data: [0],
+                dataLabels: {
+                    format: '<div style="text-align:center"><span style="font-size:25px;color:' +
+                        ((Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black') + '">{y}</span><br/>' +
+                        '<span style="font-size:12px;color:silver">A</span></div>'
+                },
+                tooltip: {
+                    valueSuffix: ' A'
+                }
+            }]
+        }));
+        let chartfreq = Highcharts.chart('container-freq', Highcharts.merge(gaugeFreqOptions, {
+            exporting: {
+                enabled: false
+            },
+            yAxis: {
+                min: 0,
+                max: 120,
+                title: {
+                    text: 'Frecuencia'
+                }
+            },
+            credits: {
+                enabled: false
+            },
+            series: [{
+                name: 'Frecuencia',
+                data: [0],
+                dataLabels: {
+                    format: '<div style="text-align:center"><span style="font-size:25px;color:' +
+                        ((Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black') + '">{y}</span><br/>' +
+                        '<span style="font-size:12px;color:silver">Hz</span></div>'
+                },
+                tooltip: {
+                    valueSuffix: ' Hz'
+                }
+            }]
+        }));
+        
+        function DeviceDataProcess (data) {
+
+            console.log(data[0]);
+
+            if (chartvolt) {
+                let point = chartvolt.series[0].points[0];
+                point.update(data[0].V);
+            }
+
+            if (chartcurrent) {
+                let point = chartcurrent.series[0].points[0];
+                point.update(data[0].C);
+            }
+
+            if (chartfreq) {
+                let point = chartfreq.series[0].points[0];
+                point.update(data[0].F);
+            }
+
+            if (AP) {
+                let series = AP.series[0];
+                let x = (new Date()).getTime()
+                let y = data[0].AP
+                series.addPoint([x, y], true, true);
+            }
+
+            if (AC) {
+                let series = AC.series[0];
+                let x = (new Date()).getTime()
+                let y = data[0].AC
+                series.addPoint([x, y], true, true);
+            }
+        }
+
+        let wasConnected = false;
+        let isConnected = true;
+        function connect() {
+            // if user is running mozilla then use it's built-in WebSocket
+            window.WebSocket = window.WebSocket || window.MozWebSocket;
+            if (window.WebSocket) {
+                connection = new WebSocket('ws://'+ window.location.hostname +':9300?value=' + v);
+                connection.onopen = () => {
+                    if (wasConnected) {
+                        toastr.success('Hemos recuperado la comunicacion con el servidor.', 'Éxito!');
+                    }
+                    wasConnected = true;
+                    isConnected = true;
+                };
+                connection.onmessage = (message) => {
+                    //console.log(message);
+                    try {
+                        var json = JSON.parse(message.data);
+                        //console.log(json);
+                        DeviceDataProcess(json);
+                    } catch (e) {
+                        console.log('Invalid JSON: ', message.data);
+                        return;
+                    }
+                };
+                connection.onclose = (closeEvent) => {
+                    if (isConnected) {
+                        toastr.error('Lo sentimos, Hemos perdido comunicacion con el servidor. Intentando reconectar...', 'Error!');
+                        isConnected = false;
+                    }
+                    setTimeout ('connect()', 5000); 
+                };
+                connection.onerror = (error) => {
+                    if (isConnected) {
+                        toastr.error('Lo sentimos, Hay algún problema con la conexión. Intentando reconectar...', 'Error!');
+                        wasConnected = true;
+                        isConnected = false;
+                    }
+                    connection.close();
+                };
+            } else {
+                toastr.error('Lo sentimos, pero su navegador no es compatible con WebSocket.', 'Error!');
+            }
+        }
+        connect();
+    </script>
+</div>

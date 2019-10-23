@@ -1,0 +1,3 @@
+.active>.auto .text, .active>.text, .text-active {
+    display: none!important;
+}
