@@ -22,7 +22,7 @@
   <!-- Theme style -->
   <link rel="stylesheet" href="../css/screenfull/screenfull.css">
   <!-- Google Font -->
-  <!--<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">-->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -54,6 +54,9 @@
         }
         .control-sidebar {
           padding-top: 50px !important;
+        }
+        .h3, h3 {
+          font-size: 24px !important;
         }
       }
   </style>
@@ -205,14 +208,29 @@
                 </span>
               </a>
               <ul class="treeview-menu" style="display: none;">
-                <li data-toggle="modal" data-target="#modal-edit-device"   ><a href="#"><i class="fa fa-edit"></i>Editar dispositivo</a></li>
-                <li data-toggle="modal" data-target="#modal-delete-device" ><a href="#"><i class="fa fa-remove"></i>Eliminar dispositivo</a></li>
-                <li data-toggle="modal" data-target="#modal-add-device"    ><a href="#"><i class="fa fa-plus"></i>Agregar nuevo dispositivo</a></li>
+                <li data-toggle="modal" data-target="#modal-add-device" data-backdrop="static" data-keyboard="false"><a href="#"><i class="fa fa-plus"></i>Agregar nuevo dispositivo</a></li>
+
+                <% if (NDevices > 0) { %>
+
+                <li data-toggle="modal" data-target="#modal-edit-device" data-backdrop="static" data-keyboard="false"><a href="#"><i class="fa fa-edit"></i>Editar dispositivo</a></li>
+                <li data-toggle="modal" data-target="#modal-delete-device" data-backdrop="static" data-keyboard="false"><a href="#"><i class="fa fa-remove"></i>Eliminar dispositivo</a></li>
+
+                <% } else { %>
+                
+                <li><a href="#"><i class="fa fa-edit"></i>Editar dispositivo</a></li>
+                <li><a href="#"><i class="fa fa-remove"></i>Eliminar dispositivo</a></li>
+
+                <% } %>
+
               </ul>
             </li>
-            <% for(var i=0; i < JSON.parse(devices).length; i++) { %>
-              <li><a device="<%= i %>" href="#" onclick='changeDevice(this); return false;' ><i class="fa fa-laptop"></i><%= JSON.parse(devices)[i].name %></a></li>
-             <% } %>
+            <% if (NDevices > 0) { %>
+              <% for(var i = 0; i < JSON.parse(devices).length; i++) { %>
+              
+            <li><a device="<%= i %>" href="#" onclick='changeDevice(this); return false;' ><i class="fa fa-laptop"></i><%= JSON.parse(devices)[i].name %></a></li>
+              
+              <% } %>
+            <% } %>
           </ul>
         </li>
         
@@ -222,14 +240,6 @@
             <span>Opciones</span>
           </a>
         </li>
-        <!--
-        <li class="">
-          <a class="token" href="#">
-            <i class="fa fa-table"></i>
-            <span>Token de acceso</span>
-          </a>
-        </li>
-        -->
         <li class="header">Mas sobre nosotros</li>
         <li><a href="#"><i class="fa fa-circle-o text-red"></i> <span>YouTube</span></a></li>
         <li><a href="#"><i class="fa fa-circle-o text-aqua"></i> <span>Twitter</span></a></li>
@@ -346,21 +356,20 @@
     location.href = protocol + '//' + hostname + pathname + '?device=' + deviceID;
   }
 
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 	$( ".dashboard"    ).click(function() { loadView($(this).attr("class")); });
 	$( ".historical"   ).click(function() { loadView($(this).attr("class")); });
 	$( ".comparisons"  ).click(function() { loadView($(this).attr("class")); });
 	$( ".notifications").click(function() { loadView($(this).attr("class")); });
 	$( ".devices"      ).click(function() { loadView($(this).attr("class")); });
 	$( ".options"      ).click(function() { loadView($(this).attr("class")); });
-  //$( ".token"        ).click(function() { loadView($(this).attr("class")); });
 
   let v     = "<%=deviceSerial%>";
+  let nDevices = <%=NDevices%>;
   let model = "<%=deviceModel%>";
 	let pages = [];
   let lastPage = "something";
   let container = $('.content-wrapper');
+
 	function loadView (page) {
 		if ($("#" + page).length ) {
 			if (lastPage !== page) {
@@ -430,10 +439,10 @@
     });
   }
 
-  if ("<%haveDevices%>") {
+  if (nDevices > 0) {
     loadView('dashboard');
   } else {
-    $("#modal-add-device").modal();
+    $("#modal-add-device").modal({backdrop: 'static', keyboard: true});
   }
 </script>
 

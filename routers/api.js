@@ -16,14 +16,16 @@ const DeviceSchema = require('../models/device_schema');
 *	SUPPRESS 	* Delete device     //DEPRECATED
 **********************************************/
 router.post("/device", function(req, res) {
-    const action = req.body.action  || null;
+
+    const action = req.body.action;
 
     switch (action) {
         case 'add':
-        
-            const name   = req.body.name    || null;
-            const serial = req.body.serial  || null;
-            const mail = req.session.mail   || null;
+            
+            var name   = req.body.name;
+            var serial = req.body.serial;
+            var mail = req.session.mail;
+            
             // Comprobar que esten los datos
             if (name != null && serial != null && mail != null) {
                 // Buscar dispositivo en la base de datos
@@ -84,12 +86,14 @@ router.post("/device", function(req, res) {
                     action  : 'reload'
                 });
             }
-            break;
+            
+        break;
         
         case 'edit':
-            const name   = req.body.name    || null;
-            const serial = req.body.serial  || null;
-            const mail = req.session.mail   || null;
+            console.log("Joder");
+            var name   = req.body.name;
+            var serial = req.body.serial;
+            var mail = req.session.mail;
             // Comprobar que esten los datos
             if (name != null && serial != null && mail != null) {
                 // Buscar dispositivo en la base de datos
@@ -150,11 +154,11 @@ router.post("/device", function(req, res) {
                     action  : 'reload'
                 });
             }
-            break;
-
+        break;
+        /*
         case 'delete':
-            const serial = req.body.serial  || null;
-            const mail = req.session.mail   || null;
+            var serial = req.body.serial  || null;
+            var mail = req.session.mail   || null;
             // Comprobar que esten los datos
             if (serial != null && mail != null) {
                 // Buscar dispositivo en la base de datos
@@ -216,7 +220,7 @@ router.post("/device", function(req, res) {
                 });
             }
             break;
-    
+        */
         default:
             res.status(200).send({
                 status  : 'error',

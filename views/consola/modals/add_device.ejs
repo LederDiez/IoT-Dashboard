@@ -13,20 +13,26 @@
 					<!-- text input -->
 					<div class="form-group">
 						<label>Nombre del dispositivo</label>
-						<input type="text" class="form-control" placeholder="Enter ..." id="inputAddName">
+						<input type="text" class="form-control" id="inputAddName">
 					</div>
 
 					<!-- text input -->
 					<div class="form-group">
 						<label>Serial del dispositivo</label>
-						<input type="text" class="form-control" placeholder="Enter ..." id="inputAddSerial">
+						<input type="text" class="form-control" id="inputAddSerial">
 					</div>
 
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary" onclick="add_device();" >Save changes</button>
+				
+				<% if (NDevices > 0) { %>
+				
+				<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
+				
+				<% } %>
+				
+				<button type="button" class="btn btn-primary" onclick="add_device();" >	AGREGAR</button>
 			</div>
 		</div>
 		<!-- /.modal-content -->
