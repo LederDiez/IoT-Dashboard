@@ -3,6 +3,7 @@
 const mongoose = require('mongoose');
 const colors   = require('colors');
 
+mongoose.set('useUnifiedTopology', true);
 mongoose.connect('mongodb://localhost/express', {
     useCreateIndex: true,
     useNewUrlParser: true

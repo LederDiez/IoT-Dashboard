@@ -25,6 +25,263 @@
         </ol>
     </section>
     <section id="dashboard_contend" class="content">
+
+        <link rel="stylesheet" href="../css/svg-animator.css">
+
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-solid">
+                    <div class="box-header">
+                        <h3 class="box-title">Potencia aparente</h3>
+                        <div class="box-tools pull-right"></div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div style="text-align: center;" class="box-body">
+                        <svg id="csvg" width="320" height="320"></svg>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+        </div>
+
+        <script type="text/javascript">
+            
+            var pathOld = null;
+            var pathNew = null;
+
+            var PtI;
+            var RtI;
+            var BtI;
+            var ItL;
+
+            function updateBalls(arrayElements, direction, color, duration) {
+                for (let i = 0; i < arrayElements.length; i++) {
+                    const element = arrayElements[i];
+
+                    console.log(element);
+                    var tx = element.tx;
+                    var ty = element.ty;
+                    var delay = Math.floor(i * ((duration * 12.5) / 100));
+                    
+                    element.setAttribute("fill",color);
+                    if (direction == 1) {
+                        element.animate([
+                            {   // from
+                                transform : 'translate(0px, 0px)'
+                            },
+                            {   // to
+                                transform : 'translate('+tx+'px, '+ty+'px)'
+                            }
+                        ], {
+                            delay     : delay,
+                            duration  : duration,
+                            iterations: Infinity
+                        });
+                    } else {
+                        element.animate([
+                            {   // from
+                                transform : 'translate('+tx+'px, '+ty+'px)'
+                            },
+                            {   // to
+                                transform : 'translate(0px, 0px)'
+                            }
+                        ], {
+                            delay     : delay,
+                            duration  : duration,
+                            iterations: Infinity
+                        });
+                    }
+
+                }
+            }
+
+            // Dibuja las lineas que conectan los circulos
+            function drawConnector(s, x1, y1, x2, y2, name) {
+                
+                var line = s.line(x1, y1, x2, y2);
+                line.attr({
+                    stroke: "#e4e4e4",
+                    strokeWidth: 1
+                });
+
+                var arrayElements = new Array();
+
+                for (let i = 1; i <= 8; i++) {
+
+                    // 8 pixeles maximo
+                    // Circulo azul
+                    var id = name + i;
+                    var c = s.circle(x1, y1, 5).attr({
+                        fill : "#ffffff00",
+                        id   : id
+                    });
+
+                    // 125 por segundo de duracion de la animacion
+                    var duration = 4000;
+                    var delay = Math.floor(i * ((duration * 12.5) / 100));
+                    var tx = x2 - x1;
+                    var ty = y2 - y1;
+
+                    var element = document.getElementById(id);
+                    
+                    element.tx = tx;
+                    element.ty = ty;
+
+                    arrayElements.push(element);
+
+                }
+                return arrayElements;
+            }
+
+            // Draws a chart node
+            function drawNode(s, x, y, image) {
+    
+                var externalCircle = s.circle(x, y, 46)
+                externalCircle.attr({
+                    fill : "rgba(255, 255, 255, 1)",
+                    stroke : "#bdbdbd",
+                    strikeWidth : 1,
+                })
+
+                var internalCircle = s.circle(x, y, 29)
+                internalCircle.attr({
+                    fill : "#616161"
+                })
+
+                var path = drawPath(s, 100/100, x, y);
+
+                var imagen = s.image(image, x-20, y-20 , 40, 40);
+
+                var circle = s.group();
+                circle.add(externalCircle, internalCircle, path, imagen);
+                return circle
+            }
+            
+            function drawChart(container, pro) {
+            
+                var s = new Snap(container);
+
+                var el   = document.getElementById("csvg"); // or other selector like querySelector()
+                var rect = el.getBoundingClientRect(); // get the bounding rectangle
+
+                var W = rect.width;
+                var H = rect.height;
+
+                // Colculo de las pociciones
+                var panelX = (W*20)/100, panelY = (H*20)/100;
+                var battX  = (W*80)/100, battY  = (H*20)/100;
+
+                var inverX = (W*50)/100, inverY = (H*50)/100;
+
+                var loadX  = (W*80)/100, loadY  = (H*80)/100;
+                var redX   = (W*20)/100, redY   = (H*80)/100;
+                
+                PtI = drawConnector(s, panelY, panelX, inverX, inverY, "PtoI");
+                RtI = drawConnector(s, redX  , redY  , inverX, inverY, "RtoI");
+                BtI = drawConnector(s, battX , battY , inverX, inverY, "BtoI");
+                ItL = drawConnector(s, inverX, inverY, loadX , loadY , "ItoL");
+                
+
+                updateBalls(PtI, 1, "#00c853", 4000);
+                updateBalls(RtI, 1, "#d50000", 4000);
+                updateBalls(BtI, 0, "#00c853", 4000);
+                updateBalls(ItL, 1, "#d50000", 4000);
+                
+                var panelNode = drawNode(s, panelY, panelX, "pv.svg");
+                var batteNode = drawNode(s, battX , battY , "battery.svg");
+                var inverNode = drawNode(s, inverX, inverY, "inverter.svg");
+                var loadNode  = drawNode(s, loadX , loadY , "consumption.svg");
+                var redNode   = drawNode(s, redX  , redY  , "grid.svg");
+            }
+
+            setTimeout(function(){
+                //updateBalls(PtI, 0, "#d50000", 2000);
+            }, 5000);
+
+
+            // Dibuja la barra de porcentaje
+            function drawPath(snap, percent, x, y) {
+                
+                var path = null;
+
+                var attr = {
+                stroke: '#FEAD00',
+                fill: '#FEAD00',
+                strokeWidth: 1
+                };
+                
+                path = drawPieSector(snap, {x:x, y:y}, 0, 0, 0, 0, attr);
+                
+                var sector;
+                
+                Snap.animate(0, percent * 359.99, function (deg) {
+                
+                    if(sector) { 
+                        sector.remove();
+                    }
+
+                    sector = drawPieSector(snap, {x:x, y:y}, 29, 45, -90, deg, attr);
+
+                }, 1000, mina.linear);
+
+                return path;
+            }
+    
+            ///////////////////////////////////////////////////////////////////
+            // Draws a pie sector
+            //
+            ///////////////////////////////////////////////////////////////////
+            function drawPieSector(snap, centre, rIn, rOut, startDeg, delta, attr) {
+    
+                var startOut = {
+                    x: centre.x + rOut * Math.cos(Math.PI*(startDeg)/180),
+                    y: centre.y + rOut * Math.sin(Math.PI*(startDeg)/180)
+                };
+    
+                var endOut = {
+                    x: centre.x + rOut * Math.cos(Math.PI*(startDeg + delta)/180),
+                    y: centre.y + rOut * Math.sin(Math.PI*(startDeg + delta)/180)
+                };
+    
+                var startIn = {
+                    x: centre.x + rIn * Math.cos(Math.PI*(startDeg + delta)/180),
+                    y: centre.y + rIn * Math.sin(Math.PI*(startDeg + delta)/180)
+                };
+    
+                var endIn = {
+                    x: centre.x + rIn * Math.cos(Math.PI*(startDeg)/180),
+                    y: centre.y + rIn * Math.sin(Math.PI*(startDeg)/180)
+                };
+    
+                var largeArc = delta > 180 ? 1 : 0;
+    
+                var path = "M" + startOut.x + "," + startOut.y +
+                        " A" + rOut + "," + rOut + " 0 " +
+                        largeArc + ",1 " + endOut.x + "," + endOut.y +
+                        " L" + startIn.x + "," + startIn.y +
+                        " A" + rIn + "," + rIn + " 0 " +
+                        largeArc + ",0 " + endIn.x + "," + endIn.y +
+                        " L" + startOut.x + "," + startOut.y + " Z";
+    
+                var path = snap.path(path);
+    
+                path.attr(attr);
+    
+                return path;
+            }
+    
+            // Calcula en tamaño de los curculos que se mueven
+            function calculateCirclesPixels(max, value) {
+                var pixels = Math.ceil(value / (max / 8));
+                console.log(pixels);
+            }
+
+            var chart = new drawChart('#csvg', {
+            //
+            });
+        </script>
+
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
                 <div class="box box-solid">
