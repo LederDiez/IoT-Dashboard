@@ -1,0 +1,81 @@
+{
+	"width": 100,
+	"height": 100,
+	"fill": "#ffff00",
+	"stroke": "#000000",
+	"strokeWidth": 1,
+	"segment": [
+		{
+			"type": "m",
+			"x": 20,
+			"y": 40,
+			"absolute": true,
+			"rx": 0,
+			"axisRotation": 0,
+			"largeArc": false,
+			"sweep": false,
+			"x1": 0,
+			"y1": 0,
+			"x2": 0,
+			"y2": 0
+		},
+		{
+			"type": "a",
+			"x": 64,
+			"y": 0,
+			"absolute": false,
+			"rx": 46,
+			"ry": 46,
+			"axisRotation": 0,
+			"largeArc": false,
+			"sweep": true,
+			"x1": 0,
+			"y1": 0,
+			"x2": 0,
+			"y2": 0
+		},
+		{
+			"type": "l",
+			"x": -12,
+			"y": 12,
+			"absolute": false,
+			"rx": 0,
+			"axisRotation": 0,
+			"largeArc": false,
+			"sweep": false,
+			"x1": 0,
+			"y1": 0,
+			"x2": 0,
+			"y2": 0
+		},
+		{
+			"type": "a",
+			"x": -40,
+			"y": 0,
+			"absolute": false,
+			"rx": 30,
+			"ry": 30,
+			"axisRotation": 0,
+			"largeArc": false,
+			"sweep": false,
+			"x1": 0,
+			"y1": 0,
+			"x2": 0,
+			"y2": 0
+		},
+		{
+			"type": "z",
+			"x": 0,
+			"y": 0,
+			"absolute": false,
+			"rx": 0,
+			"axisRotation": 0,
+			"largeArc": false,
+			"sweep": false,
+			"x1": 0,
+			"y1": 0,
+			"x2": 0,
+			"y2": 0
+		}
+	]
+}

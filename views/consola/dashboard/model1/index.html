@@ -1,331 +1,104 @@
 <div id="dashboard">
     <style>
         .gauge-content {
+            text-align: center;
+            padding: 0px !important;
             margin-left: auto;
             margin-right: auto;
-            width: 270px;
-            height: 200px;
+            width: 290px;
+            height: 344px;
+        }
+        .gauge {
+            margin-top: 22%;
+            width: 290px;
+            height: 220px;
         }
         .graphic-container {
             margin-left: auto;
             margin-right: auto;
+            padding-right: 1%;
             height: 311px;
         }
         .h3, h3 {
-          font-size: 24px !important;
+          font-size: 20px !important;
         }
     </style>
     <section class="content-header">
-        <h1>Dashboard
-            <small>Control panel</small>
-        </h1>
-        <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li class="active">Dashboard</li>
+        <h1>Tablero</h1>
+        <ol class="breadcrumb" style="font-size: inherit;">
+            <li id="tablerodevicenameli"></li>
+            <script>document.getElementById("tablerodevicenameli").innerHTML='<a><i class="fa fa-laptop"></i>'+DEVICE_NAME+'</a>';</script>
         </ol>
     </section>
     <section id="dashboard_contend" class="content">
 
-        <link rel="stylesheet" href="../css/svg-animator.css">
-
         <div class="row">
-            <div class="col-xs-12">
+
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
                 <div class="box box-solid">
                     <div class="box-header">
-                        <h3 class="box-title">Potencia aparente</h3>
+                        <h3 class="box-title">Conecciones y potencias</h3>
                         <div class="box-tools pull-right"></div>
                     </div>
                     <!-- /.box-header -->
                     <div style="text-align: center;" class="box-body">
-                        <svg id="csvg" width="320" height="320"></svg>
+                        <svg id="connectionChart" width="320" height="320" version="1.1" xmlns="http://www.w3.org/2000/svg"></svg>
                     </div>
                     <!-- /.box-body -->
                 </div>
                 <!-- /.box -->
             </div>
-        </div>
-
-        <script type="text/javascript">
-            
-            var pathOld = null;
-            var pathNew = null;
-
-            var PtI;
-            var RtI;
-            var BtI;
-            var ItL;
-
-            function updateBalls(arrayElements, direction, color, duration) {
-                for (let i = 0; i < arrayElements.length; i++) {
-                    const element = arrayElements[i];
-
-                    console.log(element);
-                    var tx = element.tx;
-                    var ty = element.ty;
-                    var delay = Math.floor(i * ((duration * 12.5) / 100));
-                    
-                    element.setAttribute("fill",color);
-                    if (direction == 1) {
-                        element.animate([
-                            {   // from
-                                transform : 'translate(0px, 0px)'
-                            },
-                            {   // to
-                                transform : 'translate('+tx+'px, '+ty+'px)'
-                            }
-                        ], {
-                            delay     : delay,
-                            duration  : duration,
-                            iterations: Infinity
-                        });
-                    } else {
-                        element.animate([
-                            {   // from
-                                transform : 'translate('+tx+'px, '+ty+'px)'
-                            },
-                            {   // to
-                                transform : 'translate(0px, 0px)'
-                            }
-                        ], {
-                            delay     : delay,
-                            duration  : duration,
-                            iterations: Infinity
-                        });
-                    }
-
-                }
-            }
-
-            // Dibuja las lineas que conectan los circulos
-            function drawConnector(s, x1, y1, x2, y2, name) {
-                
-                var line = s.line(x1, y1, x2, y2);
-                line.attr({
-                    stroke: "#e4e4e4",
-                    strokeWidth: 1
-                });
-
-                var arrayElements = new Array();
-
-                for (let i = 1; i <= 8; i++) {
-
-                    // 8 pixeles maximo
-                    // Circulo azul
-                    var id = name + i;
-                    var c = s.circle(x1, y1, 5).attr({
-                        fill : "#ffffff00",
-                        id   : id
-                    });
-
-                    // 125 por segundo de duracion de la animacion
-                    var duration = 4000;
-                    var delay = Math.floor(i * ((duration * 12.5) / 100));
-                    var tx = x2 - x1;
-                    var ty = y2 - y1;
-
-                    var element = document.getElementById(id);
-                    
-                    element.tx = tx;
-                    element.ty = ty;
-
-                    arrayElements.push(element);
-
-                }
-                return arrayElements;
-            }
-
-            // Draws a chart node
-            function drawNode(s, x, y, image) {
-    
-                var externalCircle = s.circle(x, y, 46)
-                externalCircle.attr({
-                    fill : "rgba(255, 255, 255, 1)",
-                    stroke : "#bdbdbd",
-                    strikeWidth : 1,
-                })
-
-                var internalCircle = s.circle(x, y, 29)
-                internalCircle.attr({
-                    fill : "#616161"
-                })
-
-                var path = drawPath(s, 100/100, x, y);
-
-                var imagen = s.image(image, x-20, y-20 , 40, 40);
-
-                var circle = s.group();
-                circle.add(externalCircle, internalCircle, path, imagen);
-                return circle
-            }
-            
-            function drawChart(container, pro) {
-            
-                var s = new Snap(container);
-
-                var el   = document.getElementById("csvg"); // or other selector like querySelector()
-                var rect = el.getBoundingClientRect(); // get the bounding rectangle
-
-                var W = rect.width;
-                var H = rect.height;
-
-                // Colculo de las pociciones
-                var panelX = (W*20)/100, panelY = (H*20)/100;
-                var battX  = (W*80)/100, battY  = (H*20)/100;
-
-                var inverX = (W*50)/100, inverY = (H*50)/100;
-
-                var loadX  = (W*80)/100, loadY  = (H*80)/100;
-                var redX   = (W*20)/100, redY   = (H*80)/100;
-                
-                PtI = drawConnector(s, panelY, panelX, inverX, inverY, "PtoI");
-                RtI = drawConnector(s, redX  , redY  , inverX, inverY, "RtoI");
-                BtI = drawConnector(s, battX , battY , inverX, inverY, "BtoI");
-                ItL = drawConnector(s, inverX, inverY, loadX , loadY , "ItoL");
-                
-
-                updateBalls(PtI, 1, "#00c853", 4000);
-                updateBalls(RtI, 1, "#d50000", 4000);
-                updateBalls(BtI, 0, "#00c853", 4000);
-                updateBalls(ItL, 1, "#d50000", 4000);
-                
-                var panelNode = drawNode(s, panelY, panelX, "pv.svg");
-                var batteNode = drawNode(s, battX , battY , "battery.svg");
-                var inverNode = drawNode(s, inverX, inverY, "inverter.svg");
-                var loadNode  = drawNode(s, loadX , loadY , "consumption.svg");
-                var redNode   = drawNode(s, redX  , redY  , "grid.svg");
-            }
-
-            setTimeout(function(){
-                //updateBalls(PtI, 0, "#d50000", 2000);
-            }, 5000);
-
-
-            // Dibuja la barra de porcentaje
-            function drawPath(snap, percent, x, y) {
-                
-                var path = null;
-
-                var attr = {
-                stroke: '#FEAD00',
-                fill: '#FEAD00',
-                strokeWidth: 1
-                };
-                
-                path = drawPieSector(snap, {x:x, y:y}, 0, 0, 0, 0, attr);
-                
-                var sector;
-                
-                Snap.animate(0, percent * 359.99, function (deg) {
-                
-                    if(sector) { 
-                        sector.remove();
-                    }
-
-                    sector = drawPieSector(snap, {x:x, y:y}, 29, 45, -90, deg, attr);
-
-                }, 1000, mina.linear);
-
-                return path;
-            }
-    
-            ///////////////////////////////////////////////////////////////////
-            // Draws a pie sector
-            //
-            ///////////////////////////////////////////////////////////////////
-            function drawPieSector(snap, centre, rIn, rOut, startDeg, delta, attr) {
-    
-                var startOut = {
-                    x: centre.x + rOut * Math.cos(Math.PI*(startDeg)/180),
-                    y: centre.y + rOut * Math.sin(Math.PI*(startDeg)/180)
-                };
-    
-                var endOut = {
-                    x: centre.x + rOut * Math.cos(Math.PI*(startDeg + delta)/180),
-                    y: centre.y + rOut * Math.sin(Math.PI*(startDeg + delta)/180)
-                };
-    
-                var startIn = {
-                    x: centre.x + rIn * Math.cos(Math.PI*(startDeg + delta)/180),
-                    y: centre.y + rIn * Math.sin(Math.PI*(startDeg + delta)/180)
-                };
-    
-                var endIn = {
-                    x: centre.x + rIn * Math.cos(Math.PI*(startDeg)/180),
-                    y: centre.y + rIn * Math.sin(Math.PI*(startDeg)/180)
-                };
-    
-                var largeArc = delta > 180 ? 1 : 0;
-    
-                var path = "M" + startOut.x + "," + startOut.y +
-                        " A" + rOut + "," + rOut + " 0 " +
-                        largeArc + ",1 " + endOut.x + "," + endOut.y +
-                        " L" + startIn.x + "," + startIn.y +
-                        " A" + rIn + "," + rIn + " 0 " +
-                        largeArc + ",0 " + endIn.x + "," + endIn.y +
-                        " L" + startOut.x + "," + startOut.y + " Z";
-    
-                var path = snap.path(path);
-    
-                path.attr(attr);
-    
-                return path;
-            }
-    
-            // Calcula en tamaño de los curculos que se mueven
-            function calculateCirclesPixels(max, value) {
-                var pixels = Math.ceil(value / (max / 8));
-                console.log(pixels);
-            }
-
-            var chart = new drawChart('#csvg', {
-            //
-            });
-        </script>
-
-        <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
                 <div class="box box-solid">
                     <div class="box-header">
                         <h3 class="box-title">Voltaje de fase</h3>
                         <div class="box-tools pull-right"></div>
                     </div>
                     <!-- /.box-header -->
-                    <div class="box-body">
-                        <div id="container-volt" class="gauge-content"></div>
+                    <div class="box-body gauge-content">
+                        <div id="container-volt" class="gauge"></div>
                     </div>
                     <!-- /.box-body -->
                 </div>
                 <!-- /.box -->
             </div>
-            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
                 <div class="box box-solid">
                     <div class="box-header">
                         <h3 class="box-title">Corriente de fase</h3>
                         <div class="box-tools pull-right"></div>
                     </div>
                     <!-- /.box-header -->
-                    <div class="box-body">
-                        <div id="container-current" class="gauge-content"></div>
+                    <div class="box-body gauge-content">
+                        <div id="container-current" class="gauge"></div>
                     </div>
                     <!-- /.box-body -->
                 </div>
                 <!-- /.box -->
             </div>
-            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
                 <div class="box box-solid">
                     <div class="box-header">
                         <h3 class="box-title">Frecuencia de fase</h3>
                         <div class="box-tools pull-right"></div>
                     </div>
                     <!-- /.box-header -->
-                    <div class="box-body">
-                        <div id="container-freq" class="gauge-content"></div>
+                    <div class="box-body gauge-content">
+                        <!--<div id="container-freq" class="gauge"></div>-->
+                        <p class="no-padder m-n font-normal gauge" style="font-size: 130px;">
+                            <a style="color: rgb(30, 49, 62) !important;">60<span style="font-size: 50px;">Hz</span></a>
+                        </p>
                     </div>
                     <!-- /.box-body -->
                 </div>
                 <!-- /.box -->
             </div>
         </div>
+
         <div class="row">
             <div class="col-xs-12">
                 <div class="box box-solid">
@@ -359,12 +132,87 @@
             </div>
         </div>
     </section>
+
     <script type="text/javascript">
+
+        let connectGraphNodes = [
+            {
+                name : 'panel',
+                color : "#616161",
+                image : "../images/pv.svg",
+                gauge : 1,
+                position : {
+                    x : 20,
+                    y : 20
+                },
+                connection : {
+                    x : 50,
+                    y : 50
+                }
+            },{
+                name : 'bateria',
+                color : "#616161",
+                image : "../images/battery.svg",
+                gauge : 1,
+                position : {
+                    x : 80,
+                    y : 20
+                },
+                connection : {
+                    x : 50,
+                    y : 50
+                }
+            },{
+                name : 'inversor',
+                color : "#616161",
+                image : "../images/inverter.svg",
+                gauge : 1,
+                position : {
+                    x : 50,
+                    y : 50
+                },
+                connection : {
+                    x : 80,
+                    y : 80
+                }
+            },{
+                name : 'red',
+                color : "#616161",
+                image : "../images/grid.svg",
+                gauge : 0,
+                position : {
+                    x : 20,
+                    y : 80
+                },
+                connection : {
+                    x : 50,
+                    y : 50
+                }
+            },{
+                name : 'carga',
+                color : "#616161",
+                image : "../images/consumption.svg",
+                gauge : 0,
+                position : {
+                    x : 80,
+                    y : 80
+                },
+            }
+        ]
+
+        let graphic = ConnectionGraph.chart("connectionChart", connectGraphNodes);
+
+        function getRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min)) + min;
+        }
 
         let AP = Highcharts.stockChart('container-ap', {
             time: {
                 useUTC: false
             },
+            credits: {
+                enabled: false
+            },
             rangeSelector: {
                 buttons: [{
                     count: 1,
@@ -378,9 +226,6 @@
                     count: 10,
                     type: 'minute',
                     text: '10 M'
-                }, {
-                    type: 'all',
-                    text: 'Todo'
                 }],
                 inputEnabled: false,
                 selected: 0
@@ -393,32 +238,42 @@
                     text: ''
                 },
                 plotLines: [{
-                    value: 30,
+                    value: 75,
                     color: 'red',
                     dashStyle: 'shortdash',
                     width: 2,
-                    label: {
-                        text: 'Último cuarto hasta maximo'
-                    }
+                    //label: { text: 'Último cuarto hasta maximo' }
                 }, {
-                    value: 20,
+                    value: 50,
                     color: 'yellow',
                     dashStyle: 'shortdash',
                     width: 2,
-                    label: {
-                        text: 'Última mitad hasta maximo'
-                    }
+                    //label: { text: 'Última mitad hasta maximo' }
                 }]
             },
             series: [{
-                name: 'Random data',
+                name: 'Potencia aparente',
+                type: 'area',
+                threshold: null,
+                fillColor: {
+                    linearGradient: {
+                        x1: 0,
+                        y1: 0,
+                        x2: 0,
+                        y2: 1
+                    },
+                    stops: [
+                        [0, Highcharts.getOptions().colors[0]],
+                        [1, Highcharts.color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                    ]
+                },
                 data: (function () {
                     // generate an array of random data
                     let data = [],
                         time = (new Date()).getTime(),
                         i;
 
-                    for (i = -999; i <= 0; i += 1) {
+                    for (i = -600; i <= 0; i += 1) {
                         data.push([
                             time + i * 1000,
                             0
@@ -427,12 +282,33 @@
                     }
                     return data;
                 }())
-            }]
+            }],
+            responsive: {
+                rules: [{
+                    condition: {
+                        maxWidth: 500
+                    },
+                    chartOptions: {
+                        chart: {
+                            height: 300
+                        },
+                        subtitle: {
+                            text: null
+                        },
+                        navigator: {
+                            enabled: false
+                        }
+                    }
+                }]
+            }
         });
         let AC = Highcharts.stockChart('container-ac', {
             time: {
                 useUTC: false
             },
+            credits: {
+                enabled: false
+            },
             rangeSelector: {
                 buttons: [{
                     count: 1,
@@ -446,9 +322,6 @@
                     count: 10,
                     type: 'minute',
                     text: '10 M'
-                }, {
-                    type: 'all',
-                    text: 'Todo'
                 }],
                 inputEnabled: false,
                 selected: 0
@@ -461,32 +334,42 @@
                     text: ''
                 },
                 plotLines: [{
-                    value: 30,
+                    value: 75,
                     color: 'red',
                     dashStyle: 'shortdash',
                     width: 2,
-                    label: {
-                        text: 'Último cuarto hasta maximo'
-                    }
+                    //label: { text: 'Último cuarto hasta maximo' }
                 }, {
-                    value: 20,
+                    value: 50,
                     color: 'yellow',
                     dashStyle: 'shortdash',
                     width: 2,
-                    label: {
-                        text: 'Última mitad hasta maximo'
-                    }
+                    //label: { text: 'Última mitad hasta maximo' }
                 }]
             },
             series: [{
-                name: 'Random data',
+                name: 'Potencia activa',
+                type: 'area',
+                threshold: null,
+                fillColor: {
+                    linearGradient: {
+                        x1: 0,
+                        y1: 0,
+                        x2: 0,
+                        y2: 1
+                    },
+                    stops: [
+                        [0, Highcharts.getOptions().colors[0]],
+                        [1, Highcharts.color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                    ]
+                },
                 data: (function () {
                     // generate an array of random data
                     let data = [],
                         time = (new Date()).getTime(),
                         i;
 
-                    for (i = -999; i <= 0; i += 1) {
+                    for (i = -600; i <= 0; i += 1) {
                         data.push([
                             time + i * 1000,
                             0
@@ -495,7 +378,25 @@
                     }
                     return data;
                 }())
-            }]
+            }],
+            responsive: {
+                rules: [{
+                    condition: {
+                        maxWidth: 500
+                    },
+                    chartOptions: {
+                        chart: {
+                            height: 300
+                        },
+                        subtitle: {
+                            text: null
+                        },
+                        navigator: {
+                            enabled: false
+                        }
+                    }
+                }]
+            }
         });
 
         let gaugeVoltsOptions = {
@@ -509,7 +410,7 @@
                 startAngle: -90,
                 endAngle: 90,
                 background: {
-                    backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || '#EEE',
+                    backgroundColor: Highcharts.defaultOptions.legend.backgroundColor || '#EEE',
                     innerRadius: '60%',
                     outerRadius: '100%',
                     shape: 'arc'
@@ -545,6 +446,34 @@
                 }
             }
         };
+        let chartvolt = Highcharts.chart('container-volt', Highcharts.merge(gaugeVoltsOptions, {
+            exporting: {
+                enabled: false
+            },
+            yAxis: {
+                min: 0,
+                max: 200,
+                //title: { text: 'Voltios' }
+            },
+            credits: {
+                enabled: false
+            },
+            series: [{
+                name: 'Voltios',
+                data: [0],
+                dataLabels: {
+                    format: 
+                        '<div style="text-align:center">' +
+                        '<span style="font-size:25px">{y}</span><br/>' +
+                        '<span style="font-size:12px;opacity:0.4">V</span>' +
+                        '</div>'
+                },
+                tooltip: {
+                    valueSuffix: ' V'
+                }
+            }]
+        }));
+        
         let gaugeAmpsOptions = {
             chart: {
                 type: 'solidgauge'
@@ -556,7 +485,7 @@
                 startAngle: -90,
                 endAngle: 90,
                 background: {
-                    backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || '#EEE',
+                    backgroundColor: Highcharts.defaultOptions.legend.backgroundColor || '#EEE',
                     innerRadius: '60%',
                     outerRadius: '100%',
                     shape: 'arc'
@@ -592,79 +521,6 @@
                 }
             }
         };
-        let gaugeFreqOptions = {
-            chart: {
-                type: 'solidgauge'
-            },
-            title: null,
-            pane: {
-                center: ['50%', '85%'],
-                size: '140%',
-                startAngle: -90,
-                endAngle: 90,
-                background: {
-                    backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || '#EEE',
-                    innerRadius: '60%',
-                    outerRadius: '100%',
-                    shape: 'arc'
-                }
-            },
-            tooltip: {
-                enabled: false
-            },
-            // the value axis
-            yAxis: {
-                stops: [
-                    [0.1, '#55BF3B'] // green
-                ],
-                lineWidth: 0,
-                minorTickInterval: null,
-                tickAmount: 2,
-                title: {
-                    y: -70
-                },
-                labels: {
-                    y: 16
-                }
-            },
-            plotOptions: {
-                solidgauge: {
-                    dataLabels: {
-                        y: 5,
-                        borderWidth: 0,
-                        useHTML: true
-                    }
-                }
-            }
-        };
-        
-        let chartvolt = Highcharts.chart('container-volt', Highcharts.merge(gaugeVoltsOptions, {
-            exporting: {
-                enabled: false
-            },
-            yAxis: {
-                min: 0,
-                max: 200,
-                title: {
-                    text: 'Voltios'
-                }
-            },
-            credits: {
-                enabled: false
-            },
-            series: [{
-                name: 'Voltios',
-                data: [0],
-                dataLabels: {
-                    format: '<div style="text-align:center"><span style="font-size:25px;color:' +
-                        ((Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black') + '">{y}</span><br/>' +
-                        '<span style="font-size:12px;color:silver">V</span></div>'
-                },
-                tooltip: {
-                    valueSuffix: ' V'
-                }
-            }]
-        }));
         let chartcurrent = Highcharts.chart('container-current', Highcharts.merge(gaugeAmpsOptions, {
             exporting: {
                 enabled: false
@@ -672,9 +528,7 @@
             yAxis: {
                 min: 0,
                 max: 100,
-                title: {
-                    text: 'Amperios'
-                }
+                //title: { text: 'Amperios' }
             },
             credits: {
                 enabled: false
@@ -683,60 +537,69 @@
                 name: 'Amperios',
                 data: [0],
                 dataLabels: {
-                    format: '<div style="text-align:center"><span style="font-size:25px;color:' +
-                        ((Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black') + '">{y}</span><br/>' +
-                        '<span style="font-size:12px;color:silver">A</span></div>'
+                    format: 
+                        '<div style="text-align:center">' +
+                        '<span style="font-size:25px">{y}</span><br/>' +
+                        '<span style="font-size:12px;opacity:0.4">A</span>' +
+                        '</div>'
                 },
                 tooltip: {
                     valueSuffix: ' A'
                 }
             }]
         }));
-        let chartfreq = Highcharts.chart('container-freq', Highcharts.merge(gaugeFreqOptions, {
-            exporting: {
-                enabled: false
-            },
-            yAxis: {
-                min: 0,
-                max: 120,
-                title: {
-                    text: 'Frecuencia'
-                }
-            },
-            credits: {
-                enabled: false
-            },
-            series: [{
-                name: 'Frecuencia',
-                data: [0],
-                dataLabels: {
-                    format: '<div style="text-align:center"><span style="font-size:25px;color:' +
-                        ((Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black') + '">{y}</span><br/>' +
-                        '<span style="font-size:12px;color:silver">Hz</span></div>'
-                },
-                tooltip: {
-                    valueSuffix: ' Hz'
-                }
-            }]
-        }));
-        
+
+        setInterval(function(){
+            
+            /*if (chartvolt) {
+                let point = chartvolt.series[0].points[0];
+                point.update(110 + Math.round(Math.random() * 2));
+            }*/
+
+            if (chartcurrent) {
+                let point = chartcurrent.series[0].points[0];
+                point.update(getRandomInt(10, 13));
+            }
+
+            if (AP) {
+                let series = AP.series[0];
+                let x = (new Date()).getTime()
+                let y = getRandomInt(60, 70);
+                series.addPoint([x, y], true, true);
+            }
+
+            if (AC) {
+                let series = AC.series[0];
+                let x = (new Date()).getTime()
+                let y = getRandomInt(55, 65);
+                series.addPoint([x, y], true, true);
+            }
+
+            //c = "#00c853"; Verde
+            //c = "#9e9e9e"; Gris
+            //c = "#616161"; Gris oscuro
+            //c = "#d50000"; Rojo
+            // id valor "direccion color radio" (circulos) color (centro)
+
+            graphic.updateNode(0, getRandomInt(80, 90), 1, "#00c853", 90);  // Panel a inversor
+            graphic.updateNode(1, getRandomInt(50, 52), 0, "#00c853", 70);  // bateria a inversor
+            graphic.updateNode(2, getRandomInt(10, 15), 1, "#00c853", 30, "#00c853");  // Inversor a carga
+            graphic.updateNode(3, 0, -1, "#d50000");// red a inversor
+
+        }, 3000);
+
         function DeviceDataProcess (data) {
 
             console.log(data[0]);
 
             if (chartvolt) {
                 let point = chartvolt.series[0].points[0];
-                point.update(data[0].V);
+                point.update(data[0].value);
             }
 
-            if (chartcurrent) {
+            /*if (chartcurrent) {
                 let point = chartcurrent.series[0].points[0];
                 point.update(data[0].C);
-            }
-
-            if (chartfreq) {
-                let point = chartfreq.series[0].points[0];
-                point.update(data[0].F);
             }
 
             if (AP) {
@@ -751,7 +614,7 @@
                 let x = (new Date()).getTime()
                 let y = data[0].AC
                 series.addPoint([x, y], true, true);
-            }
+            }*/
         }
 
         let wasConnected = false;
@@ -795,7 +658,7 @@
                     connection.close();
                 };
             } else {
-                toastr.error('Lo sentimos, pero su navegador no es compatible con WebSocket.', 'Error!');
+                toastr.error('Lo sentimos, pero su navegador no es compatible con nuestros sitio web.', 'Error!');
             }
         }
         connect();

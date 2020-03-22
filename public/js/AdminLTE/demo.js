@@ -159,12 +159,6 @@ $(function () {
     if ($('body').hasClass('fixed')) {
       $('[data-layout="fixed"]').attr('checked', 'checked')
     }
-    if ($('body').hasClass('layout-boxed')) {
-      $('[data-layout="layout-boxed"]').attr('checked', 'checked')
-    }
-    if ($('body').hasClass('sidebar-collapse')) {
-      $('[data-layout="sidebar-collapse"]').attr('checked', 'checked')
-    }
 
   }
 
@@ -201,14 +195,6 @@ $(function () {
     + '</label>'
     + '<p>Activate the fixed layout. You can\'t use fixed and boxed layouts together</p>'
     + '</div>'
-    // Boxed layout
-    + '<div class="form-group">'
-    + '<label class="control-sidebar-subheading">'
-    + '<input type="checkbox"data-layout="layout-boxed" class="pull-right"/> '
-    + 'Boxed Layout'
-    + '</label>'
-    + '<p>Activate the boxed layout</p>'
-    + '</div>'
     // Sidebar Toggle
     + '<div class="form-group">'
     + '<label class="control-sidebar-subheading">'
@@ -217,14 +203,6 @@ $(function () {
     + '</label>'
     + '<p>Toggle the left sidebar\'s state (open or collapse)</p>'
     + '</div>'
-    // Sidebar mini expand on hover toggle
-    + '<div class="form-group">'
-    + '<label class="control-sidebar-subheading">'
-    + '<input type="checkbox"data-enable="expandOnHover"class="pull-right"/> '
-    + 'Sidebar Expand on Hover'
-    + '</label>'
-    + '<p>Let the sidebar mini expand on hover</p>'
-    + '</div>'
     // Control Sidebar Toggle
     + '<div class="form-group">'
     + '<label class="control-sidebar-subheading">'
@@ -232,14 +210,6 @@ $(function () {
     + 'Toggle Right Sidebar Slide'
     + '</label>'
     + '<p>Toggle between slide over content and push content effects</p>'
-    + '</div>'
-    // Control Sidebar Skin Toggle
-    + '<div class="form-group">'
-    + '<label class="control-sidebar-subheading">'
-    + '<input type="checkbox"data-sidebarskin="toggle"class="pull-right"/> '
-    + 'Toggle Right Sidebar Skin'
-    + '</label>'
-    + '<p>Toggle between dark and light skins for the right sidebar</p>'
     + '</div>'
   )
   var $skinsList = $('<ul />', { 'class': 'list-unstyled clearfix' })

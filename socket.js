@@ -63,27 +63,27 @@ wsServer.on('request', (req) => {
     // we need to know client index to remove them on 'close' event
     var index = clients.push(connection) - 1;
 
-    console.log(`${(new Date())} Connection accepted.`.bgGreen);
+    console.log(`${(new Date())} Connection accepted from ${(type)}.`.bgGreen);
     console.log(`There are ${clients.length} clients connected.`.bgBlue);
 
     // user or device sent some message
     connection.on('message', (message) => {
         if (message.type === 'utf8') {
-            if (connection.CSerial == null) {
+            // console.log(message.utf8Data);
+            if (connection.CSerial == null) { // El primer mensaje enviado por un dispositivo es su serial
                 serial = message.utf8Data;
                 if (clients[index] != null) {
                     clients[index].CSerial = serial;
-                } else {
-                    //
-                }
+                } // else error
             } else {
-                if (type == "client") {
+                if (type == "user") { // "client"
+                    var data = message.utf8Data;
                     for (var i = 0; i < clients.length; i++) {
                         if (clients[i].CType == 'device' && clients[i].CSerial == serial) {
-                            clients[i].sendUTF(message.utf8Data);
+                            clients[i].sendUTF(data);
                         }
                     }
-                } else {
+                } else if (type == "device") {
                     var data = message.utf8Data;
                     for (var i = 0; i < clients.length; i++) {
                         if (clients[i].CType == 'user' && clients[i].CSerial == serial) {
@@ -101,12 +101,7 @@ wsServer.on('request', (req) => {
     connection.on('close', (reasonCode, description) => {
         // remove user from the list of connected clients
         clients.splice(index, 1);
-
-        console.log(`${(new Date())} Client disconnected.`.bgRed);
+        console.log(`${(new Date())} ${(connection.CType)} disconnected.`.bgRed);
         console.log(`There are ${clients.length} clients connected.`.bgBlue);
-    });
-
-    connection.on('error', function(error) {
-        console.log(`Connection Error: ${error.toString()}`.red);
     });
 });

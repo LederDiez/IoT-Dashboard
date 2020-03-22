@@ -66,6 +66,7 @@
 					pass1 : password
 				},
 				function (response, status) {
+					$("#password_login").val('');
 					requestsProcess(status, response);
 				});
             }

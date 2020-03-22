@@ -26,7 +26,7 @@
     "start_server": "node app.js",
     "start_socket": "node socket.js",
     "dev_server": "nodemon app.js",
-    "dev_socket": "nodemon socket.js",
+    "dev_socket": "nodemon socket.js"
   },
   "keywords": [
     "Dashboard",

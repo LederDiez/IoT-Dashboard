@@ -1,0 +1,289 @@
+
+<div class="row">
+            <div class="col-xs-12">
+                <div class="box box-solid">
+                    <div class="box-header">
+                        <h3 class="box-title">Conecciones y potencias</h3>
+                        <div class="box-tools pull-right"></div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div style="text-align: center;" class="box-body">
+                        <svg id="csvg" width="320" height="320" version="1.1" xmlns="http://www.w3.org/2000/svg"></svg>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+        </div>
+
+<script type="text/javascript">
+            
+            var pathOld = null;
+            var pathNew = null;
+
+            var PtI;
+            var RtI;
+            var BtI;
+            var ItL;
+
+            var panelNode;
+            var batteNode;
+            var inverNode;
+            var loadNode;
+            var redNode;
+
+            var PGauge;
+            var IGauge;
+            var BGauge;
+
+            var s;
+
+            function updateBalls(arrayElements, direction, color, duration) {
+                for (let i = 0; i < arrayElements.length; i++) {
+                    const element = arrayElements[i];
+                    var tx = element.tx;
+                    var ty = element.ty;
+                    var delay = Math.floor(i * ((duration * 12.5) / 100));
+                    
+                    element.setAttribute("fill",color);
+                    if (direction == 1) {
+                        element.animate([
+                            {   // from
+                                transform : 'translate(0px, 0px)'
+                            },
+                            {   // to
+                                transform : 'translate('+tx+'px, '+ty+'px)'
+                            }
+                        ], {
+                            delay     : delay,
+                            duration  : duration,
+                            iterations: Infinity
+                        });
+                    } else {
+                        element.animate([
+                            {   // from
+                                transform : 'translate('+tx+'px, '+ty+'px)'
+                            },
+                            {   // to
+                                transform : 'translate(0px, 0px)'
+                            }
+                        ], {
+                            delay     : delay,
+                            duration  : duration,
+                            iterations: Infinity
+                        });
+                    }
+
+                }
+            }
+
+            // Dibuja las lineas que conectan los circulos
+            function drawConnector(s, x1, y1, x2, y2, name) {
+                
+                var line = s.line(x1, y1, x2, y2);
+                line.attr({
+                    stroke: "#e4e4e4",
+                    strokeWidth: 1
+                });
+
+                var arrayElements = new Array();
+
+                for (let i = 1; i <= 8; i++) {
+
+                    // 8 pixeles maximo
+                    // Circulo azul
+                    var id = name + i;
+                    var c = s.circle(x1, y1, 5).attr({
+                        fill : "#ffffff00",
+                        id   : id
+                    });
+
+                    // 125 por segundo de duracion de la animacion
+                    var duration = 4000;
+                    var delay = Math.floor(i * ((duration * 12.5) / 100));
+                    var tx = x2 - x1;
+                    var ty = y2 - y1;
+
+                    var element = document.getElementById(id);
+                    
+                    element.tx = tx;
+                    element.ty = ty;
+
+                    arrayElements.push(element);
+
+                }
+                return arrayElements;
+            }
+
+            // Dibuja la barra de porcentaje
+            function drawGauge(snap, id, x, y) {
+                
+                var yt = y - 37.2;
+                var d1 = "M"+x+" "+yt+" a 30 30 0 0 1 0 74.4 a 30 30 0 0 1 0 -74.4";
+                var graphic = snap.path({
+                    path        : d1,
+                    stroke      : '#e0e0e0',
+                    fill        : '#00000000',
+                    strokeDasharray: '175.5, 251.2',
+                    strokeWidth : 17.4,
+                });
+                graphic.transform('r45,'+x+','+y);
+                var clone = graphic.clone();
+                clone.attr({
+                    id          : id,
+                    stroke      : '#9e9e9e',
+                    strokeDasharray : '0,251.2'
+                });
+                var element = document.getElementById(id);
+                element.setAttribute("stroke-linecap","butt");
+                element.lasV = 0;
+
+                //
+
+                var d2 = "M "+(x-24)+" "+(y-24)+" c 7 -6 28 -15 48 0 z ";
+                var graphic2 = snap.path({
+                    path        : d2,
+                    fill        : '#00000000',
+                    strokeWidth : 0
+                });
+                var text = s.text(0, 0,'5%').attr({
+                    id : id + "text",
+                    textpath: graphic2,
+                    fill: "gray",
+                    //fontSize:15
+                });
+                var tp = text.select('textpath').node.setAttribute('startOffset', '19%'); // 19 // 14.5
+
+                return element;
+            }
+
+            // Draws a chart node
+            function drawNode(s, x, y, color, con, id, image) {
+
+                var gauge = {};
+
+                var externalRadio = 47;
+                var internalRadio = 28;
+                var angulos = [0, 30, 60, 90, 120, 240, 270, 300, 330];
+    
+                var externalCircle = s.circle(x, y, externalRadio)
+                externalCircle.attr({
+                    fill : "#FFFFFFFF",
+                    stroke : "#bdbdbd",
+                    strokeWidth : 1,
+                })
+
+                if (con) {
+                    gauge = drawGauge(s, id, x, y);
+                } else {
+                    gauge.lasV = null;
+                }
+
+                var internalCircle = s.circle(x, y, internalRadio)
+                internalCircle.attr({
+                    fill : color, // #616161 #00c853 #f57c00 #d50000
+                })
+                var imagen = s.image(image, x-20, y-20 , 40, 40);
+
+                for (let i = 0; i < angulos.length; i++) {
+                    
+                    const angulo = angulos[i];
+
+                    var sin = Math.sin(angulo * (Math.PI / 180));
+                    var cos = Math.cos(angulo * (Math.PI / 180));
+
+                    var x2 = sin * (internalRadio) + x;
+                    var y2 = cos * (internalRadio) + y;
+                    var x3 = sin * (externalRadio - 1) + x;
+                    var y3 = cos * (externalRadio - 1) + y;
+                    var t1 = s.line(x2, y2, x3, y3);
+                    t1.attr({
+                        stroke      : "white",
+                        strokeWidth : 0.5
+                    });
+                }
+
+                return gauge;
+            }
+            
+            function drawChart(container, pro) {
+            
+                s = new Snap(container);
+
+                var el   = document.getElementById("csvg"); // or other selector like querySelector()
+                var rect = el.getBoundingClientRect(); // get the bounding rectangle
+
+                var W = rect.width;
+                var H = rect.height;
+
+                // Colculo de las pociciones
+                var panelX = (W*20)/100, panelY = (H*20)/100;
+                var battX  = (W*80)/100, battY  = (H*20)/100;
+                var inverX = (W*50)/100, inverY = (H*50)/100;
+                var loadX  = (W*80)/100, loadY  = (H*80)/100;
+                var redX   = (W*20)/100, redY   = (H*80)/100;
+                
+                PtI = drawConnector(s, panelX, panelY, inverX, inverY, "PtoI");
+                RtI = drawConnector(s, redX  , redY  , inverX, inverY, "RtoI");
+                BtI = drawConnector(s, battX , battY , inverX, inverY, "BtoI");
+                ItL = drawConnector(s, inverX, inverY, loadX , loadY , "ItoL");
+                
+
+                updateBalls(PtI, 1, "#00c853", 4000);
+                updateBalls(RtI, 1, "#d50000", 4000);
+                updateBalls(BtI, 0, "#00c853", 4000);
+                updateBalls(ItL, 1, "#d50000", 4000);
+                
+                PGauge = drawNode(s, panelX, panelY, "#d50000", 1, "panelGauge"  , "pv.svg");
+                BGauge = drawNode(s, battX , battY , "#616161", 1, "batteryGauge", "battery.svg");
+                IGauge = drawNode(s, inverX, inverY, "#d50000", 1, "inveterGauge", "inverter.svg");
+                         drawNode(s, loadX , loadY , "#616161", 0, "            ", "consumption.svg");
+                         drawNode(s, redX  , redY  , "#616161", 0, "            ", "grid.svg");
+            }
+
+            function updateGauge(element, porcen) {
+                var lasV = element.lasV;
+                var gauge = s.select('#' + element.id);
+                
+                /*
+                if (porcen <= 50) {
+                    gauge.attr({stroke : "#00af48"});
+                } else if (porcen > 50 && porcen <= 75) {
+                    gauge.attr({stroke : "#f57c00"});
+                } else {
+                    gauge.attr({stroke : "#d50000"});
+                }
+                */
+
+                porcen = (175.5 * porcen)/100;
+                Snap.animate(lasV, porcen, function( value ) {
+                    gauge.attr({
+                        strokeDasharray : value+',251.2'
+                    });
+                }, 500);
+                element.lasV = porcen;
+            }
+
+            function getRandomInt(min, max) {
+                return Math.floor(Math.random() * (max - min)) + min;
+            }
+            
+            setTimeout(function(){
+                setInterval(function () {
+                    updateGauge(PGauge, getRandomInt(0, 100));
+                    updateGauge(IGauge, getRandomInt(0, 100));
+                    updateGauge(BGauge, getRandomInt(0, 100));
+                }, 1000);
+            }, 1000);
+            
+    
+            // Calcula en tamaño de los curculos que se mueven
+            function calculateCirclesPixels(max, value) {
+                var pixels = Math.ceil(value / (max / 8));
+                console.log(pixels);
+            }
+
+            var chart = new drawChart('#csvg', {
+            //
+            });
+        </script>

@@ -66,7 +66,7 @@
 
   <header class="main-header">
     <!-- Logo -->
-    <a href="../../index2.html" class="logo">
+    <a class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>LD</b></span>
       <!-- logo for regular state and mobile devices -->
@@ -164,10 +164,10 @@
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">NAVEGACIÓN PRINCIPAL</li>
         
-        <li class="active">
+        <li class="">
           <a class="dashboard" href="#"> <!-- ----------------------------------------------------------------------------------------- -->
             <i class="fa fa-dashboard"></i>
-            <span>Dashboard</span>
+            <span>Tablero</span>
           </a>
         </li>
         
@@ -303,12 +303,12 @@
 
 <!-- Slimscroll -->
 <script src="../js/jquery-slimscroll/jquery.slimscroll.min.js"></script>
-<!-- FastClick -->
-<script src="../js/fastclick/fastclick.js"></script>
+<!-- FastClick 
+<script src="../js/fastclick/fastclick.js"></script>-->
 <!-- AdminLTE App -->
-<script src="../js/AdminLTE/adminlte.min.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="../js/AdminLTE/pages/dashboard.js"></script>
+<script src="../js/AdminLTE/adminlte.js"></script>
+<!-- AdminLTE for demo purposes 
+<script src="../js/AdminLTE/pages/dashboard.js"></script>-->
 <!-- AdminLTE for demo purposes -->
 <script src="../js/AdminLTE/demo.js"></script>
 <!-- PACE -->
@@ -324,8 +324,10 @@
 <script src="../js/highcharts/solid-gauge.js"></script>
 <script src="../js/highcharts/exporting.js"></script>
 <script src="../js/highcharts/export-data.js"></script>
+<script src="../js/highcharts/accessibility.js"></script>
 
 <script src="../js/snap-svg/snap.svg-min.js"></script>
+<script src="../js/web/Graphics.js"></script>
 
 <script type="text/javascript">
 
@@ -343,8 +345,8 @@
     "extendedTimeOut": "1000"
   };
 
-  const DEVICE_NAME   = "";
-  const DEVICE_MODEL  = "";
+  const DEVICE_NAME   = "<%=deviceName%>";
+  const DEVICE_MODEL  = "<%=deviceModel%>";
 
   var connection;
 
@@ -384,7 +386,8 @@
 				}
 				$('.' + lastPage).parent().removeClass( "active" );
 				$('.' + page).parent().addClass( "active" );
-				lastPage = page;
+        lastPage = page;
+        window.localStorage.setItem("localLastPage", lastPage);
 			}
 		} else {
 			Pace.restart();
@@ -399,7 +402,8 @@
 					}
 					$('.' + lastPage).parent().removeClass( "active" );
 					$('.' + page).parent().addClass( "active" );
-					lastPage = page;
+          lastPage = page;
+          window.localStorage.setItem("localLastPage", lastPage);
 				}, error: function (xhr, ajaxOptions, thrownError) {
           toastr.error('Tenemos problemas para procesar nuestros archivos.', 'Error!');
 				}
@@ -442,7 +446,11 @@
   }
 
   if (nDevices > 0) {
-    loadView('dashboard');
+    var localLastPage = 'dashboard'
+    if (window.localStorage.getItem("localLastPage") != null) {
+      localLastPage = window.localStorage.getItem("localLastPage");
+    }
+    loadView(localLastPage);
   } else {
     $("#modal-add-device").modal({backdrop: 'static', keyboard: true});
   }
