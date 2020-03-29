@@ -1,11 +1,17 @@
 <!DOCTYPE html>
-<html>
+<html lang="es" xml:lang="es">
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Consola</title>
-  <!-- Tell the browser to be responsive to screen width -->
-  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+  <meta name="theme-color" content="#00a65a">
+  <meta name="msapplication-navbutton-color" content="#00a65a">
+  <meta name="apple-mobile-web-app-status-bar-style" content="#00a65a">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <link rel="manifest" href="./manifest.json">
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
   <!-- Bootstrap 3.3.7 -->
   <link rel="stylesheet" href="../css/bootstrap/bootstrap.min.css">
   <!-- Font Awesome -->
@@ -350,6 +356,20 @@
 
   var connection;
 
+  let v         = "<%=deviceSerial%>";
+  let nDevices  = <%=NDevices%>;
+  let model     = "<%=deviceModel%>";
+	let pages     = [];
+  let lastPage  = "something";
+  let container = $('.content-wrapper');
+
+  $( ".dashboard"    ).click(function() { loadView($(this).attr("class")); });
+	$( ".historical"   ).click(function() { loadView($(this).attr("class")); });
+	$( ".comparisons"  ).click(function() { loadView($(this).attr("class")); });
+	$( ".notifications").click(function() { loadView($(this).attr("class")); });
+	$( ".devices"      ).click(function() { loadView($(this).attr("class")); });
+	$( ".options"      ).click(function() { loadView($(this).attr("class")); });
+
   function changeDevice (element) {
 
     var deviceID = element.getAttribute('device');
@@ -359,20 +379,6 @@
 
     location.href = protocol + '//' + hostname + pathname + '?device=' + deviceID;
   }
-
-	$( ".dashboard"    ).click(function() { loadView($(this).attr("class")); });
-	$( ".historical"   ).click(function() { loadView($(this).attr("class")); });
-	$( ".comparisons"  ).click(function() { loadView($(this).attr("class")); });
-	$( ".notifications").click(function() { loadView($(this).attr("class")); });
-	$( ".devices"      ).click(function() { loadView($(this).attr("class")); });
-	$( ".options"      ).click(function() { loadView($(this).attr("class")); });
-
-  let v     = "<%=deviceSerial%>";
-  let nDevices = <%=NDevices%>;
-  let model = "<%=deviceModel%>";
-	let pages = [];
-  let lastPage = "something";
-  let container = $('.content-wrapper');
 
 	function loadView (page) {
 		if ($("#" + page).length ) {
@@ -445,15 +451,81 @@
     });
   }
 
-  if (nDevices > 0) {
-    var localLastPage = 'dashboard'
-    if (window.localStorage.getItem("localLastPage") != null) {
-      localLastPage = window.localStorage.getItem("localLastPage");
+  (function () {
+    if (nDevices > 0) {
+      var localLastPage = 'dashboard'
+      if (window.localStorage.getItem("localLastPage") != null) {
+        localLastPage = window.localStorage.getItem("localLastPage");
+      }
+      loadView(localLastPage);
+    } else {
+      $("#modal-add-device").modal({backdrop: 'static', keyboard: true});
     }
-    loadView(localLastPage);
-  } else {
-    $("#modal-add-device").modal({backdrop: 'static', keyboard: true});
+  })();
+
+  function urlB64ToUint8Array(base64String) {
+    const padding = '='.repeat((4 - base64String.length % 4) % 4);
+    const base64 = (base64String + padding)
+      .replace(/\-/g, '+')
+      .replace(/_/g, '/');
+
+    const rawData = window.atob(base64);
+    const outputArray = new Uint8Array(rawData.length);
+
+    for (let i = 0; i < rawData.length; ++i) {
+      outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
   }
+
+  async function subscriber (subscription) {
+    await fetch('./subscription', {
+      method : 'POST',
+      body : JSON.stringify(subscription),
+      headers : {
+        'Content-Type' : 'application/json'
+      }
+    });
+  }
+
+  (function(){
+
+    const PUBLIC_VAPID_KEY = 'BIu88NQdjuLjWMNt8p4iBhnvaksI3bOTlNOLlNDWCZi7cSKB6X1drO8Q3b4kvgTM-pMJf3zA8qWfml5cScMkhVU';
+    window.addEventListener('load', function() {
+      if ('serviceWorker' in navigator && 'PushManager' in window) {
+        console.log('Service Worker and Push is supported');
+        navigator.serviceWorker.register('./sw.js').then(function(swReg) {
+          console.log('Service Worker is registered', swReg);
+
+          if (swReg) {
+
+            if (Notification.permission === 'denied') {
+              console.log('Push Messaging Blocked.');
+              return;
+            }
+
+            const applicationServerKey = urlB64ToUint8Array(PUBLIC_VAPID_KEY);
+            swReg.pushManager.subscribe({
+              userVisibleOnly: true,
+              applicationServerKey: applicationServerKey
+            }).then(function(subscription) {
+              console.log('User is subscribed:', subscription);
+
+              subscriber(subscription).then();
+
+            }).catch(function(err) {
+              console.log('Failed to subscribe the user: ', err);
+            });
+          }
+
+        }).catch(function(error) {
+          console.error('Service Worker Error', error);
+        });
+      } else {
+        console.warn('Push messaging is not supported');
+      }
+    });
+  })();
 </script>
 
 </body>

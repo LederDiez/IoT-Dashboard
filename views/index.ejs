@@ -2,17 +2,14 @@
 <html lang="es" xml:lang="es">
 <head>
 	<title>Inicio</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   
   <meta name="theme-color" content="#4285f4">
-  <meta name="msapplication-navbutton-color" content="#4285f4">
-  <meta name="apple-mobile-web-app-status-bar-style" content="#4285f4">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
-	<meta name="description" content="Plataforma administrativa de IoT">
+	<meta name="description" content="Plataforma administrativa IoT">
 	<meta name="keywords"
     content="Inicio, IoT, Internet Of Things, cloud, platform, esp8266, arduino, Leder Diez, Internet de las cosas"
-	>
+  >
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
 	<meta name="application-name" content="Administracion">
 
@@ -28,7 +25,7 @@
 		<div class="container w-xxl w-auto-xs ng-scope"></div>
 	</div>
 	<script src="/js/jquery/jquery.min.js"></script>
-	<script src="/js/pace/pace.js"></script>
+	<script src="/js/pace/pace.min.js"></script>
   <script src="/js/toastr/toastr.min.js"></script>
 
 	<script type="text/javascript">
@@ -48,7 +45,8 @@
 
     let pages = [];
     let lastPage = "something";
-		function loadView(page) {
+    
+    function loadView(page) {
       let container = $('.container');
       if ($("#" + page).length ) {
         if (lastPage !== page) {
@@ -84,6 +82,7 @@
 			}
 		}
     loadView("login");
+
     function requestsProcess (status, response) {
       if (response.status == "success") {
         toastr.success(response.message, response.title);
@@ -107,6 +106,7 @@
         }, 1000);
       }
     }
+
 	</script>
 </body>
 </html>

@@ -1,6 +1,9 @@
 const db = require('../models/session_conecction');
+
+const dotenv   = require('dotenv').config();
 const CryptoJS = require("crypto-js");
-const express = require('express');
+const express  = require('express');
+
 const router = express.Router();
 
 router.get("/", function(req, res) {
@@ -42,13 +45,17 @@ router.get("/consola", function(req, res) {
 		db.collection("devices").find({'user' : mail}).toArray(function(err, result) {
 			if (!err) {
 				if (result.toString() != "") {
+					if (result.length <= deviceId) {
+						req.query.device = 0;
+						deviceId = 0;
+					}
 
 					deviceName   = result[deviceId].name;
 					deviceModel  = result[deviceId].model;
 					deviceSerial = result[deviceId].serial;
 
 					// Encrypt
-					var encryptedSerial = CryptoJS.AES.encrypt(deviceSerial, 'Fv55xh2JWJP25eW');
+					var encryptedSerial = CryptoJS.AES.encrypt(deviceSerial, process.env.SERIAL_CRYPTO_KEY);
 					
 					RenderData.deviceName	= deviceName,
 					RenderData.deviceModel  = deviceModel,

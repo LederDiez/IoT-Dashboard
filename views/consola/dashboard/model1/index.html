@@ -199,7 +199,6 @@
                 },
             }
         ]
-
         let graphic = ConnectionGraph.chart("connectionChart", connectGraphNodes);
 
         function getRandomInt(min, max) {
@@ -623,7 +622,7 @@
             // if user is running mozilla then use it's built-in WebSocket
             window.WebSocket = window.WebSocket || window.MozWebSocket;
             if (window.WebSocket) {
-                connection = new WebSocket('ws://'+ window.location.hostname +':9300?value=' + v);
+                connection = new WebSocket('wss://'+ window.location.hostname +'?value=' + v);
                 connection.onopen = () => {
                     if (wasConnected) {
                         toastr.success('Hemos recuperado la comunicacion con el servidor.', 'Éxito!');
