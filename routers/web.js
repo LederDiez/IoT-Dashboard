@@ -26,8 +26,15 @@ router.get("/consola", function(req, res) {
 		}
 		/******************************************************/
 
-		var user = req.session.user;
-		var mail = req.session.mail;
+		var userid = req.session.userid;
+		var user   = req.session.user;
+		var mail   = req.session.mail;
+		var image  = req.session.image;
+		var check  = req.session.check;
+
+		if (image == "") {
+			image = "default.png";
+		}
 
 		var deviceName;
 		var deviceModel;
@@ -35,6 +42,8 @@ router.get("/consola", function(req, res) {
 		var RenderData = {
 			user	     : user,
 			mail         : mail,
+			image        : image,
+			check        : check,
 			NDevices     : 0,
 			deviceName 	 : null,
 			deviceModel  : null,
@@ -42,7 +51,7 @@ router.get("/consola", function(req, res) {
 			devices		 : null
 		};
 
-		db.collection("devices").find({'user' : mail}).toArray(function(err, result) {
+		db.collection("devices").find({'user' : userid}).toArray(function(err, result) {
 			if (!err) {
 				if (result.toString() != "") {
 					if (result.length <= deviceId) {

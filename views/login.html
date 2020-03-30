@@ -36,8 +36,8 @@
 			</div>
 			<div class="checkbox m-b-md m-t-none">
 				<label class="i-checks">
-					<input type="checkbox" name="check" class="ng-pristine ng-untouched ng-valid">
-					<i></i> Recordarme
+					<input type="checkbox" id="check" class="ng-pristine ng-untouched ng-valid">
+					<i></i> Mostrar contraseña
 				</label>
 			</div>
 			<button type="submit" class="btn btn-lg btn-primary btn-block">Iniciar sesión</button>
@@ -51,15 +51,20 @@
 				<a class="btn btn-lg btn-default btn-block" onclick="loadView('register');">Crea una cuenta</a>
 		</form>
 		<script>
+			$("#check").click(function () {
+				if ($("#check").prop('checked')) {
+					$("#password_login").prop('type', 'text');
+				} else {
+					$("#password_login").prop('type', 'password');
+				}
+			})
             function send_login() {
                 Pace.restart();
 				
 				let mail 	 = $('#mail_login').val();
 				let password = $('#password_login').val();
-
-				if (window.AndroidInterface) {	
-					AndroidInterface.showToast('Hello Android!');
-				}
+				
+				$("#password_login").prop('type', 'password');
 				$.post("./api/user", {
 					page  : 'login',
 					mail  : mail.replace(/ /g, ""),

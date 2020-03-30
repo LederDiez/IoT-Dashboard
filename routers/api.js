@@ -1,8 +1,12 @@
 'user strict'
 
-const bcrypt = require('bcrypt-nodejs');
+const bcrypt  = require('bcrypt-nodejs');
 const express = require('express');
-const router = express.Router();
+const { v4: uuid } = require('uuid');
+const multer  = require('multer');
+const path    = require('path');
+const fs      = require('fs');
+const router  = express.Router();
 const db           = require('../models/session_conecction');
 const UserSchema   = require('../models/user_schema');
 const DeviceSchema = require('../models/device_schema');
@@ -18,219 +22,254 @@ const DeviceSchema = require('../models/device_schema');
 router.post("/device", function(req, res) {
 
     const action = req.body.action;
+    var IsStarted = false;
 
-    switch (action) {
-        case 'add':
-            
-            var name   = req.body.name;
-            var serial = req.body.serial;
-            var mail = req.session.mail;
-            
-            // Comprobar que esten los datos
-            if (name != null && serial != null && mail != null) {
-                // Buscar dispositivo en la base de datos
-                DeviceSchema.findOne({'serial' : serial}, function (err, data) {
-                    // Comprobar errores en la busqueda
-                    if (!err) {
-                        // Comprobar que se ha encontrado
-                        if (data != null) {
-                            // Comprobar que no este asociado a ningun usuario
-                            if (data.user == '') {
-                                // Registar como de este usuario
-                                data.name = name;
-                                data.user = mail;
-                                var query    = {'serial' : serial};
-                                db.collection('devices').findOneAndUpdate(query, data, function (err, doc) {
-                                    if (!err) {
-                                        res.status(200).send({
-                                            status  : 'success',
-                                            title   : 'Éxito!',
-                                            message : 'Dispositivo asociado a su cuenta',
-                                            action  : 'reload'
-                                        });
-                                    } else {
-                                        res.status(200).send({
-                                            status  : 'error',
-                                            title   : 'Error!',
-                                            message : 'Error del servidor.'
-                                        });
-                                    }
-                                });
+    if (req.session.IsStarted != null) {
+        IsStarted = req.session.IsStarted;
+    }
+    if (IsStarted) {
+        switch (action) {
+            case 'add':
+                
+                var name   = req.body.name;
+                var serial = req.body.serial;
+                var userid = req.session.userid;
+                
+                // Comprobar que esten los datos
+                if (name != null && serial != null && userid != null) {
+                    // Buscar dispositivo en la base de datos
+                    DeviceSchema.findOne({'serial' : serial}, function (err, data) {
+                        // Comprobar errores en la busqueda
+                        if (!err) {
+                            // Comprobar que se ha encontrado
+                            if (data != null) {
+                                // Comprobar que no este asociado a ningun usuario
+                                if (data.user == '') {
+                                    // Registar como de este usuario
+                                    data.name = name;
+                                    data.user = userid;
+                                    data.save(function (err, updateData) {
+                                        if (!err) {
+                                            res.status(200).send({
+                                                status  : 'success',
+                                                title   : 'Éxito!',
+                                                message : 'Dispositivo asociado a su cuenta',
+                                                action  : 'reload'
+                                            });
+                                        } else {
+                                            res.status(200).send({
+                                                status  : 'error',
+                                                title   : 'Error!',
+                                                message : 'Error del servidor.'
+                                            });
+                                        }
+                                    });
+                                } else {
+                                    res.status(200).send({
+                                        status  : 'error',
+                                        title   : 'Error!',
+                                        message : 'Dispositivo asociado a otro usuario.'
+                                    });
+                                }
                             } else {
                                 res.status(200).send({
                                     status  : 'error',
                                     title   : 'Error!',
-                                    message : 'Dispositivo asociado a otro usuario.'
+                                    message : 'Serial invalido o erroneo.'
                                 });
                             }
                         } else {
                             res.status(200).send({
                                 status  : 'error',
                                 title   : 'Error!',
-                                message : 'Serial invalido o erroneo.'
+                                message : 'Error del servidor.'
                             });
                         }
-                    } else {
-                        res.status(200).send({
-                            status  : 'error',
-                            title   : 'Error!',
-                            message : 'Error del servidor.'
-                        });
-                    }
-                });
-            } else {
-                res.status(200).send({
-                    status  : 'error',
-                    title   : 'Error!',
-                    message : 'Datos no validos.',
-                    action  : 'reload'
-                });
-            }
-            
-        break;
-        
-        case 'edit':
-            console.log("Joder");
-            var name   = req.body.name;
-            var serial = req.body.serial;
-            var mail = req.session.mail;
-            // Comprobar que esten los datos
-            if (name != null && serial != null && mail != null) {
-                // Buscar dispositivo en la base de datos
-                DeviceSchema.findOne({'serial' : serial}, function (err, data) {
-                    // Comprobar errores en la busqueda
-                    if (!err) {
-                        // Comprobar que se ha encontrado
-                        if (data != null) {
-                            // Comprobar que este asociado al usuario
-                            if (data.user == mail) {
-                                // Actualizar los datos del dispositivo
-                                data.name = name;
-                                data.user = mail;
-                                var query    = {'serial' : serial};
-                                db.collection('devices').findOneAndUpdate(query, data, function (err, doc) {
-                                    if (!err) {
-                                        res.status(200).send({
-                                            status  : 'success',
-                                            title   : 'Éxito!',
-                                            message : 'Datos del dispositivo actualizados',
-                                            action  : 'reload'
-                                        });
-                                    } else {
-                                        res.status(200).send({
-                                            status  : 'error',
-                                            title   : 'Error!',
-                                            message : 'Error del servidor.'
-                                        });
-                                    }
-                                });
-                            } else {
-                                res.status(200).send({
-                                    status  : 'error',
-                                    title   : 'Error!',
-                                    message : 'Dispositivo no asociado a este usuario.'
-                                });
-                            }
-                        } else {
-                            res.status(200).send({
-                                status  : 'error',
-                                title   : 'Error!',
-                                message : 'Serial invalido o erroneo.'
-                            });
-                        }
-                    } else {
-                        res.status(200).send({
-                            status  : 'error',
-                            title   : 'Error!',
-                            message : 'Error del servidor.'
-                        });
-                    }
-                });
-            } else {
-                res.status(200).send({
-                    status  : 'error',
-                    title   : 'Error!',
-                    message : 'Datos no validos.',
-                    action  : 'reload'
-                });
-            }
-        break;
-        /*
-        case 'delete':
-            var serial = req.body.serial  || null;
-            var mail = req.session.mail   || null;
-            // Comprobar que esten los datos
-            if (serial != null && mail != null) {
-                // Buscar dispositivo en la base de datos
-                DeviceSchema.findOne({'serial' : serial}, function (err, data) {
-                    // Comprobar errores en la busqueda
-                    if (!err) {
-                        // Comprobar que se ha encontrado
-                        if (data != null) {
-                            // Comprobar que este asociado al usuario
-                            if (data.user == mail) {
-                                // Actualizar los datos del dispositivo
-                                data.name = '';
-                                data.user = '';
-                                var query    = {'serial' : serial};
-                                db.collection('devices').findOneAndUpdate(query, data, function (err, doc) {
-                                    if (!err) {
-                                        res.status(200).send({
-                                            status  : 'success',
-                                            title   : 'Éxito!',
-                                            message : 'Dispositivo eliminado de su cuenta',
-                                            action  : 'reload'
-                                        });
-                                    } else {
-                                        res.status(200).send({
-                                            status  : 'error',
-                                            title   : 'Error!',
-                                            message : 'Error del servidor.'
-                                        });
-                                    }
-                                });
-                            } else {
-                                res.status(200).send({
-                                    status  : 'error',
-                                    title   : 'Error!',
-                                    message : 'Dispositivo no asociado a este usuario.'
-                                });
-                            }
-                        } else {
-                            res.status(200).send({
-                                status  : 'error',
-                                title   : 'Error!',
-                                message : 'Serial invalido o erroneo.'
-                            });
-                        }
-                    } else {
-                        res.status(200).send({
-                            status  : 'error',
-                            title   : 'Error!',
-                            message : 'Error del servidor.'
-                        });
-                    }
-                });
-            } else {
-                res.status(200).send({
-                    status  : 'error',
-                    title   : 'Error!',
-                    message : 'Datos no validos.',
-                    action  : 'reload'
-                });
-            }
+                    });
+                } else {
+                    res.status(200).send({
+                        status  : 'error',
+                        title   : 'Error!',
+                        message : 'Datos no validos.',
+                        action  : 'reload'
+                    });
+                }
+                
             break;
-        */
-        default:
-            res.status(200).send({
-                status  : 'error',
-                title   : 'Error!',
-                message : 'Datos no validos.',
-                action  : 'reload'
-            });
-        break;
+            
+            case 'edit':
+                console.log("Joder");
+                var name   = req.body.name;
+                var serial = req.body.serial;
+                var mail = req.session.mail;
+                // Comprobar que esten los datos
+                if (name != null && serial != null && mail != null) {
+                    // Buscar dispositivo en la base de datos
+                    DeviceSchema.findOne({'serial' : serial}, function (err, data) {
+                        // Comprobar errores en la busqueda
+                        if (!err) {
+                            // Comprobar que se ha encontrado
+                            if (data != null) {
+                                // Comprobar que este asociado al usuario
+                                if (data.user == mail) {
+                                    // Actualizar los datos del dispositivo
+                                    data.name = name;
+                                    data.user = mail;
+                                    var query    = {'serial' : serial};
+                                    db.collection('devices').findOneAndUpdate(query, data, function (err, doc) {
+                                        if (!err) {
+                                            res.status(200).send({
+                                                status  : 'success',
+                                                title   : 'Éxito!',
+                                                message : 'Datos del dispositivo actualizados',
+                                                action  : 'reload'
+                                            });
+                                        } else {
+                                            res.status(200).send({
+                                                status  : 'error',
+                                                title   : 'Error!',
+                                                message : 'Error del servidor.'
+                                            });
+                                        }
+                                    });
+                                } else {
+                                    res.status(200).send({
+                                        status  : 'error',
+                                        title   : 'Error!',
+                                        message : 'Dispositivo no asociado a este usuario.'
+                                    });
+                                }
+                            } else {
+                                res.status(200).send({
+                                    status  : 'error',
+                                    title   : 'Error!',
+                                    message : 'Serial invalido o erroneo.'
+                                });
+                            }
+                        } else {
+                            res.status(200).send({
+                                status  : 'error',
+                                title   : 'Error!',
+                                message : 'Error del servidor.'
+                            });
+                        }
+                    });
+                } else {
+                    res.status(200).send({
+                        status  : 'error',
+                        title   : 'Error!',
+                        message : 'Datos no validos.',
+                        action  : 'reload'
+                    });
+                }
+            break;
+            /*
+            case 'delete':
+                var serial = req.body.serial  || null;
+                var mail = req.session.mail   || null;
+                // Comprobar que esten los datos
+                if (serial != null && mail != null) {
+                    // Buscar dispositivo en la base de datos
+                    DeviceSchema.findOne({'serial' : serial}, function (err, data) {
+                        // Comprobar errores en la busqueda
+                        if (!err) {
+                            // Comprobar que se ha encontrado
+                            if (data != null) {
+                                // Comprobar que este asociado al usuario
+                                if (data.user == mail) {
+                                    // Actualizar los datos del dispositivo
+                                    data.name = '';
+                                    data.user = '';
+                                    var query    = {'serial' : serial};
+                                    db.collection('devices').findOneAndUpdate(query, data, function (err, doc) {
+                                        if (!err) {
+                                            res.status(200).send({
+                                                status  : 'success',
+                                                title   : 'Éxito!',
+                                                message : 'Dispositivo eliminado de su cuenta',
+                                                action  : 'reload'
+                                            });
+                                        } else {
+                                            res.status(200).send({
+                                                status  : 'error',
+                                                title   : 'Error!',
+                                                message : 'Error del servidor.'
+                                            });
+                                        }
+                                    });
+                                } else {
+                                    res.status(200).send({
+                                        status  : 'error',
+                                        title   : 'Error!',
+                                        message : 'Dispositivo no asociado a este usuario.'
+                                    });
+                                }
+                            } else {
+                                res.status(200).send({
+                                    status  : 'error',
+                                    title   : 'Error!',
+                                    message : 'Serial invalido o erroneo.'
+                                });
+                            }
+                        } else {
+                            res.status(200).send({
+                                status  : 'error',
+                                title   : 'Error!',
+                                message : 'Error del servidor.'
+                            });
+                        }
+                    });
+                } else {
+                    res.status(200).send({
+                        status  : 'error',
+                        title   : 'Error!',
+                        message : 'Datos no validos.',
+                        action  : 'reload'
+                    });
+                }
+                break;
+            */
+            default:
+                res.status(200).send({
+                    status  : 'error',
+                    title   : 'Error!',
+                    message : 'Datos no validos.',
+                    action  : 'reload'
+                });
+            break;
+        }
+    } else {
+        res.status(200).send({
+            status     : 'error',
+            title      : 'Error!',
+            message    : 'Sesión no iniciada.',
+            action     : 'redirect',
+            redirectTo : '../'
+        });
     }
 });
+
+const multerStorageConfig = multer.diskStorage({
+    destination : 'public/images/users',
+    filename : (req, file, cb) => {
+        cb(null, uuid() + path.extname(file.originalname).toLocaleLowerCase());
+    }
+});
+
+const uploader = multer({
+    storage : multerStorageConfig,
+    dest : 'public/images/users',
+    limits : {fileSize : 5000000},
+    fileFilter : (req, file, cb) => {
+        const fileTypes = /jpg|jpeg|png|gif/;
+        const mimetype  = fileTypes.test(file.mimetype);
+        const extname   = fileTypes.test(path.extname(file.originalname));
+        if (mimetype && extname) {
+            return cb(null, true);
+        }
+        cb("Error el archivo debe ser una imagen valida");
+    }
+}).single('image');
 
 /**********************************************
 *	User controller
@@ -241,13 +280,16 @@ router.post("/device", function(req, res) {
 *	remember	* 
 *	edit     	* 
 **********************************************/
-router.post("/user", function(req, res) {
+router.post("/user", uploader,function(req, res) {
 
     const page  = req.body.page  || null;
     const user  = req.body.user  || null;
     const mail  = req.body.mail  || null;
     const pass1 = req.body.pass1 || null;
     const pass2 = req.body.pass2 || null;
+    const check = req.body.check || null;
+    const image = req.file       || null;
+    const pass3 = req.body.pass3 || null;
 
     var IsStarted = false;
 
@@ -268,10 +310,11 @@ router.post("/user", function(req, res) {
                                 if (validPassword(pass1, data.pass)) {
 
                                     req.session.IsStarted = true;
+                                    req.session.userid  = data.id;
                                     req.session.user    = data.user;
                                     req.session.mail    = data.mail;
-                                    req.session.imag    = data.imag;
-                                    req.session.devices = data.devices;
+                                    req.session.check   = data.check;
+                                    req.session.image   = data.image;
                                     
                                     res.status(200).send({
                                         status     : 'success',
@@ -373,8 +416,8 @@ router.post("/user", function(req, res) {
                                         newUser.user    = user;
                                         newUser.mail    = mail;
                                         newUser.pass    = generateHash(pass1);
-                                        newUser.devices = "";
-                                        newUser.imag    = "";
+                                        newUser.check   = false;
+                                        newUser.image   = "";
     
                                         newUser.save((err) => {
                                             if (!err) { 
@@ -420,7 +463,7 @@ router.post("/user", function(req, res) {
                         res.status(200).send({
                             status  : 'error',
                             title   : 'Error!',
-                            message : 'Datos no validos.',
+                            message : 'Correo invalido.',
                             action  : 'reload'
                         });
                     }
@@ -452,7 +495,107 @@ router.post("/user", function(req, res) {
             break;
 
         case 'edit':
-            
+            let error = false;
+            // Comprobar que la secion este iniciada
+            if (IsStarted) {
+                // Comprobar que el mail este registrado
+                // data es la informacion del usuario encontrada con ese mail
+                UserSchema.findOne({'mail': req.session.mail}, function (err, data) {
+                    //Error al tratar de buscar el mail en la base de datos
+                    if (!err) {
+                        // Comprobar de que no existan datos de un usuario
+                        if (data) {
+                            if (validPassword(pass3, data.pass)) {
+                                if (user != null) {
+                                    data.user = user;
+                                }
+                                if (mail != null) {
+                                    // Comprobar que el nuevo mail es valido
+                                    if (validarEmail(mail)) {
+                                        data.mail = mail;
+                                    } else {
+                                        // Nuevo correo invalido
+                                        res.status(200).send({
+                                            status  : 'error',
+                                            title   : 'Error!',
+                                            message : 'Correo invalido.'
+                                        });
+                                        error = true;
+                                    }
+                                }
+                                if (pass1 != null && pass2 != null) {
+                                    // Comprobar contraseñas
+                                    if (pass1 === pass2) {
+                                        data.pass = generateHash(pass1);
+                                    } else {
+                                        // Contraseñas invalidas // no deberia ocurrir
+                                        res.status(200).send({  // Unauthorized
+                                            status  : 'error',
+                                            title   : 'Error!',
+                                            message : 'Contraseñas no validas.',
+                                            action  : 'reload'
+                                        });
+                                        error = true;
+                                    }
+                                }
+                                if (check) {
+                                    data.check = check;
+                                }
+                                if (image != null) {
+                                    if (data.image != "") {
+                                        fs.unlinkSync('./public/images/users/' + data.image);
+                                    }
+                                    data.image = image.filename;
+                                }
+                                if (!error) {
+                                    data.save(function (err, updateData) {
+                                        if (!err) {
+                                            res.status(200).send({
+                                                status  : 'success',
+                                                title   : 'Éxito!',
+                                                message : 'Datos de usuario guardados correctamente.',
+                                                action  : 'logout'
+                                            });
+                                        } else {
+                                            res.status(200).send({ // Server error
+                                                status  : 'error',
+                                                title   : 'Error!',
+                                                message : 'El usuario no pudo ser modificado. ERROR CODE #1',
+                                            });
+                                        }
+                                    });
+                                }
+                            } else {
+                                res.status(200).send({
+                                    status  : 'error',
+                                    title   : 'Error!',
+                                    message : 'Contraseña de usuario incorrecta.'
+                                });
+                            }
+                        } else {
+                            res.status(200).send({
+                                status  : 'error',
+                                title   : 'Error!',
+                                message : 'Email no registrado.'
+                            });
+                        }
+                    } else {
+                        res.status(200).send({ // Server error
+                            status  : 'error',
+                            title   : 'Error!',
+                            message : 'El usuario no pudo ser modificado. ERROR CODE #2'
+                        });
+                    }
+                });
+            } else {
+                res.status(200).send({
+                    status     : 'error',
+                    title      : 'Error!',
+                    message    : 'Sesión no iniciada.',
+                    action     : 'redirect',
+                    redirectTo : '../'
+                });
+            }
             break;
 
         default:
