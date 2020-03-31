@@ -11,8 +11,10 @@ const morgan     = require('morgan');
 const colors     = require('colors');
 const path       = require('path');
 
+const mongoose   = require('mongoose');
 const session    = require('express-session');
 const MongoStore = require('connect-mongo')(session);
+const deviceData = require('./models/device_data_schema');
 
 const db         = require('./models/session_conecction');
 const web_router = require('./routers/web');
@@ -44,7 +46,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(session({  
     secret: process.env.SESSION_SECRET,
     cookie: {
-        maxAge: 1000 * 60 * 60 * 24 * 7 // 1 week
+        maxAge: 604800000 // 1 week
     },
     resave: false,
     saveUninitialized: true,
@@ -157,6 +159,15 @@ wsServer.on('request', (req) => {
 
                     // Guardar historial
 
+                    let data_schema = mongoose.model('device-' + connection.serial, deviceData);
+                    let new_data = new data_schema();
+                    new_data.registerDate = Date.now();
+                    new_data.data = data;
+                    new_data.save((err) => {
+                        if (err) {
+                            console.log('error al guardar datos del dispositivo'.bgRed);
+                        }
+                    });
                 }
             }
         }
