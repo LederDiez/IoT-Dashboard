@@ -21,7 +21,7 @@ const web_router = require('./routers/web');
 const api_router = require('./routers/api');
 
 const fs         = require('fs');
-const https      = require('https');
+const http       = require('http');
 
 const app = express();
 
@@ -80,16 +80,16 @@ app.use(function(err, req, res, next) {
     return res.status(500).sendFile(__dirname + '/views/500.html');
 });
 
-var httpsServer = https.createServer(app);
+var httpServer = http.createServer(app);
 
-httpsServer.listen(app.get('port'), () => {
+httpServer.listen(app.get('port'), () => {
     console.log("WEB SERVER HTTPS STARTED!!!".red)
 });
 
 //////////////////////////////////////////////////////////////////////////////////////
 
 var wsServer = new webSocketServer({
-    httpServer: httpsServer
+    httpServer: httpServer
 });
 
 // Variables con valores globales
