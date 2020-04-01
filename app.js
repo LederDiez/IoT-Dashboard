@@ -21,7 +21,6 @@ const web_router = require('./routers/web');
 const api_router = require('./routers/api');
 
 const fs         = require('fs');
-const http       = require('http');
 const https      = require('https');
 
 const app = express();
@@ -55,15 +54,6 @@ app.use(session({
     })
 }));
 
-// Route https
-app.use(function (req, res, next) {
-    // The 'x-forwarded-proto' check is for Heroku
-    if (!req.secure && req.get('x-forwarded-proto') !== 'https' && process.env.NODE_ENV !== "development") {
-        return res.redirect('https://' + req.get('Host') + req.url);
-    }
-    next();    
-});
-
 // static files
 app.use(express.static('public'));
 app.use(express.static('views'));
@@ -90,16 +80,7 @@ app.use(function(err, req, res, next) {
     return res.status(500).sendFile(__dirname + '/views/500.html');
 });
 
-var httpServer = http.createServer(app);
-var httpsServer = https.createServer({
-    key: fs.readFileSync('./tls/key.pem'),
-    cert: fs.readFileSync('./tls/csr.pem')
-}, app);
-
-httpServer.listen(80, () => {
-    console.log('WEB SERVER HTTP STARTED!!!'.red);
-});
-httpsServer.listen(443, () => {
+httpsServer.listen(app.get('port'), () => {
     console.log("WEB SERVER HTTPS STARTED!!!".red)
 });
 
