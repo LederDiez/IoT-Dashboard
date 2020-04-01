@@ -80,6 +80,8 @@ app.use(function(err, req, res, next) {
     return res.status(500).sendFile(__dirname + '/views/500.html');
 });
 
+var httpsServer = https.createServer(app);
+
 httpsServer.listen(app.get('port'), () => {
     console.log("WEB SERVER HTTPS STARTED!!!".red)
 });
