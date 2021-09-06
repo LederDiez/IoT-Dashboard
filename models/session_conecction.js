@@ -3,10 +3,9 @@
 const mongoose = require('mongoose');
 const colors   = require('colors');
 
-mongoose.set('useUnifiedTopology', true);
 //"mongodb+srv://LederDiez:159753852@cluster0-jcmxa.mongodb.net/test?retryWrites=true&w=majority"
 mongoose.connect('mongodb://localhost:27017/test', {
-    useCreateIndex: true,
+    useUnifiedTopology: true,
     useNewUrlParser: true
 }).then(function () { 
   console.log('Success to establish connection with mongodb'.bgGreen); 
