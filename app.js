@@ -92,7 +92,8 @@ app.use(function(err, req, res, next) {
 var httpServer = http.createServer(app);
 
 httpServer.listen(app.get('port'), () => {
-    console.log("WEB SERVER HTTPS STARTED!!!".red)
+    console.log("WEB SERVER STARTED!!!".red)
+    console.log("WEB SOCKET STARTED!!!".red)
 });
 
 //////////////////////////////////////////////////////////////////////////////////////

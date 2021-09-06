@@ -1,137 +1,158 @@
 <div id="dashboard">
     <style>
-        .gauge-content {
-            text-align: center;
-            padding: 0px !important;
-            margin-left: auto;
-            margin-right: auto;
-            width: 290px;
-            height: 344px;
-        }
         .gauge {
-            margin-top: 22%;
             width: 290px;
             height: 220px;
         }
-        .graphic-container {
-            margin-left: auto;
-            margin-right: auto;
-            padding-right: 1%;
-            height: 311px;
-        }
-        .h3, h3 {
-          font-size: 20px !important;
-        }
     </style>
-    <section class="content-header">
-        <h1>Tablero</h1>
-        <ol class="breadcrumb" style="font-size: inherit;">
-            <li id="tablerodevicenameli"></li>
-            <script>document.getElementById("tablerodevicenameli").innerHTML='<a><i class="fa fa-laptop"></i>'+DEVICE_NAME+'</a>';</script>
-        </ol>
-    </section>
-    <section id="dashboard_contend" class="content">
-
-        <div class="row">
-
-            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                <div class="box box-solid">
-                    <div class="box-header">
-                        <h3 class="box-title">Conecciones y potencias</h3>
-                        <div class="box-tools pull-right"></div>
-                    </div>
-                    <!-- /.box-header -->
-                    <div style="text-align: center;" class="box-body">
-                        <svg id="connectionChart" width="320" height="320" version="1.1" xmlns="http://www.w3.org/2000/svg"></svg>
-                    </div>
-                    <!-- /.box-body -->
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Tablero</h1>
                 </div>
-                <!-- /.box -->
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                <div class="box box-solid">
-                    <div class="box-header">
-                        <h3 class="box-title">Voltaje de fase</h3>
-                        <div class="box-tools pull-right"></div>
-                    </div>
-                    <!-- /.box-header -->
-                    <div class="box-body gauge-content">
-                        <div id="container-volt" class="gauge"></div>
-                    </div>
-                    <!-- /.box-body -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li id="tablerodevicenameli" class="breadcrumb-item active"></li>
+                        <script>document.getElementById("tablerodevicenameli").innerHTML='<a><i class="fa fa-laptop"></i> '+DEVICE_NAME+'</a>';</script>
+                    </ol>
                 </div>
-                <!-- /.box -->
             </div>
-
         </div>
+        <!-- /.container-fluid -->
+    </div>
 
-        <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                <div class="box box-solid">
-                    <div class="box-header">
-                        <h3 class="box-title">Corriente de fase</h3>
-                        <div class="box-tools pull-right"></div>
+    <!-- Main content -->
+    <div id="dashboard_contend" class="content">
+        <div class="container-fluid">
+            <div class="row">
+
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                    <div class="card card-outline card-dark">
+                        <div class="card-header">
+                            <div class="d-flex justify-content-between">
+                                <h3 class="card-title">Conecciones y potencias</h3>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex">
+                                <p class="d-flex flex-column">
+                                    <span class="text-bold text-lg">6</span>
+                                    <span>Horas de uso restantes</span>
+                                </p>
+                                <p class="ml-auto d-flex flex-column text-right">
+                                    <span class="text-bold text-lg text-danger">90%</span>
+                                    <span class="">Uso de maximo</span>
+                                </p>
+                            </div>
+                            <!-- /.d-flex -->
+
+                            <div class="d-flex justify-content-center chart">
+                                <svg id="connectionChart" width="320" height="320" version="1.1" xmlns="http://www.w3.org/2000/svg"></svg>
+                            </div>
+                        </div>
                     </div>
-                    <!-- /.box-header -->
-                    <div class="box-body gauge-content">
+                    <!-- /.card -->
+                    <div class="card card-outline card-dark">
+                    <div class="card-header">
+                    <h5 class="card-title">Monthly Recap Report</h5>
+
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+
+                    <div class="d-flex justify-content-center">
+                    <!-- Sales Chart Canvas -->
                         <div id="container-current" class="gauge"></div>
                     </div>
-                    <!-- /.box-body -->
-                </div>
-                <!-- /.box -->
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                <div class="box box-solid">
-                    <div class="box-header">
-                        <h3 class="box-title">Frecuencia de fase</h3>
-                        <div class="box-tools pull-right"></div>
+                    <!-- /.chart-responsive -->
+
                     </div>
-                    <!-- /.box-header -->
-                    <div class="box-body gauge-content">
-                        <!--<div id="container-freq" class="gauge"></div>-->
-                        <p class="no-padder m-n font-normal gauge" style="font-size: 130px;">
+                    </div>
+                    <!-- /.card -->
+                </div>
+
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                    <div class="card card-outline card-dark">
+                    <div class="card-header">
+                    <h5 class="card-title">Monthly Recap Report</h5>
+
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+
+                    <div class="d-flex justify-content-center">
+                    <!-- Sales Chart Canvas -->
+                        <div id="container-volt" class="gauge"></div>
+                    </div>
+                    <!-- /.chart-responsive -->
+
+                    </div>
+                    </div>
+                    <!-- /.card -->
+                    <div class="card card-outline card-dark">
+                    <div class="card-header">
+                    <h5 class="card-title">Monthly Recap Report</h5>
+
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+
+                    <div class="d-flex justify-content-center">
+                    <!-- Sales Chart Canvas -->
+                        <p class="no-padder m-n font-normal" style="font-size: 130px;">
                             <a style="color: rgb(30, 49, 62) !important;">60<span style="font-size: 50px;">Hz</span></a>
                         </p>
                     </div>
-                    <!-- /.box-body -->
-                </div>
-                <!-- /.box -->
-            </div>
-        </div>
+                    <!-- /.chart-responsive -->
 
-        <div class="row">
-            <div class="col-xs-12">
-                <div class="box box-solid">
-                    <div class="box-header">
-                        <h3 class="box-title">Potencia aparente</h3>
-                        <div class="box-tools pull-right"></div>
                     </div>
-                    <!-- /.box-header -->
-                    <div class="box-body">
-                        <div id="container-ap" class="graphic-container"></div>
                     </div>
-                    <!-- /.box-body -->
+                    <!-- /.card -->
                 </div>
-                <!-- /.box -->
+
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card card-outline card-dark">
+                    <div class="card-header">
+                    <h5 class="card-title">Monthly Recap Report</h5>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class=" card-body p-0">
+                        <div id="container-ap"></div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <div class="card card-outline card-dark">
+                    <div class="card-header">
+                    <h5 class="card-title">Monthly Recap Report</h5>
+
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body p-0">
+
+                    <div class="chart ">
+                    <!-- Sales Chart Canvas -->
+                        <div id="container-ac"></div>
+                    </div>
+                    <!-- /.chart-responsive -->
+
+                    </div>
+                    </div>
+
+                </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-xs-12">
-                <div class="box box-solid">
-                    <div class="box-header">
-                        <h3 class="box-title">Potencia activa</h3>
-                        <div class="box-tools pull-right"></div>
-                    </div>
-                    <!-- /.box-header -->
-                    <div class="box-body">
-                        <div id="container-ac" class="graphic-container"></div>
-                    </div>
-                    <!-- /.box-body -->
-                </div>
-                <!-- /.box -->
-            </div>
-        </div>
-    </section>
+        <!-- /.container-fluid -->
+    </div>
+    <!-- /.content -->
 
     <script type="text/javascript">
 
@@ -268,15 +289,15 @@
                 },
                 data: (function () {
                     // generate an array of random data
-                    let data = [],
-                        time = (new Date()).getTime(),
-                        i;
+                    let data = [];
+                    let time = (new Date()).getTime();
+                    let i;
 
                     for (i = -600; i <= 0; i += 1) {
                         data.push([
                             time + i * 1000,
-                            0
-                            //Math.round(Math.random() * 100)
+                            //0
+                            Math.round(Math.random() * 100)
                         ]);
                     }
                     return data;
@@ -364,15 +385,15 @@
                 },
                 data: (function () {
                     // generate an array of random data
-                    let data = [],
-                        time = (new Date()).getTime(),
-                        i;
+                    let data = [];
+                    let time = (new Date()).getTime();
+                    let i;
 
                     for (i = -600; i <= 0; i += 1) {
                         data.push([
                             time + i * 1000,
-                            0
-                            //Math.round(Math.random() * 100)
+                            //0
+                            Math.round(Math.random() * 100)
                         ]);
                     }
                     return data;
@@ -622,7 +643,7 @@
             // if user is running mozilla then use it's built-in WebSocket
             window.WebSocket = window.WebSocket || window.MozWebSocket;
             if (window.WebSocket) {
-                connection = new WebSocket('wss://'+ window.location.hostname +'?value=' + v);
+                connection = new WebSocket('ws://'+ window.location.hostname +'?value=' + v);
                 connection.onopen = () => {
                     if (wasConnected) {
                         toastr.success('Hemos recuperado la comunicacion con el servidor.', 'Éxito!');

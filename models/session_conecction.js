@@ -4,7 +4,8 @@ const mongoose = require('mongoose');
 const colors   = require('colors');
 
 mongoose.set('useUnifiedTopology', true);
-mongoose.connect('mongodb+srv://LederDiez:159753852@cluster0-jcmxa.mongodb.net/test?retryWrites=true&w=majority', {
+//"mongodb+srv://LederDiez:159753852@cluster0-jcmxa.mongodb.net/test?retryWrites=true&w=majority"
+mongoose.connect('mongodb://localhost:27017/test', {
     useCreateIndex: true,
     useNewUrlParser: true
 }).then(function () { 

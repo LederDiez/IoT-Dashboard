@@ -42,7 +42,6 @@ router.get("/consola", function(req, res) {
 		var RenderData = {
 			user	     : user,
 			mail         : mail,
-			image        : image,
 			check        : check,
 			NDevices     : 0,
 			deviceName 	 : null,
