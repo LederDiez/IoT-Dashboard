@@ -9,17 +9,22 @@ const router = express.Router();
 router.get("/", function(req, res) {
 	if (req.session.IsStarted != true) {
 		res.render("index", {
-			title: 'Home'
+			title: 'Acceso'
 		});
 	} else {
-		res.redirect('./consola'); 
+		if (req.session.type == 'client') {
+			res.redirect('./consola'); 
+		} else {
+			res.redirect('./admin'); 
+		}
+		
 	}
 });
 
 router.get("/consola", function(req, res) {
 	if (req.session.IsStarted == true) {
 
-		/* Dice que dispositivo tiene seleccionado el usuario */
+		/* Indica que dispositivo tiene seleccionado el usuario */
 		var deviceId = 0;
 		if (req.query.device != null) {
 			deviceId = req.query.device;
@@ -29,12 +34,7 @@ router.get("/consola", function(req, res) {
 		var userid = req.session.userid;
 		var user   = req.session.user;
 		var mail   = req.session.mail;
-		var image  = req.session.image;
 		var check  = req.session.check;
-
-		if (image == "") {
-			image = "default.png";
-		}
 
 		var deviceName;
 		var deviceModel;
@@ -50,7 +50,7 @@ router.get("/consola", function(req, res) {
 			devices		 : null
 		};
 
-		db.collection("devices").find({'user' : userid}).toArray(function(err, result) {
+		db.collection("devices").find({'associatedUser' : userid}).toArray(function(err, result) {
 			if (!err) {
 				if (result.toString() != "") {
 					if (result.length <= deviceId) {
@@ -59,8 +59,8 @@ router.get("/consola", function(req, res) {
 					}
 
 					deviceName   = result[deviceId].name;
-					deviceModel  = result[deviceId].model;
-					deviceSerial = result[deviceId].serial;
+					deviceModel  = result[deviceId].modelName;
+					deviceSerial = result[deviceId].serialNumber;
 
 					// Encrypt
 					var encryptedSerial = CryptoJS.AES.encrypt(deviceSerial, process.env.SERIAL_CRYPTO_KEY);
@@ -88,6 +88,12 @@ router.get("/consola", function(req, res) {
 	} else {
 		res.redirect('/'); 
 	}
+});
+
+router.get("/admin", function(req, res) {
+	res.render("test", {
+		title: 'Administrador'
+	});
 });
 
 module.exports = router;

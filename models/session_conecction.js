@@ -17,5 +17,4 @@ mongoose.connect('mongodb://localhost:27017/test', {
 mongoose.Promise = global.Promise;
 const db = mongoose.connection
 
-module.exports = db;  
-// conecction.js
+module.exports = db;

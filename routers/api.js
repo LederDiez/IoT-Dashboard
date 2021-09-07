@@ -38,7 +38,7 @@ router.post("/device", function(req, res) {
                 // Comprobar que esten los datos
                 if (name != null && serial != null && userid != null) {
                     // Buscar dispositivo en la base de datos
-                    DeviceSchema.findOne({'serial' : serial}, function (err, data) {
+                    DeviceSchema.findOne({'serialNumber' : serial}, function (err, data) {
                         // Comprobar errores en la busqueda
                         if (!err) {
                             // Comprobar que se ha encontrado
@@ -105,7 +105,7 @@ router.post("/device", function(req, res) {
                 // Comprobar que esten los datos
                 if (name != null && serial != null && mail != null) {
                     // Buscar dispositivo en la base de datos
-                    DeviceSchema.findOne({'serial' : serial}, function (err, data) {
+                    DeviceSchema.findOne({'serialNumber' : serial}, function (err, data) {
                         // Comprobar errores en la busqueda
                         if (!err) {
                             // Comprobar que se ha encontrado
@@ -115,7 +115,7 @@ router.post("/device", function(req, res) {
                                     // Actualizar los datos del dispositivo
                                     data.name = name;
                                     data.user = mail;
-                                    var query    = {'serial' : serial};
+                                    var query    = {'serialNumber' : serial};
                                     db.collection('devices').findOneAndUpdate(query, data, function (err, doc) {
                                         if (!err) {
                                             res.status(200).send({
@@ -170,7 +170,7 @@ router.post("/device", function(req, res) {
                 // Comprobar que esten los datos
                 if (serial != null && mail != null) {
                     // Buscar dispositivo en la base de datos
-                    DeviceSchema.findOne({'serial' : serial}, function (err, data) {
+                    DeviceSchema.findOne({'serialNumber' : serial}, function (err, data) {
                         // Comprobar errores en la busqueda
                         if (!err) {
                             // Comprobar que se ha encontrado
@@ -180,7 +180,7 @@ router.post("/device", function(req, res) {
                                     // Actualizar los datos del dispositivo
                                     data.name = '';
                                     data.user = '';
-                                    var query    = {'serial' : serial};
+                                    var query    = {'serialNumber' : serial};
                                     db.collection('devices').findOneAndUpdate(query, data, function (err, doc) {
                                         if (!err) {
                                             res.status(200).send({
@@ -249,28 +249,6 @@ router.post("/device", function(req, res) {
     }
 });
 
-const multerStorageConfig = multer.diskStorage({
-    destination : 'public/images/users',
-    filename : (req, file, cb) => {
-        cb(null, uuid() + path.extname(file.originalname).toLocaleLowerCase());
-    }
-});
-
-const uploader = multer({
-    storage : multerStorageConfig,
-    dest : 'public/images/users',
-    limits : {fileSize : 5000000},
-    fileFilter : (req, file, cb) => {
-        const fileTypes = /jpg|jpeg|png|gif/;
-        const mimetype  = fileTypes.test(file.mimetype);
-        const extname   = fileTypes.test(path.extname(file.originalname));
-        if (mimetype && extname) {
-            return cb(null, true);
-        }
-        cb("Error el archivo debe ser una imagen valida");
-    }
-}).single('image');
-
 /**********************************************
 *	User controller
 * 	login 		* 
@@ -280,7 +258,7 @@ const uploader = multer({
 *	remember	* 
 *	edit     	* 
 **********************************************/
-router.post("/user", uploader,function(req, res) {
+router.post("/user", function(req, res) {
 
     const page  = req.body.page  || null;
     const user  = req.body.user  || null;
@@ -288,7 +266,6 @@ router.post("/user", uploader,function(req, res) {
     const pass1 = req.body.pass1 || null;
     const pass2 = req.body.pass2 || null;
     const check = req.body.check || null;
-    const image = req.file       || null;
     const pass3 = req.body.pass3 || null;
 
     var IsStarted = false;
@@ -314,15 +291,26 @@ router.post("/user", uploader,function(req, res) {
                                     req.session.user    = data.user;
                                     req.session.mail    = data.mail;
                                     req.session.check   = data.check;
-                                    req.session.image   = data.image;
+                                    req.session.type    = data.type;
+
+                                    if (data.type == "admin") {
+                                        res.status(200).send({
+                                            status     : 'success',
+                                            title      : 'Éxito',
+                                            message    : 'Sesion iniciada.',
+                                            action     : 'redirect',
+                                            redirectTo : './admin'
+                                        });
+                                    } else if (data.type == "client") {
+                                        res.status(200).send({
+                                            status     : 'success',
+                                            title      : 'Éxito',
+                                            message    : 'Sesion iniciada.',
+                                            action     : 'redirect',
+                                            redirectTo : './consola'
+                                        });
+                                    }
                                     
-                                    res.status(200).send({
-                                        status     : 'success',
-                                        title      : 'Éxito',
-                                        message    : 'Sesion iniciada.',
-                                        action     : 'redirect',
-                                        redirectTo : './consola'
-                                    });
                                 } else {
                                     res.status(200).send({
                                         status  : 'error',
@@ -413,11 +401,11 @@ router.post("/user", uploader,function(req, res) {
                                         
                                         const newUser = new UserSchema();
     
+                                        newUser.type    = 'client';
                                         newUser.user    = user;
                                         newUser.mail    = mail;
                                         newUser.pass    = generateHash(pass1);
                                         newUser.check   = false;
-                                        newUser.image   = "";
     
                                         newUser.save((err) => {
                                             if (!err) { 
@@ -540,12 +528,6 @@ router.post("/user", uploader,function(req, res) {
                                 }
                                 if (check) {
                                     data.check = check;
-                                }
-                                if (image != null) {
-                                    if (data.image != "") {
-                                        fs.unlinkSync('./public/images/users/' + data.image);
-                                    }
-                                    data.image = image.filename;
                                 }
                                 if (!error) {
                                     data.save(function (err, updateData) {
