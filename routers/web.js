@@ -8,7 +8,20 @@ const router = express.Router();
 
 router.get("/", function(req, res) {
 	if (req.session.IsStarted != true) {
-		res.render("index", {
+		res.render("index");
+	} else {
+		if (req.session.type == 'client') {
+			res.redirect('./consola'); 
+		} else {
+			res.redirect('./admin'); 
+		}
+		
+	}
+});
+
+router.get("/acceso", function(req, res) {
+	if (req.session.IsStarted != true) {
+		res.render("acceso", {
 			title: 'Acceso'
 		});
 	} else {

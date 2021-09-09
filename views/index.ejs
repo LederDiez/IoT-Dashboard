@@ -1,112 +1,180 @@
-<!DOCTYPE html>
-<html lang="es" xml:lang="es">
-<head>
-	<title>Inicio</title>
-  
-  <meta name="theme-color" content="#4285f4">
+<!doctype html>
+<html lang="es">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<meta name="description" content="Plataforma administrativa IoT">
-	<meta name="keywords"
-    content="Inicio, IoT, Internet Of Things, cloud, platform, esp8266, arduino, Leder Diez, Internet de las cosas"
-  >
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
-	<meta name="application-name" content="Administracion">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
 
-	<link rel="stylesheet" href="/css/pace/red/pace.min.css">
-	<link rel="stylesheet" href="/css/animate.min.css">
-	<link rel="stylesheet" href="/css/font-awesome/font-awesome.min.css">
-	<link rel="stylesheet" href="/css/normalize/normalize.min.css">
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-	<link rel="stylesheet" href="/css/toastr/toastr.min.css">
-</head>
-<body class="ng-scope">
-	<div class="app-scope">
-		<div class="container w-xxl w-auto-xs ng-scope"></div>
-	</div>
-	<script src="/js/jquery/jquery.min.js"></script>
-	<script src="/js/pace/pace.min.js"></script>
-  <script src="/js/toastr/toastr.min.js"></script>
+    <title>Hello, world!</title>
 
-	<script type="text/javascript">
-    toastr.options = {
-      "closeButton": true,
-      "debug": false,
-      "newestOnTop": false,
-      "progressBar": false,
-      "positionClass": "toast-top-left",
-      "preventDuplicates": false,
-      "onclick": null,
-      "showDuration": "300",
-      "hideDuration": "1000",
-      "timeOut": "5000",
-      "extendedTimeOut": "1000"
-    };
-
-    let pages = [];
-    let lastPage = "something";
-    
-    function loadView(page) {
-      let container = $('.container');
-      if ($("#" + page).length ) {
-        if (lastPage !== page) {
-          for (let i = 0; i < pages.length; i++) {
-            if (pages[i] !== page) {
-              $("#" + pages[i]).css( "display", "none" );
-            } else {
-              $("#" + pages[i]).css( "display", "block" );
-            }
-          }
-          $('.' + lastPage).parent().removeClass( "active" );
-          $('.' + page).parent().addClass( "active" );
-          lastPage = page;
-        }
-      } else {
-        Pace.restart();
-        $.ajax({url: "/" + page + ".html",
-          success: function(result) {
-            $(container).append(result);
-            pages.push(page);
-            for (let i = 0; i < pages.length; i++) {
-              if (pages[i] !== page) {
-                $("#" + pages[i]).css( "display", "none" );
-              }
-            }
-            $('.' + lastPage).parent().removeClass( "active" );
-            $('.' + page).parent().addClass( "active" );
-            lastPage = page;
-          }, error: function () {
-            toastr.error('Tenemos problemas para procesar las peticiones.', 'Error!');
-          }
-        });
-			}
-		}
-    loadView("login");
-
-    function requestsProcess (status, response) {
-      if (response.status == "success") {
-        toastr.success(response.message, response.title);
-      } else if (response.status == "error") {
-        toastr.error(response.message, response.title);
-      } else {
-        toastr.error('Tenemos problemas para procesar las peticiones.', 'Error!');
-        return;
+    <style type="text/css">
+      body {
+        background-color: #212121;
+        color: white;
       }
-      if (response.action == "show") {
-        setTimeout( function() {
-          loadView(response.toShow);
-        }, 1000);
-      } else if (response.action == "redirect") {
-        setTimeout( function() {
-          window.location.replace(response.redirectTo);
-        }, 1000);
-      } else if (response.action == "reload") {
-        setTimeout( function() {
-          window.location.reload();
-        }, 1000);
+      #particles-js {
+        height: 594px;
       }
-    }
+      .particles-js-canvas-el {
+        top: 55px;
+        max-height: 594px;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-color: #1a1a1a;
+        background-image: url("");
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: 50% 50%;
+      }
+      .container-banner-box {
+          color: white;
+          z-index: 10;
+          position: relative;
+          max-width: 379px;
+          margin: 0 auto;
+          padding: 0 15px;
+          text-align: center;
+      }
+      .banner-box {
+        padding-top: 60%;
+      }
+      .c-icons {
+        font-size: 28px;
+        color: #01579b;
+      }
+      .c-text {
+        color: #bdbdbd;
+      }
+      .c-text h5 {
+        color: white;
+      }
+    </style>
+  </head>
+  <body class="user-select-none">
+    <nav class="navbar navbar-dark bg-dark">
+      <div class="container-fluid">
+        <div class="navbar-brand">
+          <img src="/favicon.ico" alt="" width="24" height="24" class="d-inline-block align-text-top">
+          <span class="navbar-brand mb-0 h1">Navbar</span>
+        </div>
+        <div class="d-none d-md-block">
+          <div class="d-flex">
+            <div class="nav-item">
+              <a class="nav-link text-light" href="#">Monitoreo</a>
+            </div>
+            <div class="nav-item">
+              <a class="nav-link text-light" href="#">Analisis</a>
+            </div>
+            <div class="nav-item">
+              <a class="nav-link text-light" href="#">Contacto</a>
+            </div>
+            <div class="nav-item d-flex align-items-center">
+              <button type="button" class="btn btn-success btn-sm">Plataforma</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <div id="particles-js">
+      <div class="container-banner-box">
+        <div class="banner-box">
+          <h1>particles</h1>
+          <p>A lightweight, dependency-free and responsive javascript plugin for particle backgrounds.</p>
+        </div>
+      </div>
+      <canvas class="particles-js-canvas-el"></canvas>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-sm">
+          <div class="mb-3 mt-3">
+            <div class="c-icons d-table-cell align-top pe-2">
+              <i class="fas fa-hand-holding-heart"></i>
+            </div>
+            <div class="c-text d-table-cell align-middle">
+              <h5>Diagnóstico temprano</h5>
+              Una algoritmo de inteligencia artifical para alertar de futuros fallos a tiempo.
+            </div>
+          </div>
+        </div>
+        <div class="col-sm">
+          <div class="mb-3 mt-3">
+            <div class="c-icons d-table-cell align-top pe-2">
+              <i class="fas fa-cloud"></i>
+            </div>
+            <div class="c-text d-table-cell align-middle">
+              <h5>Plataforma en la nube</h5>
+              Gestione todo desde una misma plataforma en su dispositivo movil.
+            </div>
+          </div>
+        </div>
+        <div class="col-sm">
+          <div class="mb-3 mt-3">
+            <div class="c-icons d-table-cell align-top pe-2">
+              <i class="fas fa-database"></i>
+            </div>
+            <div class="c-text d-table-cell align-middle">
+              <h5>Almacenamiento</h5>
+              Almacenamiento de datos 
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm">
+          <div class="mb-3 mt-3">
+            <div class="c-icons d-table-cell align-top pe-2">
+              <i class="fas fa-history"></i>
+            </div>
+            <div class="c-text d-table-cell align-middle">
+              <h5>Datos en tiempo real</h5>
+              Visualize sus datos en cuanto se generan.
+            </div>
+          </div>
+        </div>
+        <div class="col-sm">
+          <div class="mb-3 mt-3">
+            <div class="c-icons d-table-cell align-top pe-2">
+              <i class="fas fa-gamepad"></i>
+            </div>
+            <div class="c-text d-table-cell align-middle">
+              <h5>Control a distancia</h5>
+              Controle su equipamiento desde cualquier lugar en el que se encuentre.
+            </div>
+          </div>
+        </div>
+        <div class="col-sm">
+          <div class="mb-3 mt-3">
+            <div class="c-icons d-table-cell align-top pe-2">
+              <i class="fas fa-microchip"></i>
+            </div>
+            <div class="c-text d-table-cell align-middle">
+              <h5>Sorfware a medida</h5>
+              Hardware y Software a media para el control de todo tipo de equipamiento.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-	</script>
-</body>
+    <!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-eMNCOe7tC1doHpGoWe/6oMVemdAVTMs2xqW4mwXrXsW0L84Iytr2wi5v2QjrP/xp" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.min.js" integrity="sha384-cn7l7gDp0eyniUwwAZgrzD06kc/tftFf19TOAs2zVinnD/C7E91j9yyk5//jjpt/" crossorigin="anonymous"></script>
+    -->
+
+    <script src="/js/particles/particles.min.js"></script>
+    <script src="/js/particles/particles-app.js"></script>
+  </body>
 </html>
