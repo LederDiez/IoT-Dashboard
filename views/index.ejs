@@ -54,6 +54,26 @@
       .c-text h5 {
         color: white;
       }
+
+      .image-card {
+        position: relative;
+        display: inline-block;
+      }
+
+      .card-title {
+        color: black;
+        background-color: #f8f9fab3;
+        padding-top: .5rem;
+        padding-bottom: .25rem;
+        padding-right: 1rem;
+        padding-left: 1rem;
+        left: 0;
+        top: 0;
+        position: absolute;
+      }
+      .from-label {
+        color: gray;
+      }
     </style>
   </head>
   <body class="user-select-none">
@@ -61,22 +81,20 @@
       <div class="container-fluid">
         <div class="navbar-brand">
           <img src="/favicon.ico" alt="" width="24" height="24" class="d-inline-block align-text-top">
-          <span class="navbar-brand mb-0 h1">Navbar</span>
+          <span class="navbar-brand mb-0 h1">PARTICLES</span>
         </div>
-        <div class="d-none d-md-block">
-          <div class="d-flex">
-            <div class="nav-item">
-              <a class="nav-link text-light" href="#">Monitoreo</a>
-            </div>
-            <div class="nav-item">
-              <a class="nav-link text-light" href="#">Analisis</a>
-            </div>
-            <div class="nav-item">
-              <a class="nav-link text-light" href="#">Contacto</a>
-            </div>
-            <div class="nav-item d-flex align-items-center">
-              <button type="button" class="btn btn-success btn-sm">Plataforma</button>
-            </div>
+        <div class="d-flex">
+          <div class="nav-item d-none d-md-block">
+            <a class="nav-link text-light" href="#">Analisis</a>
+          </div>
+          <div class="nav-item d-none d-md-block">
+            <a class="nav-link text-light" href="#">Monitoreo</a>
+          </div>
+          <div class="nav-item d-none d-md-block">
+            <a class="nav-link text-light" href="#">Contacto</a>
+          </div>
+          <div class="nav-item d-flex align-items-center">
+            <a href="/acceso" class="btn btn-danger btn-sm">Acceso</a>
           </div>
         </div>
       </div>
@@ -84,8 +102,9 @@
     <div id="particles-js">
       <div class="container-banner-box">
         <div class="banner-box">
-          <h1>particles</h1>
-          <p>A lightweight, dependency-free and responsive javascript plugin for particle backgrounds.</p>
+          <h1>PARTICLES</h1>
+          <p>Sistemas de monitoreo y control a la medida de sus necesidades.</p>
+          <a href="/acceso?demo=true" class="btn btn-success">Demo</a>
         </div>
       </div>
       <canvas class="particles-js-canvas-el"></canvas>
@@ -103,7 +122,7 @@
             </div>
           </div>
         </div>
-        <div class="col-sm">
+        <div class="col-12 col-sm-6 col-md-4">
           <div class="mb-3 mt-3">
             <div class="c-icons d-table-cell align-top pe-2">
               <i class="fas fa-cloud"></i>
@@ -114,7 +133,7 @@
             </div>
           </div>
         </div>
-        <div class="col-sm">
+        <div class="col-12 col-sm-6 col-md-4">
           <div class="mb-3 mt-3">
             <div class="c-icons d-table-cell align-top pe-2">
               <i class="fas fa-database"></i>
@@ -125,9 +144,7 @@
             </div>
           </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-sm">
+        <div class="col-12 col-sm-6 col-md-4">
           <div class="mb-3 mt-3">
             <div class="c-icons d-table-cell align-top pe-2">
               <i class="fas fa-history"></i>
@@ -138,7 +155,7 @@
             </div>
           </div>
         </div>
-        <div class="col-sm">
+        <div class="col-12 col-sm-6 col-md-4">
           <div class="mb-3 mt-3">
             <div class="c-icons d-table-cell align-top pe-2">
               <i class="fas fa-gamepad"></i>
@@ -149,7 +166,7 @@
             </div>
           </div>
         </div>
-        <div class="col-sm">
+        <div class="col-12 col-sm-6 col-md-4">
           <div class="mb-3 mt-3">
             <div class="c-icons d-table-cell align-top pe-2">
               <i class="fas fa-microchip"></i>
@@ -161,7 +178,112 @@
           </div>
         </div>
       </div>
+      <div class="p-2">
+        <hr>
+      </div>
+      <div class="row">
+        <div class="col-sm-4">
+          <img src="/images/photo2.svg" class="img-fluid">
+        </div>
+        <div class="col-sm-8">
+          <h5>Sorfware a medida</h5>
+          Hardware y Software a media para el control de todo tipo de equipamiento.
+        </div>
+      </div>
+      <div class="p-2">
+        <hr>
+      </div>
+      <div class="row">
+        <div class="col-sm-8">
+          <h5>Sorfware a medida</h5>
+          Hardware y Software a media para el control de todo tipo de equipamiento.
+        </div>
+        <div class="col-sm-4">
+          <img src="/images/photo2.svg" class="img-fluid">
+        </div>
+      </div>
+      <div class="p-2">
+        <hr>
+      </div>
+      <div class="d-flex justify-content-center">
+          <h4>APLICACIONES</h4>
+      </div>
+      <div class="d-flex justify-content-center pb-4">
+        <div class="text-center">
+        Ofrecemos una infraestructura en la nube escalable lista para usar para conectar todos sus dispositivos. Ademas con nuestro hardware programado a la mediad de sus nesecidades podra automatizar cualquier tipo de proceso.</div>
+      </div>
+      <div class="row">
+        <div class="col-6 col-sm-6 col-md-3 px-0">
+          <div class="image-card">
+            <img src="/images/photo2.svg" class="img-fluid content_photo">
+            <div class="card-title">
+              <h6>AGRONOMIA</h6>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-sm-6 col-md-3 px-0">
+          <div class="image-card">
+            <img src="/images/photo2.svg" class="img-fluid content_photo">
+            <div class="card-title">
+              <h6>RASTREO DE ACTIVOS</h6>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-sm-6 col-md-3 px-0">
+          <div class="image-card">
+            <img src="/images/photo2.svg" class="img-fluid content_photo">
+            <div class="card-title">
+              <h6>INDUSTRIA</h6>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-sm-6 col-md-3 px-0">
+          <div class="image-card">
+            <img src="/images/photo2.svg" class="img-fluid content_photo">
+            <div class="card-title">
+              <h6>AGUA INTELIGENTE</h6>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="p-2">
+        <hr>
+      </div>
+      <div class="row">
+        <div class=" col-12 col-sm-6">
+          <h2 class="d-flex justify-content-center pb-2"><strong>Contáctanos</strong></h2>
+          <p class="text-center">Cuéntanos tus ideas o proyectos, estaremos más que felices en ayudarle a cumplir tus objetivos.</p>
+          <form class="form-floating">
+            <div class="form-floating  mb-3">
+              <input class="form-control" id="floatingName" placeholder="nombre">
+              <label class="from-label" for="floatingName">Nombre completo</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input class="form-control" id="floatingEmail" placeholder="correo">
+              <label class="from-label" for="floatingEmail">Correo eléctronico</label>
+            </div>
+            <div class="mb-3">
+              <label for="exampleFormControlTextarea1" class="form-label">Describe tu caso de uso o aplicación:</label>
+              <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            </div>
+            <div class="d-flex justify-content-center">
+              <button type="submit" class="btn btn-primary">Enviar</button>
+            </div>
+          </form>
+        </div>
+
+        <div class=" col-12 col-sm-6 pt-5 text-center d-flex align-items-center justify-content-center">
+            <div class="">
+              <h2><strong>LEDER DIEZ</strong></h2>
+              <p class="lead mb-0">Monteria - Cordoba</p>
+              <p class="lead mb-5">Calle 14 # 3-36 Barrio La granja<br>
+                Teléfono: +57-3003597502
+              </p>
+            </div>
+          </div>
+        </div>
     </div>
+    <div class="p-2"></div>
 
     <!-- Optional JavaScript; choose one of the two! -->
 
