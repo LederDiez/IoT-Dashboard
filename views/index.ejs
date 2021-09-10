@@ -1,7 +1,9 @@
 <!doctype html>
 <html lang="es">
   <head>
-    <!-- Required meta tags -->
+
+    <title>LEDER DIEZ</title>
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -9,106 +11,44 @@
     <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
-
-    <title>Hello, world!</title>
-
-    <style type="text/css">
-      body {
-        background-color: #212121;
-        color: white;
-      }
-      #particles-js {
-        height: 594px;
-      }
-      .particles-js-canvas-el {
-        top: 55px;
-        max-height: 594px;
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        background-color: #1a1a1a;
-        background-image: url("");
-        background-repeat: no-repeat;
-        background-size: cover;
-        background-position: 50% 50%;
-      }
-      .container-banner-box {
-          color: white;
-          z-index: 10;
-          position: relative;
-          max-width: 379px;
-          margin: 0 auto;
-          padding: 0 15px;
-          text-align: center;
-      }
-      .banner-box {
-        padding-top: 60%;
-      }
-      .c-icons {
-        font-size: 28px;
-        color: #01579b;
-      }
-      .c-text {
-        color: #bdbdbd;
-      }
-      .c-text h5 {
-        color: white;
-      }
-
-      .image-card {
-        position: relative;
-        display: inline-block;
-      }
-
-      .card-title {
-        color: black;
-        background-color: #f8f9fab3;
-        padding-top: .5rem;
-        padding-bottom: .25rem;
-        padding-right: 1rem;
-        padding-left: 1rem;
-        left: 0;
-        top: 0;
-        position: absolute;
-      }
-      .from-label {
-        color: gray;
-      }
-    </style>
+    <!-- Generados CSS -->
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
   </head>
   <body class="user-select-none">
-    <nav class="navbar navbar-dark bg-dark">
-      <div class="container-fluid">
-        <div class="navbar-brand">
-          <img src="/favicon.ico" alt="" width="24" height="24" class="d-inline-block align-text-top">
-          <span class="navbar-brand mb-0 h1">PARTICLES</span>
+    <header class="header">
+      <nav class="navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+          <div class="navbar-brand">
+            <img src="/favicon.ico" alt="" width="24" height="24" class="d-inline-block align-text-top">
+            <span class="navbar-brand mb-0 h1">LOGO</span>
+          </div>
+          <div class="d-flex">
+            <div class="nav-item d-none d-md-block">
+              <a class="nav-link text-light" href="#software">Software</a>
+            </div>
+            <div class="nav-item d-none d-md-block">
+              <a class="nav-link text-light" href="#hardware">Hardware</a>
+            </div>
+            <div class="nav-item d-none d-md-block">
+              <a class="nav-link text-light" href="#contacto">Contacto</a>
+            </div>
+            <div class="nav-item d-flex align-items-center">
+              <a href="/acceso" class="btn btn-danger btn-sm">Acceso</a>
+            </div>
+          </div>
         </div>
-        <div class="d-flex">
-          <div class="nav-item d-none d-md-block">
-            <a class="nav-link text-light" href="#">Analisis</a>
-          </div>
-          <div class="nav-item d-none d-md-block">
-            <a class="nav-link text-light" href="#">Monitoreo</a>
-          </div>
-          <div class="nav-item d-none d-md-block">
-            <a class="nav-link text-light" href="#">Contacto</a>
-          </div>
-          <div class="nav-item d-flex align-items-center">
-            <a href="/acceso" class="btn btn-danger btn-sm">Acceso</a>
+      </nav>
+      <div id="particles-js">
+        <div class="container-banner-box">
+          <div class="banner-box">
+            <h1>LOGO</h1>
+            <p>Sistemas de monitoreo y control a la medida de sus necesidades.</p>
+            <a href="/acceso?demo=true" class="btn btn-success">Demo</a>
           </div>
         </div>
+        <canvas class="particles-js-canvas-el"></canvas>
       </div>
-    </nav>
-    <div id="particles-js">
-      <div class="container-banner-box">
-        <div class="banner-box">
-          <h1>PARTICLES</h1>
-          <p>Sistemas de monitoreo y control a la medida de sus necesidades.</p>
-          <a href="/acceso?demo=true" class="btn btn-success">Demo</a>
-        </div>
-      </div>
-      <canvas class="particles-js-canvas-el"></canvas>
-    </div>
+    </header>
     <div class="container">
       <div class="row">
         <div class="col-sm">
@@ -118,7 +58,7 @@
             </div>
             <div class="c-text d-table-cell align-middle">
               <h5>Diagnóstico temprano</h5>
-              Una algoritmo de inteligencia artifical para alertar de futuros fallos a tiempo.
+              Usamos inteligencia artificial para informarle de futuros fallos en sus equipos.
             </div>
           </div>
         </div>
@@ -129,7 +69,7 @@
             </div>
             <div class="c-text d-table-cell align-middle">
               <h5>Plataforma en la nube</h5>
-              Gestione todo desde una misma plataforma en su dispositivo movil.
+              Gestione todo desde una misma plataforma en su dispositivo móvil.
             </div>
           </div>
         </div>
@@ -139,8 +79,8 @@
               <i class="fas fa-database"></i>
             </div>
             <div class="c-text d-table-cell align-middle">
-              <h5>Almacenamiento</h5>
-              Almacenamiento de datos 
+              <h5>Almacenamiento en la nube</h5>
+              Nuestra plataforma almacena los datos para que usted pueda consultarlos en cualquier momento.
             </div>
           </div>
         </div>
@@ -151,7 +91,7 @@
             </div>
             <div class="c-text d-table-cell align-middle">
               <h5>Datos en tiempo real</h5>
-              Visualize sus datos en cuanto se generan.
+              Visualice sus datos en cuanto se generan.
             </div>
           </div>
         </div>
@@ -162,7 +102,7 @@
             </div>
             <div class="c-text d-table-cell align-middle">
               <h5>Control a distancia</h5>
-              Controle su equipamiento desde cualquier lugar en el que se encuentre.
+              Controle sus equipos desde cualquier lugar en el que se encuentre.
             </div>
           </div>
         </div>
@@ -172,34 +112,38 @@
               <i class="fas fa-microchip"></i>
             </div>
             <div class="c-text d-table-cell align-middle">
-              <h5>Sorfware a medida</h5>
-              Hardware y Software a media para el control de todo tipo de equipamiento.
+              <h5>Control a medida</h5>
+              Hardware y Software a media para el control de todo tipo de equipos.
             </div>
           </div>
         </div>
       </div>
+      <a name="software"></a>
       <div class="p-2">
         <hr>
       </div>
       <div class="row">
         <div class="col-sm-4">
-          <img src="/images/photo2.svg" class="img-fluid">
+          <img src="/images/a-medida1.jpg" class="img-fluid">
         </div>
         <div class="col-sm-8">
-          <h5>Sorfware a medida</h5>
-          Hardware y Software a media para el control de todo tipo de equipamiento.
+          <h5 class="mt-1">Software a medida</h5>
+          Nuestra plataforma es un producto diseñado y desarrollado e implementado con base en las necesidades de su negocio, además le ofrece múltiples ventajas competitivas, de eficiencia, optimización y costos.
+          <br>
+          Nuestro software a medida contempla las diferentes dimensiones y variables involucradas: las personas, los procesos, la seguridad, los volúmenes de datos, el entorno de negocio y muchas otras, con el fin de generar un programa que solucione y entregue el valor esperado a su negocio o empresa.
         </div>
       </div>
+      <a name="hardware"></a>
       <div class="p-2">
         <hr>
       </div>
       <div class="row">
         <div class="col-sm-8">
-          <h5>Sorfware a medida</h5>
-          Hardware y Software a media para el control de todo tipo de equipamiento.
+          <h5 class="mt-1">Hardware a medida</h5>
+          Ofrecemos hardware a medida especializado para la automatización de procesos industriales.
         </div>
         <div class="col-sm-4">
-          <img src="/images/photo2.svg" class="img-fluid">
+          <img src="/images/a-medida2.jpg" class="img-fluid">
         </div>
       </div>
       <div class="p-2">
@@ -210,12 +154,12 @@
       </div>
       <div class="d-flex justify-content-center pb-4">
         <div class="text-center">
-        Ofrecemos una infraestructura en la nube escalable lista para usar para conectar todos sus dispositivos. Ademas con nuestro hardware programado a la mediad de sus nesecidades podra automatizar cualquier tipo de proceso.</div>
+        Ofrecemos una infraestructura en la nube lista para usar y conectar todos sus equipos. Ademas con nuestro hardware programado a la mediad de sus nesecidades podra automatizar cualquier tipo de proceso.</div>
       </div>
       <div class="row">
         <div class="col-6 col-sm-6 col-md-3 px-0">
           <div class="image-card">
-            <img src="/images/photo2.svg" class="img-fluid content_photo">
+            <img src="/images/caso-uso1.jpg" class="img-fluid content_photo">
             <div class="card-title">
               <h6>AGRONOMIA</h6>
             </div>
@@ -223,7 +167,7 @@
         </div>
         <div class="col-6 col-sm-6 col-md-3 px-0">
           <div class="image-card">
-            <img src="/images/photo2.svg" class="img-fluid content_photo">
+            <img src="/images/caso-uso2.jpg" class="img-fluid content_photo">
             <div class="card-title">
               <h6>RASTREO DE ACTIVOS</h6>
             </div>
@@ -231,7 +175,7 @@
         </div>
         <div class="col-6 col-sm-6 col-md-3 px-0">
           <div class="image-card">
-            <img src="/images/photo2.svg" class="img-fluid content_photo">
+            <img src="/images/caso-uso3.jpg" class="img-fluid content_photo">
             <div class="card-title">
               <h6>INDUSTRIA</h6>
             </div>
@@ -239,7 +183,7 @@
         </div>
         <div class="col-6 col-sm-6 col-md-3 px-0">
           <div class="image-card">
-            <img src="/images/photo2.svg" class="img-fluid content_photo">
+            <img src="/images/caso-uso4.jpg" class="img-fluid content_photo">
             <div class="card-title">
               <h6>AGUA INTELIGENTE</h6>
             </div>
@@ -251,6 +195,7 @@
       </div>
       <div class="row">
         <div class=" col-12 col-sm-6">
+          <a name="contacto"></a>
           <h2 class="d-flex justify-content-center pb-2"><strong>Contáctanos</strong></h2>
           <p class="text-center">Cuéntanos tus ideas o proyectos, estaremos más que felices en ayudarle a cumplir tus objetivos.</p>
           <form class="form-floating">
@@ -274,9 +219,13 @@
 
         <div class=" col-12 col-sm-6 pt-5 text-center d-flex align-items-center justify-content-center">
             <div class="">
-              <h2><strong>LEDER DIEZ</strong></h2>
+              <h2><strong>NOMBRE Y LOGO</strong></h2>
               <p class="lead mb-0">Monteria - Cordoba</p>
-              <p class="lead mb-5">Calle 14 # 3-36 Barrio La granja<br>
+              <p class="lead mb-5">
+                Calle 14 # 3-36 Barrio La granja
+                <br>
+                Correo: lederdiez00@gmail.com
+                <br>
                 Teléfono: +57-3003597502
               </p>
             </div>

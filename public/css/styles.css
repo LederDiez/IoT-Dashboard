@@ -1,14 +1,14 @@
 .header .navbar {
   background-color: transparent !important;
-  z-index: 10;
-}
+  z-index: 10; }
+
 body {
   background-color: #212121;
-  color: white;
-}
+  color: white; }
+
 #particles-js {
-  height: 594px;
-}
+  height: 594px; }
+
 .particles-js-canvas-el {
   top: 0px;
   /*max-height: 594px;*/
@@ -19,35 +19,33 @@ body {
   background-image: url("");
   background-repeat: no-repeat;
   background-size: cover;
-  background-position: 50% 50%;
-}
+  background-position: 50% 50%; }
+
 .container-banner-box {
-    color: white;
-    z-index: 10;
-    position: relative;
-    max-width: 379px;
-    margin: 0 auto;
-    padding: 0 15px;
-    text-align: center;
-}
+  color: white;
+  z-index: 10;
+  position: relative;
+  max-width: 379px;
+  margin: 0 auto;
+  padding: 0 15px;
+  text-align: center; }
+
 .banner-box {
-  padding-top: 60%;
-}
+  padding-top: 60%; }
+
 .c-icons {
   font-size: 28px;
-  color: #01579b;
-}
+  color: #01579b; }
+
 .c-text {
-  color: #bdbdbd;
-}
+  color: #bdbdbd; }
+
 .c-text h5 {
-  color: white;
-}
+  color: white; }
 
 .image-card {
   position: relative;
-  display: inline-block;
-}
+  display: inline-block; }
 
 .card-title {
   color: black;
@@ -58,8 +56,7 @@ body {
   padding-left: 1rem;
   left: 0;
   top: 0;
-  position: absolute;
-}
+  position: absolute; }
+
 .from-label {
-  color: gray;
-}
+  color: gray; }
