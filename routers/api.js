@@ -299,7 +299,7 @@ router.post("/user", function(req, res) {
                                             title      : 'Éxito',
                                             message    : 'Sesion iniciada.',
                                             action     : 'redirect',
-                                            redirectTo : './admin'
+                                            redirectTo : '../admin'
                                         });
                                     } else if (data.type == "client") {
                                         res.status(200).send({
@@ -307,7 +307,7 @@ router.post("/user", function(req, res) {
                                             title      : 'Éxito',
                                             message    : 'Sesion iniciada.',
                                             action     : 'redirect',
-                                            redirectTo : './consola'
+                                            redirectTo : '../consola'
                                         });
                                     }
                                     
@@ -347,7 +347,7 @@ router.post("/user", function(req, res) {
                     title      : 'Error!',
                     message    : 'Sesión ya iniciada.',
                     action     : 'redirect',
-                    redirectTo : './consola'
+                    redirectTo : '../consola'
                 });
             }
             break;
@@ -362,7 +362,7 @@ router.post("/user", function(req, res) {
                             title      : 'Éxito',
                             message    : 'Sesión destruida.',
                             action     : 'redirect',
-                            redirectTo : '/'
+                            redirectTo : '/acceso'
                         });
                     } else {
                         res.status(200).send({
@@ -378,7 +378,7 @@ router.post("/user", function(req, res) {
                     title      : 'Éxito',
                     message    : 'Sesión destruida.',
                     action     : 'redirect',
-                    redirectTo : '/'
+                    redirectTo : '/acceso'
                 });
             }
             break;
@@ -469,7 +469,7 @@ router.post("/user", function(req, res) {
                     title      : 'Error!',
                     message    : 'Sesión ya iniciada.',
                     action     : 'redirect',
-                    redirectTo : './consola'
+                    redirectTo : '../consola'
                 });
             }
             break;

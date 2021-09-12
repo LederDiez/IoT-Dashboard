@@ -1,0 +1,105 @@
+<div id="login" class="login-box">
+  <div class="card card-outline card-primary">
+  	<!-- /.login-logo -->
+  	<div class="card-header text-center">
+			<a onclick="loadView('login');" class="h1"><b>LOGO</b></a>
+		</div>
+		<div class="card-body">
+			<p class="login-box-msg">Inicia sesión</p>
+			<form autocomplete="on" action="" onSubmit="send_login(); return false">
+        <div class="input-group mb-3">
+          <input 
+          id="mail_login"
+          class="form-control"
+          type="email" 
+          value="lederdiez00@gmail.com"
+          placeholder="Correo electronico"
+          required>
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-envelope"></span>
+            </div>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <!-- Valores solo para demostracion -->
+          <input
+					id="password_login"
+					class="form-control"
+					type="password"
+					value="Lederdiez"
+          placeholder="Contraseña"
+          required>
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-lock"></span>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-7">
+            <div class="icheck-primary">
+              <input type="checkbox" id="check">
+              <label for="check">
+                Mostrar contraseña
+              </label>
+            </div>
+          </div>
+          <!-- /.col -->
+          <div class="col-5">
+            <button type="submit" class="btn btn-primary btn-block">Iniciar sesión</button>
+          </div>
+          <!-- /.col -->
+        </div>
+      </form>
+      <div class="social-auth-links text-center mt-2 mb-3">
+        <a href="#" class="btn btn-block btn-danger disabled" tabindex="-1" role="button" aria-disabled="true">
+          <i class="fab fa-google mr-2"></i>
+          Iniciar sesión con Google
+        </a>
+      </div>
+      <!-- /.social-auth-links -->
+
+      <p class="mb-1">
+        <a onclick="loadView('forgot'); " class="text-center">¿Olvidaste la contraseña?</a>
+      </p>
+      <p class="mb-0">
+        <a onclick="loadView('register');" class="text-center">¿Crea una cuenta?</a>
+      </p>
+		</div>
+		<!-- /.card-body -->
+	</div>
+  <!-- /.card -->
+	<div class="text-center">
+		<p>
+			<small class="text-muted">Leder Diez © 2018 - 2021 | version 4.0</small>
+		</p>
+	</div>
+</div>
+<!-- /.login-box -->
+
+<script>
+	$("#check").click(function () {
+		if ($("#check").prop('checked')) {
+			$("#password_login").prop('type', 'text');
+		} else {
+			$("#password_login").prop('type', 'password');
+		}
+	})
+  function send_login() {
+    Pace.restart();
+		
+		let mail 	 = $('#mail_login').val();
+		let password = $('#password_login').val();
+		
+		$("#password_login").prop('type', 'password');
+		$.post("../api/user", {
+			page  : 'login',
+			mail  : mail.replace(/ /g, ""),
+			pass1 : password
+		}, function (response, status) {
+			$("#password_login").val('');
+			requestsProcess(status, response);
+		});
+        }
+</script>

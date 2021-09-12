@@ -6,27 +6,39 @@
   <meta name="theme-color" content="#4285f4">
 
 	<meta name="description" content="Plataforma administrativa IoT">
-	<meta name="keywords"
-    content="Acceso, IoT, Internet Of Things, cloud, platform, esp8266, arduino, Leder Diez, Internet de las cosas"
-  >
+	<meta name="keywords" content="Acceso, IoT, Internet Of Things, cloud, platform, esp8266, arduino, Leder Diez, Internet de las cosas">
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
 	<meta name="application-name" content="Administracion">
 
-	<link rel="stylesheet" href="/css/pace/red/pace.min.css">
-	<link rel="stylesheet" href="/css/animate.min.css">
-	<link rel="stylesheet" href="/css/font-awesome/font-awesome.min.css">
-	<link rel="stylesheet" href="/css/normalize/normalize.min.css">
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-	<link rel="stylesheet" href="/css/toastr/toastr.min.css">
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="/plugins/fontawesome-free/css/all.min.css">
+  <!-- icheck bootstrap -->
+  <link rel="stylesheet" href="/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+  <!-- Pace progress -->
+	<link rel="stylesheet" href="/plugins/pace-progress/themes/red/pace-theme-minimal.css">
+  <!-- Toastr -->
+  <link rel="stylesheet" href="/plugins/toastr/toastr.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="/dist/css/adminlte.min.css">
+
 </head>
-<body class="ng-scope">
-	<div class="app-scope">
-		<div class="container w-xxl w-auto-xs ng-scope"></div>
-	</div>
-	<script src="/js/jquery/jquery.min.js"></script>
-	<script src="/js/pace/pace.min.js"></script>
-  <script src="/js/toastr/toastr.min.js"></script>
+<body class="">
+	<div class="hold-transition login-page viewport"></div>
+
+  <!-- jQuery -->
+  <script src="/plugins/jquery/jquery.min.js"></script>
+  <!-- Bootstrap 4 -->
+  <script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <!-- Pace progress -->
+  <script src="/plugins/pace-progress/pace.min.js"></script>
+  <!-- Toastr -->
+  <script src="/plugins/toastr/toastr.min.js"></script>
+  <!-- AdminLTE App -->
+  <script src="/dist/js/adminlte.min.js"></script>
 
 	<script type="text/javascript">
     toastr.options = {
@@ -43,11 +55,18 @@
       "extendedTimeOut": "1000"
     };
 
+    function getParameterByName(name) {
+      name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+      var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+      results = regex.exec(location.search);
+      return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+    }
+
     let pages = [];
     let lastPage = "something";
     
     function loadView(page) {
-      let container = $('.container');
+      let container = $('.viewport');
       if ($("#" + page).length ) {
         if (lastPage !== page) {
           for (let i = 0; i < pages.length; i++) {
@@ -63,7 +82,7 @@
         }
       } else {
         Pace.restart();
-        $.ajax({url: "/" + page + ".html",
+        $.ajax({url: "/acceso/" + page + ".html",
           success: function(result) {
             $(container).append(result);
             pages.push(page);
@@ -77,11 +96,17 @@
             lastPage = page;
           }, error: function () {
             toastr.error('Tenemos problemas para procesar las peticiones.', 'Error!');
+            loadView("login");
           }
         });
 			}
 		}
-    loadView("login");
+
+    if (getParameterByName('view') != '') {
+      loadView(getParameterByName('view'));
+    } else {
+      loadView("login");
+    }
 
     function requestsProcess (status, response) {
       if (response.status == "success") {

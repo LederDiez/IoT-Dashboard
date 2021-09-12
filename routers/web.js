@@ -21,7 +21,7 @@ router.get("/", function(req, res) {
 
 router.get("/acceso", function(req, res) {
 	if (req.session.IsStarted != true) {
-		res.render("acceso", {
+		res.render("acceso/index", {
 			title: 'Acceso'
 		});
 	} else {

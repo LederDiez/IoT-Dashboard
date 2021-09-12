@@ -1,0 +1,132 @@
+<div id="register" class="register-box">
+	<div class="card card-outline card-primary">
+  	<!-- /.login-logo -->
+  	<div class="card-header text-center">
+			<a onclick="loadView('login');" class="h1"><b>LOGO</b></a>
+		</div>
+		<div class="card-body">
+			<p class="login-box-msg">Regístrese para comenzar</p>
+			<form onsubmit="send_register(); return false;" autocomplete="on">
+				<div class="input-group mb-3">
+          <input 
+          id="user_register"
+          type="text" 
+          class="form-control" 
+          name="usuario"
+          placeholder="Nombre completo"
+          minlength="1" 
+          maxlength="25" 
+          required>
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-user"></span>
+            </div>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <input 
+          id="mail_register"
+          type="email" 
+          class="form-control" 
+          name="email"
+          placeholder="Correo electronico"
+          required>
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-envelope"></span>
+            </div>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <input 
+          id="pass1_register"
+          type="password" 
+          class="form-control"
+          name="password"
+          placeholder="Contraseña"
+          minlength="6"
+          required>
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-lock"></span>
+            </div>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <input 
+          id="pass2_register"
+          type="password" 
+          class="form-control"
+          name="con_password"
+          placeholder="Confirmar contraseña"
+          minlength="6"
+          required>
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-lock"></span>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-7">
+            <div class="icheck-primary">
+              <input type="checkbox" id="agreeTerms" name="terms" value="agree">
+              <label for="agreeTerms">
+               Acepto los <a href="#">términos</a>
+              </label>
+            </div>
+          </div>
+          <!-- /.col -->
+          <div class="col-5">
+            <button type="submit" class="btn btn-primary btn-block">Crear cuenta</button>
+          </div>
+          <!-- /.col -->
+        </div>
+			</form>
+			<div class="social-auth-links text-center">
+        <a href="#" class="btn btn-block btn-danger disabled" tabindex="-1" role="button" aria-disabled="true">
+          <i class="fab fa-google mr-2"></i>
+          Regístrese con Google
+        </a>
+      </div>
+			<p class="text-center">
+				<small>¿Ya tienes una cuenta?</small>
+				<a class="text-center" onclick="loadView('login');">Inicia sesión</a>
+			</p>
+      
+		</div>
+		<!-- /.card-body -->
+	</div>
+  <!-- /.card -->
+	<div class="text-center">
+		<p>
+			<small class="text-muted">Leder Diez © 2018 - 2021 | version 4.0</small>
+		</p>
+	</div>
+</div>
+<!-- /.login-box -->
+<script>
+	function send_register() {
+        Pace.restart();
+		
+		let user  = $('#user_register').val();
+        let mail  = $('#mail_register').val();
+        let pass1 = $('#pass1_register').val();
+		let pass2 = $('#pass2_register').val();
+		
+        if (pass1 === pass2) {
+            $.post("../api/user", {
+				page  : 'register',
+				user  : user,
+				mail  : mail.replace(/ /g, ""),
+				pass1 : pass1,
+				pass2 : pass2
+			},
+			function (response, status) {
+				requestsProcess(status, response);
+			});
+        } else {
+            toastr.error('Las contraseñas no coinciden.', 'Error!');
+		}
+    }
+</script>
