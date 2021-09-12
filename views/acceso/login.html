@@ -6,7 +6,7 @@
 		</div>
 		<div class="card-body">
 			<p class="login-box-msg">Inicia sesión</p>
-			<form autocomplete="on" action="" onSubmit="send_login(); return false">
+			<form autocomplete="on" onSubmit="send_login(); return false">
         <div class="input-group mb-3">
           <input 
           id="mail_login"
@@ -77,7 +77,6 @@
 	</div>
 </div>
 <!-- /.login-box -->
-
 <script>
 	$("#check").click(function () {
 		if ($("#check").prop('checked')) {
@@ -101,5 +100,5 @@
 			$("#password_login").val('');
 			requestsProcess(status, response);
 		});
-        }
+	}
 </script>

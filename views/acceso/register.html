@@ -1,4 +1,4 @@
-<div id="register" class="register-box">
+<div id="register" class="login-box">
 	<div class="card card-outline card-primary">
   	<!-- /.login-logo -->
   	<div class="card-header text-center">
@@ -78,7 +78,7 @@
           </div>
           <!-- /.col -->
           <div class="col-5">
-            <button type="submit" class="btn btn-primary btn-block">Crear cuenta</button>
+            <button id="bt-register" type="submit" class="btn btn-primary btn-block" disabled="true">Crear cuenta</button>
           </div>
           <!-- /.col -->
         </div>
@@ -106,27 +106,33 @@
 </div>
 <!-- /.login-box -->
 <script>
+	$("#agreeTerms").click(function () {
+		if ($("#agreeTerms").prop('checked')) {
+			$("#bt-register").attr("disabled", false);
+		} else {
+			$("#bt-register").attr("disabled", true);
+		}
+	})
 	function send_register() {
-        Pace.restart();
+  	Pace.restart();
 		
 		let user  = $('#user_register').val();
-        let mail  = $('#mail_register').val();
-        let pass1 = $('#pass1_register').val();
+    let mail  = $('#mail_register').val();
+    let pass1 = $('#pass1_register').val();
 		let pass2 = $('#pass2_register').val();
 		
-        if (pass1 === pass2) {
-            $.post("../api/user", {
+    if (pass1 === pass2) {
+    	$.post("../api/user", {
 				page  : 'register',
 				user  : user,
 				mail  : mail.replace(/ /g, ""),
 				pass1 : pass1,
 				pass2 : pass2
-			},
-			function (response, status) {
+			}, function (response, status) {
 				requestsProcess(status, response);
 			});
-        } else {
-            toastr.error('Las contraseñas no coinciden.', 'Error!');
+    } else {
+    	toastr.error('Las contraseñas no coinciden.', 'Error!');
 		}
-    }
+  }
 </script>

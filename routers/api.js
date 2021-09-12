@@ -2,10 +2,6 @@
 
 const bcrypt  = require('bcrypt-nodejs');
 const express = require('express');
-const { v4: uuid } = require('uuid');
-const multer  = require('multer');
-const path    = require('path');
-const fs      = require('fs');
 const router  = express.Router();
 const db           = require('../models/session_conecction');
 const UserSchema   = require('../models/user_schema');
@@ -251,11 +247,11 @@ router.post("/device", function(req, res) {
 
 /**********************************************
 *	User controller
-* 	login 		* 
+* login 		* 
 *	logout 		* 
 *	register	* 
 *	recover		* 
-*	remember	* 
+*	forgot  	* 
 *	edit     	* 
 **********************************************/
 router.post("/user", function(req, res) {
@@ -475,11 +471,19 @@ router.post("/user", function(req, res) {
             break;
 
         case 'recover':
-            
+            res.status(200).send({
+                status  : 'success',
+                title   : 'Exito!',
+                message : 'Pero no disponible de momento.'
+            });
             break;
 
-        case 'remember':
-            
+        case 'forgot':
+            res.status(200).send({
+                status  : 'success',
+                title   : 'Exito!',
+                message : 'Pero no disponible de momento.'
+            });
             break;
 
         case 'edit':

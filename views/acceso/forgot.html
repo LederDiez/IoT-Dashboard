@@ -8,9 +8,14 @@
         ¿Olvidaste tu contraseña?
         <br>
         Aquí puede recuperar fácilmente una nueva contraseña.</p>
-      <form>
+      <form autocomplete="on" action="" onSubmit="send_forgot(); return false">
         <div class="input-group mb-3">
-          <input type="email" class="form-control" placeholder="Correo electronico">
+          <input 
+          id="mail_forgot" 
+          type="email" 
+          class="form-control" 
+          placeholder="Correo electronico"
+          required>
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-envelope"></span>
@@ -19,7 +24,7 @@
         </div>
         <div class="row">
           <div class="col-12">
-            <button type="submit" class="btn btn-primary btn-block" disabled="true">Restaurar contraseña</button>
+            <button type="submit" class="btn btn-primary btn-block">Restaurar contraseña</button>
           </div>
           <!-- /.col -->
         </div>
@@ -38,3 +43,17 @@
   </div>
 </div>
 <!-- /.login-box -->
+<script>
+  function send_forgot() {
+    Pace.restart();
+    
+    let mail   = $('#mail_forgot').val();
+    
+    $.post("../api/user", {
+      page  : 'forgot',
+      mail  : mail.replace(/ /g, "")
+    }, function (response, status) {
+      requestsProcess(status, response);
+    });
+  }
+</script>

@@ -25,9 +25,31 @@
   <!-- Theme style -->
   <link rel="stylesheet" href="/dist/css/adminlte.min.css">
 
+  <style type="text/css">
+    .login-box {
+      z-index: 10;
+      position: relative;
+    }
+    .particles-js-canvas-el {
+      top: 0px;
+      /*max-height: 594px;*/
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-color: #1a1a1a;
+      background-image: url("");
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: 50% 50%;
+    }
+  </style>
+
 </head>
-<body class="">
-	<div class="hold-transition login-page viewport"></div>
+<body class="user-select-none">
+  <header id="particles-js" class="header">
+    <div class="hold-transition login-page viewport"></div>
+      <canvas class="particles-js-canvas-el"></canvas>
+  </header>
 
   <!-- jQuery -->
   <script src="/plugins/jquery/jquery.min.js"></script>
@@ -39,6 +61,10 @@
   <script src="/plugins/toastr/toastr.min.js"></script>
   <!-- AdminLTE App -->
   <script src="/dist/js/adminlte.min.js"></script>
+  <!-- Particles js -->
+  <script src="/plugins/particles/particles.min.js"></script>
+  <!-- Particles config -->
+  <script src="/plugins/particles/particles-app.js"></script>
 
 	<script type="text/javascript">
     toastr.options = {
