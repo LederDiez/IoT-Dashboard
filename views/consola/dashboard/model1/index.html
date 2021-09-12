@@ -571,10 +571,10 @@
 
         setInterval(function(){
             
-            /*if (chartvolt) {
+            if (chartvolt) {
                 let point = chartvolt.series[0].points[0];
                 point.update(110 + Math.round(Math.random() * 2));
-            }*/
+            }
 
             if (chartcurrent) {
                 let point = chartcurrent.series[0].points[0];
@@ -612,12 +612,12 @@
 
             console.log(data[0]);
 
-            if (chartvolt) {
+            /*if (chartvolt) {
                 let point = chartvolt.series[0].points[0];
                 point.update(data[0].value);
             }
 
-            /*if (chartcurrent) {
+            if (chartcurrent) {
                 let point = chartcurrent.series[0].points[0];
                 point.update(data[0].C);
             }

@@ -13,53 +13,32 @@
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+
   <!-- Font Awesome -->
   <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
   <!-- Theme style -->
-  <link rel="stylesheet" href="../dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="../adminlte/css/adminlte.min.css">
+  <!-- Pace progress -->
+  <link rel="stylesheet" href="../plugins/pace-progress/themes/red/pace-theme-minimal.css">
+  <!-- Screenfull -->
+  <link rel="stylesheet" href="../plugins/screenfull/screenfull.css">
+  <!-- Toastr -->
+  <link rel="stylesheet" href="../plugins/toastr/toastr.min.css">
 
-  <!-- Pace style -->
-  <link rel="stylesheet" href="../css/pace/pace.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="../css/screenfull/screenfull.css">
-
-  <!--<style>
-      .col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2, .col-md-2, .col-lg-2, .col-xs-3, .col-sm-3, .col-md-3, .col-lg-3, .col-xs-4, .col-sm-4, .col-md-4, .col-lg-4, .col-xs-5, .col-sm-5, .col-md-5, .col-lg-5, .col-xs-6, .col-sm-6, .col-md-6, .col-lg-6, .col-xs-7, .col-sm-7, .col-md-7, .col-lg-7, .col-xs-8, .col-sm-8, .col-md-8, .col-lg-8, .col-xs-9, .col-sm-9, .col-md-9, .col-lg-9, .col-xs-10, .col-sm-10, .col-md-10, .col-lg-10, .col-xs-11, .col-sm-11, .col-md-11, .col-lg-11, .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12 {
-          position: relative;
-          min-height: 1px;
-          padding-left: 5px !important;
-          padding-right: 5px !important;
-      }
-      .content {
-          margin-left: 5px;
-          margin-right: 5px;
-      }
-      @media (max-width: 767px) {
-        .logo {
-          display: none !important;
-        }
-        .main-sidebar {
-          padding-top: 50px !important;
-        }
-        .content-wrapper {
-          padding-top: 50px !important;
-        }
-        .control-sidebar {
-          padding-top: 50px !important;
-        }
-        .h3, h3 {
-          font-size: 24px !important;
-        }
-      }
-  </style>-->
+  <style type="text/css">
+    .sidebar-tree-item {
+      margin-left: 1rem;
+    }
+    .sidebar-tree-item-text {
+      margin-left: .25rem;
+    }
+  </style>
 </head>
 <body class="hold-transition sidebar-mini sidebar-collapse layout-navbar-fixed text-sm layout-fixed">
   <!-- Site wrapper -->
 <div class="wrapper">
-
   <!-- Navbar -->
   <nav class="main-header navbar navbar-expand navbar-dark">
-
     <!-- Left navbar links -->
     <ul class="navbar-nav">
       <li class="nav-item">
@@ -72,16 +51,13 @@
         <a href="#" class="nav-link">Contact</a>
       </li>
     </ul>
-
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
-      
       <li class="nav-item">
         <div class="nav-link">
           <p class="d-none d-md-inline"><%= user %></p>
         </div>
       </li>
-
       <!-- Notifications Dropdown Menu -->
       <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
@@ -127,24 +103,19 @@
     </ul>
   </nav>
   <!-- /.navbar -->
-
-
-
   <!-- Left side column. contains the logo and sidebar -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="../home" class="brand-link">
-      <img src="../dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">AdminLTE 3</span>
+    <a href="#" class="brand-link">
+      <img src="../images/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+      <span class="brand-text font-weight-light">LOGO</span>
     </a>
     <!-- sidebar: style can be found in sidebar.less -->
     <div class="sidebar os-host-overflow os-host-overflow-y">
-
       <!-- Sidebar Menu -->
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column nav-legacy nav-child-indent" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
-
           <!-- ----------------------------------------------------------------------------------------- -->
           <li class="nav-item">
             <a href="#" class="dashboard nav-link">
@@ -152,7 +123,6 @@
               <p>Tablero</p>
             </a>
           </li>
-
           <!-- ----------------------------------------------------------------------------------------- -->
           <li class="nav-item">
             <a href="#" class="historical nav-link">
@@ -160,7 +130,6 @@
               <p>Estadisticas</p>
             </a>
           </li>
-
           <!-- ----------------------------------------------------------------------------------------- -->
           <li class="nav-item">
             <a href="#" class="comparisons nav-link">
@@ -168,7 +137,6 @@
               <p>Comparaciones</p>
             </a>
           </li>
-
           <!-- ----------------------------------------------------------------------------------------- -->
           <li class="nav-item">
             <a href="#" class="notifications nav-link">
@@ -176,7 +144,6 @@
               <p>Notificaciones</p>
             </a>
           </li>
-
           <!-- ----------------------------------------------------------------------------------------- -->
           <li class="nav-item">
             <a href="#" class="notifications nav-link">
@@ -184,7 +151,6 @@
               <p>Opciones</p>
             </a>
           </li>
-
           <li class="nav-header">Redes sociales</li>
           <li class="nav-item">
             <a href="#" class="nav-link">
@@ -204,20 +170,15 @@
               <p>Facebook</p>
             </a>
           </li>
-
         </ul>
       </nav>
     </div>
     <!-- /.sidebar -->
   </aside>
-
-
-
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
   </div>
   <!-- /.content-wrapper -->
-
   <footer class="main-footer">
     <div class="float-right d-none d-sm-block">
       <b>Version</b> 4.0
@@ -230,22 +191,12 @@
   <%- include ./modals/delete_device.ejs %>
   <%- include ./modals/add_device.ejs    %>
 
-  <style type="text/css">
-    .sidebar-tree-item {
-      margin-left: 1rem;
-    }
-    .sidebar-tree-item-text {
-      margin-left: .25rem;
-    }
-  </style>
-
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
     <!-- Control sidebar content goes here -->
     <div class="p-3 control-sidebar-content" style="">
       <h5>Opciones avanzadas</h5>
       <hr class="mb-2">
-
       <h6>Usuario</h6>
       <div
       class="mb-2" data-toggle="modal" data-target="#modal-edit-user" href="#" data-backdrop="static" data-keyboard="false" class="nav-item">
@@ -254,7 +205,6 @@
           <span class="text sidebar-tree-item-text">Modificar datos de usuario</span>
         </a>
       </div>
-
       <h6>Opciones de dispositivos</h6>
       <div
       class="mb-2" data-toggle="modal" data-target="#modal-add-device" data-backdrop="static" data-keyboard="false" class="nav-item">
@@ -279,69 +229,39 @@
         </a>
       </div>
       <% } %>
-
-
       <h6>Cambiar de dispositivo</h6>
-
       <% if (NDevices > 0) { %>
         <% for(var i = 0; i < JSON.parse(devices).length; i++) { %>
-        
         <div class="mb-2">
           <a device="<%= i %>" onclick='changeDevice(this); return false;' href="#" class="sidebar-tree-item">
             <i class="nav-icon fas fa-desktop"></i>
             <span class="text sidebar-tree-item-text"><%= JSON.parse(devices)[i].name %></span>
           </a>
         </div>
-
         <% } %>
       <% } %>
-
-      
-
     </div>
   </aside>
   <!-- /.control-sidebar -->
-
-  
 </div>
 <!-- ./wrapper -->
 
 <!-- jQuery -->
-<script src="../../plugins/jquery/jquery.min.js"></script>
+<script src="../plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
-<script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- AdminLTE App -->
-<script src="../../dist/js/adminlte.min.js"></script>
-
-
-<!-- jQuery UI 1.11.4
-<script src="../js/jquery-ui/jquery-ui.min.js"></script>
- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip 
-
-<script>
-  $.widget.bridge('uibutton', $.ui.button);
-</script>
-
--->
-
-<!-- Slimscroll -->
-<script src="../js/jquery-slimscroll/jquery.slimscroll.min.js"></script>
-<!-- FastClick 
-<script src="../js/fastclick/fastclick.js"></script>-->
-
-
-<!-- AdminLTE for demo purposes 
-<script src="../js/AdminLTE/demo.js"></script>
--->
-
-<!-- PACE -->
-<script src="../js/pace/pace.min.js"></script>
+<script src="../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- Pace progress -->
+<script src="../plugins/pace-progress/pace.min.js"></script>
+<!-- FastClick -->
+<script src="../plugins/fastclick/fastclick.js"></script>
 <!-- Screen full -->
-<script src="../js/screenfull/screenfull.js"></script>
-<!-- TOASTR -->
-<link rel="stylesheet" href="../css/toastr/toastr.min.css">
-<script src="../js/toastr/toastr.min.js"></script>
+<script src="../plugins/screenfull/screenfull.js"></script>
+<!-- Toastr -->
+<script src="../plugins/toastr/toastr.min.js"></script>
+<!-- Snap svg -->
+<script src="../plugins/snap-svg/snap.svg-min.js"></script>
 
+<!-- Highcharts -->
 <script src="../plugins/Highcharts-Stock/highstock.js"></script>
 <script src="../plugins/Highcharts/highcharts-more.js"></script>
 <script src="../plugins/Highcharts/modules/solid-gauge.js"></script>
@@ -349,8 +269,10 @@
 <script src="../plugins/Highcharts/modules/export-data.js"></script>
 <script src="../plugins/Highcharts/modules/accessibility.js"></script>
 
-<script src="../js/snap-svg/snap.svg-min.js"></script>
-<script src="../js/web/Graphics.js"></script>
+<!-- AdminLTE App -->
+<script src="../adminlte/js/adminlte.min.js"></script>
+<!-- Grafica -->
+<script src="../propios/js/Graphics.js"></script>
 
 <script type="text/javascript">
 

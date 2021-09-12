@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.get("/", function(req, res) {
 	if (req.session.IsStarted != true) {
-		res.render("index");
+		res.render("web/index");
 	} else {
 		if (req.session.type == 'client') {
 			res.redirect('./consola'); 
