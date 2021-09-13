@@ -109,4 +109,10 @@ router.get("/admin", function(req, res) {
 	});
 });
 
+router.get("/test", function(req, res) {
+	res.render("test", {
+		title: 'Test web'
+	});
+});
+
 module.exports = router;

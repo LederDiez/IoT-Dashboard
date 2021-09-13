@@ -638,12 +638,13 @@
         }
 
         let wasConnected = false;
-        let isConnected = true;
+        let isConnected = false;
         function connect() {
             // if user is running mozilla then use it's built-in WebSocket
             window.WebSocket = window.WebSocket || window.MozWebSocket;
             if (window.WebSocket) {
-                connection = new WebSocket('ws://'+ window.location.hostname +'?value=' + v);
+                // variable connection declarada en el archivo principal.
+                connection = new WebSocket('ws://'+ window.location.hostname + '?value=' + v + "&type=user");
                 connection.onopen = () => {
                     if (wasConnected) {
                         toastr.success('Hemos recuperado la comunicacion con el servidor.', 'Éxito!');

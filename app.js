@@ -98,82 +98,117 @@ httpServer.listen(app.get('port'), () => {
 
 //////////////////////////////////////////////////////////////////////////////////////
 
+function originIsAllowed(req) {
+  
+    var type = req.resourceURL.query.type;
+    var value = req.resourceURL.query.value;
+
+    if (type != null && value != null) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 var wsServer = new webSocketServer({
     httpServer: httpServer
 });
 
-// Variables con valores globales
+// Todos los clientes conectados
 var clients = new Array();
 
+// Todos los dispositivos conectados
+var devices = new Array();
+
 wsServer.on('request', (req) => {
+
+    if (!originIsAllowed(req)) {
+      // Make sure we only accept requests from an allowed origin
+      req.reject();
+      console.log(`${new Date()} Connection from origin ${req.origin} rejected.`.bgRed);
+      return;
+    }
 
     // Variables con valores propios de cada cliente
     var connection = req.accept(null, req.origin);
 
-    if (connection == null) {
-        req.reject();
-        console.log((new Date()) + ' Connection from origin ' + request.origin + ' rejected.');
-    }
+    var type = req.resourceURL.query.type;
+    var value = req.resourceURL.query.value;
 
-    connection.type   = 'device';
-    connection.serial = null;
-    var encryptSerial = req.resourceURL.query.value;
-    if (encryptSerial != null) {
-        encryptSerial = encryptSerial.replace(/ /g, "+");
-        var bytes  = CryptoJS.AES.decrypt(encryptSerial, process.env.SERIAL_CRYPTO_KEY); // Decrypt
-        connection.serial = bytes.toString(CryptoJS.enc.Utf8);
-        connection.type = 'user';
-    }
+    connection.type   = type;
+    var encryptSerial = value.replace(/ /g, "+");
+    var bytes  = CryptoJS.AES.decrypt(encryptSerial, process.env.SERIAL_CRYPTO_KEY); // Decrypt
+    connection.serial = bytes.toString(CryptoJS.enc.Utf8);
+    
 
-    clients.push(connection) - 1;
-    console.log(`${(new Date())} Connection accepted from ${(connection.type)}.`.bgGreen);
-    console.log(`There are ${clients.length} clients connected.`.bgBlue);
+    if (connection.type == "user") {
+        clients.push(connection) - 1;
+        console.log(`${(new Date())} Connection accepted from ${(connection.type)} serial ${(connection.serial)}.`.bgGrey);
+        console.log(`There are ${clients.length} clients connected.`.bgBlue);
+    } else {
+        devices.push(connection) - 1;
+        console.log(`${(new Date())} Connection accepted from ${(connection.type)} serial ${(connection.serial)}.`.bgMagenta);
+        console.log(`There are ${devices.length} devices connected.`.bgBlue);
+    }
 
     // user or device sent some message
     connection.on('message', (message) => {
         if (message.type === 'utf8') {
-            if (connection.serial == null) {
-                connection.serial = message.utf8Data; // El primer mensaje enviado por un dispositivo es su serial
-            } else {
-                if (connection.type == "user") { // Cliente envio un dato
-                    var data = message.utf8Data;
-                    for (var i = 0; i < clients.length; i++) {
-                        if (clients[i].type == 'device' && clients[i].serial == connection.serial) {
-                            clients[i].sendUTF(data);
-                        }
-                    }
-                } else if (connection.type == "device") { // Dispositivo envio un dato
-                    var data = message.utf8Data;
-                    for (var i = 0; i < clients.length; i++) {
-                        if (clients[i].type == 'user' && clients[i].serial == connection.serial) {
-                            clients[i].sendUTF(data);
-                        }
-                    }
 
-                    // Guardar historial
-
-                    let data_schema = mongoose.model('device-' + connection.serial, deviceData);
-                    let new_data = new data_schema();
-                    new_data.registerDate = Date.now();
-                    new_data.data = data;
-                    new_data.save((err) => {
-                        if (err) {
-                            console.log('error al guardar datos del dispositivo'.bgRed);
-                        }
-                    });
+            if (connection.type == "user") { // Cliente envio un dato
+                
+                var data = message.utf8Data;
+                for (var i = 0; i < devices.length; i++) {
+                    if (devices[i].serial == connection.serial) {
+                        devices[i].sendUTF(data);
+                    }
                 }
+
+            } else if (connection.type == "device") { // Dispositivo envio un dato
+                
+                var data = message.utf8Data;
+                for (var i = 0; i < clients.length; i++) {
+                    if (clients[i].serial == connection.serial) {
+                        clients[i].sendUTF(data);
+                    }
+                }
+
+                // Guardar historial
+                
+                let data_schema = mongoose.model('device-' + connection.serial, deviceData);
+                let new_data = new data_schema();
+                new_data.registerDate = Date.now();
+                new_data.data = data;
+                new_data.save((err) => {
+                    if (err) {
+                        console.log('error al guardar datos del dispositivo'.bgRed);
+                    }
+                });
             }
         }
     });
 
     connection.on('close', (reasonCode, description) => {
-        // remove user from the list of connected clients
-        for (var i = 0; i < clients.length; i++) {
-            if (clients[i].type == connection.type && clients[i].serial == connection.serial) {
-                clients.splice(i, 1);
+        // remove user or device from the list of connected clients
+
+        if (connection.type == "user") {
+            for (var i = 0; i < clients.length; i++) {
+                if (clients[i].serial == connection.serial) {
+                    clients.splice(i, 1);
+                }
             }
+
+            console.log(`${(new Date())} ${connection.type} disconnected.`.bgRed);
+            console.log(`There are ${clients.length} clients connected.`.bgBlue);
+        } else {
+            for (var i = 0; i < devices.length; i++) {
+                if (devices[i].serial == connection.serial) {
+                    devices.splice(i, 1);
+                }
+            }
+
+            console.log(`${(new Date())} ${connection.type} disconnected.`.bgRed);
+            console.log(`There are ${devices.length} devices connected.`.bgBlue);
         }
-        console.log(`${(new Date())} ${connection.type} disconnected.`.bgRed);
-        console.log(`There are ${clients.length} clients connected.`.bgBlue);
     });
 });
