@@ -53,10 +53,10 @@ router.get("/consola", function(req, res) {
 		var deviceModel;
 		var deviceSerial;
 		var RenderData = {
-			user	     : user,
-			mail         : mail,
-			check        : check,
-			NDevices     : 0,
+			user		 : user,
+			mail		 : mail,
+			check		: check,
+			NDevices	 : 0,
 			deviceName 	 : null,
 			deviceModel  : null,
 			deviceSerial : null,
@@ -82,7 +82,7 @@ router.get("/consola", function(req, res) {
 					RenderData.deviceModel  = deviceModel,
 					RenderData.NDevices	 	= result.length,
 					RenderData.deviceSerial = encryptedSerial,
-					RenderData.devices      = JSON.stringify(result)
+					RenderData.devices	  = JSON.stringify(result)
 
 					req.session.deviceName   = deviceName;
 					req.session.deviceModel  = deviceModel;
@@ -104,8 +104,9 @@ router.get("/consola", function(req, res) {
 });
 
 router.get("/admin", function(req, res) {
-	res.render("test", {
-		title: 'Administrador'
+	res.render("admin/index", {
+		title: 'Administrador',
+		user: req.session.user
 	});
 });
 

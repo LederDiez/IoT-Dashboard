@@ -16,7 +16,7 @@ const session    = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 const deviceData = require('./models/device_data_schema');
 
-const db         = require('./models/session_conecction');
+const dbConnectionStr = require('./models/session_conecction');
 const web_router = require('./routers/web');
 const api_router = require('./routers/api');
 
@@ -42,16 +42,20 @@ app.use(morgan('dev'));
 //app.use(morgan('[:date[clf]] :status :method :remote-addr :user-agent :url'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
+
+const sessionStore = new MongoStore({
+    mongooseConnection: dbConnectionStr,
+    collection: 'sessions'
+});
 app.use(session({  
     secret: process.env.SESSION_SECRET,
     cookie: {
         maxAge: 604800000 // 1 week
     },
     resave: false,
-    saveUninitialized: true,
-    store: new MongoStore({ 
-        mongooseConnection: db
-    })
+    saveUninitialized: false,
+    unset: 'destroy',
+    store: sessionStore
 }));
 
 // static files
