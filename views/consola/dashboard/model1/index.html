@@ -1,687 +1,675 @@
 <div id="dashboard">
-    <style>
-        .gauge {
-            width: 290px;
-            height: 220px;
-        }
-    </style>
-    <!-- Content Header (Page header) -->
-    <div class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1>Tablero</h1>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li id="tablerodevicenameli" class="breadcrumb-item active"></li>
-                        <script>document.getElementById("tablerodevicenameli").innerHTML='<a><i class="fa fa-laptop"></i> '+DEVICE_NAME+'</a>';</script>
-                    </ol>
-                </div>
-            </div>
-        </div>
-        <!-- /.container-fluid -->
-    </div>
+	<style>
+		.gauge {
+			width: 290px;
+			height: 220px;
+		}
+	</style>
+	<!-- Content Header (Page header) -->
+	<div class="content-header">
+		<div class="container-fluid">
+			<div class="row mb-2">
+				<div class="col-sm-6">
+				<h1>Tablero</h1>
+				</div>
+				<div class="col-sm-6">
+					<ol class="breadcrumb float-sm-right">
+						<li id="tablerodevicenameli" class="breadcrumb-item active"></li>
+						<script>document.getElementById("tablerodevicenameli").innerHTML='<a><i class="fa fa-laptop"></i> '+DEVICE_NAME+'</a>';</script>
+					</ol>
+				</div>
+			</div>
+		</div>
+		<!-- /.container-fluid -->
+	</div>
 
-    <!-- Main content -->
-    <div id="dashboard_contend" class="content">
-        <div class="container-fluid">
-            <div class="row">
+	<!-- Main content -->
+	<div id="dashboard_contend" class="content">
+		<div class="container-fluid">
+			<div class="row">
 
-                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                    <div class="card card-outline card-dark">
-                        <div class="card-header">
-                            <div class="d-flex justify-content-between">
-                                <h3 class="card-title">Conecciones y potencias</h3>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="d-flex">
-                                <p class="d-flex flex-column">
-                                    <span class="text-bold text-lg">6</span>
-                                    <span>Horas de uso restantes</span>
-                                </p>
-                                <p class="ml-auto d-flex flex-column text-right">
-                                    <span class="text-bold text-lg text-danger">90%</span>
-                                    <span class="">Uso de maximo</span>
-                                </p>
-                            </div>
-                            <!-- /.d-flex -->
+				<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+					<div class="card card-outline card-dark">
+						<div class="card-header">
+							<div class="d-flex justify-content-between">
+								<h3 class="card-title">Conecciones y potencias</h3>
+							</div>
+						</div>
+						<div class="card-body">
+							<div class="d-flex justify-content-center chart">
+								<svg id="connectionChart" width="320" height="320" version="1.1" xmlns="http://www.w3.org/2000/svg"></svg>
+							</div>
+						</div>
+					</div>
+					<!-- /.card -->
+					<div class="card card-outline card-dark">
+					<div class="card-header">
+					<h5 class="card-title">Monthly Recap Report</h5>
 
-                            <div class="d-flex justify-content-center chart">
-                                <svg id="connectionChart" width="320" height="320" version="1.1" xmlns="http://www.w3.org/2000/svg"></svg>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /.card -->
-                    <div class="card card-outline card-dark">
-                    <div class="card-header">
-                    <h5 class="card-title">Monthly Recap Report</h5>
+					</div>
+					<!-- /.card-header -->
+					<div class="card-body">
 
-                    </div>
-                    <!-- /.card-header -->
-                    <div class="card-body">
+					<div class="d-flex justify-content-center">
+					<!-- Sales Chart Canvas -->
+						<div id="container-current" class="gauge"></div>
+					</div>
+					<!-- /.chart-responsive -->
 
-                    <div class="d-flex justify-content-center">
-                    <!-- Sales Chart Canvas -->
-                        <div id="container-current" class="gauge"></div>
-                    </div>
-                    <!-- /.chart-responsive -->
+					</div>
+					</div>
+					<!-- /.card -->
+				</div>
 
-                    </div>
-                    </div>
-                    <!-- /.card -->
-                </div>
+				<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+					<div class="card card-outline card-dark">
+					<div class="card-header">
+					<h5 class="card-title">Monthly Recap Report</h5>
 
-                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                    <div class="card card-outline card-dark">
-                    <div class="card-header">
-                    <h5 class="card-title">Monthly Recap Report</h5>
+					</div>
+					<!-- /.card-header -->
+					<div class="card-body">
 
-                    </div>
-                    <!-- /.card-header -->
-                    <div class="card-body">
+					<div class="d-flex justify-content-center">
+					<!-- Sales Chart Canvas -->
+						<div id="container-volt" class="gauge"></div>
+					</div>
+					<!-- /.chart-responsive -->
 
-                    <div class="d-flex justify-content-center">
-                    <!-- Sales Chart Canvas -->
-                        <div id="container-volt" class="gauge"></div>
-                    </div>
-                    <!-- /.chart-responsive -->
+					</div>
+					</div>
+					<!-- /.card -->
+					<div class="card card-outline card-dark">
+					<div class="card-header">
+					<h5 class="card-title">Monthly Recap Report</h5>
 
-                    </div>
-                    </div>
-                    <!-- /.card -->
-                    <div class="card card-outline card-dark">
-                    <div class="card-header">
-                    <h5 class="card-title">Monthly Recap Report</h5>
+					</div>
+					<!-- /.card-header -->
+					<div class="card-body">
 
-                    </div>
-                    <!-- /.card-header -->
-                    <div class="card-body">
+					<div class="d-flex justify-content-center">
+					<!-- Sales Chart Canvas -->
+						<p class="no-padder m-n font-normal" style="font-size: 130px;">
+							<a style="color: rgb(30, 49, 62) !important;">60<span style="font-size: 50px;">Hz</span></a>
+						</p>
+					</div>
+					<!-- /.chart-responsive -->
 
-                    <div class="d-flex justify-content-center">
-                    <!-- Sales Chart Canvas -->
-                        <p class="no-padder m-n font-normal" style="font-size: 130px;">
-                            <a style="color: rgb(30, 49, 62) !important;">60<span style="font-size: 50px;">Hz</span></a>
-                        </p>
-                    </div>
-                    <!-- /.chart-responsive -->
+					</div>
+					</div>
+					<!-- /.card -->
+				</div>
 
-                    </div>
-                    </div>
-                    <!-- /.card -->
-                </div>
+			</div>
 
-            </div>
+			<div class="row">
+				<div class="col-12">
+					<div class="card card-outline card-dark">
+					<div class="card-header">
+					<h5 class="card-title">Monthly Recap Report</h5>
+					</div>
+					<!-- /.card-header -->
+					<div class=" card-body p-0">
+						<div id="container-ap"></div>
+					</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-12">
 
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card card-outline card-dark">
-                    <div class="card-header">
-                    <h5 class="card-title">Monthly Recap Report</h5>
-                    </div>
-                    <!-- /.card-header -->
-                    <div class=" card-body p-0">
-                        <div id="container-ap"></div>
-                    </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
+					<div class="card card-outline card-dark">
+					<div class="card-header">
+					<h5 class="card-title">Monthly Recap Report</h5>
 
-                    <div class="card card-outline card-dark">
-                    <div class="card-header">
-                    <h5 class="card-title">Monthly Recap Report</h5>
+					</div>
+					<!-- /.card-header -->
+					<div class="card-body p-0">
 
-                    </div>
-                    <!-- /.card-header -->
-                    <div class="card-body p-0">
+					<div class="chart ">
+					<!-- Sales Chart Canvas -->
+						<div id="container-ac"></div>
+					</div>
+					<!-- /.chart-responsive -->
 
-                    <div class="chart ">
-                    <!-- Sales Chart Canvas -->
-                        <div id="container-ac"></div>
-                    </div>
-                    <!-- /.chart-responsive -->
+					</div>
+					</div>
 
-                    </div>
-                    </div>
+				</div>
+			</div>
+		</div>
+		<!-- /.container-fluid -->
+	</div>
+	<!-- /.content -->
 
-                </div>
-            </div>
-        </div>
-        <!-- /.container-fluid -->
-    </div>
-    <!-- /.content -->
+	<script type="text/javascript">
 
-    <script type="text/javascript">
+		let connectGraphNodes = [
+			{
+				name : 'panel',
+				color : "#616161",
+				image : "../images/pv.svg",
+				gauge : 1,
+				position : {
+					x : 20,
+					y : 20
+				},
+				connection : {
+					x : 50,
+					y : 50
+				}
+			},{
+				name : 'bateria',
+				color : "#616161",
+				image : "../images/battery.svg",
+				gauge : 1,
+				position : {
+					x : 80,
+					y : 20
+				},
+				connection : {
+					x : 50,
+					y : 50
+				}
+			},{
+				name : 'inversor',
+				color : "#616161",
+				image : "../images/inverter.svg",
+				gauge : 1,
+				position : {
+					x : 50,
+					y : 50
+				},
+				connection : {
+					x : 80,
+					y : 80
+				}
+			},{
+				name : 'red',
+				color : "#616161",
+				image : "../images/grid.svg",
+				gauge : 0,
+				position : {
+					x : 20,
+					y : 80
+				},
+				connection : {
+					x : 50,
+					y : 50
+				}
+			},{
+				name : 'carga',
+				color : "#616161",
+				image : "../images/consumption.svg",
+				gauge : 0,
+				position : {
+					x : 80,
+					y : 80
+				},
+			}
+		]
+		let graphic = ConnectionGraph.chart("connectionChart", connectGraphNodes);
 
-        let connectGraphNodes = [
-            {
-                name : 'panel',
-                color : "#616161",
-                image : "../images/pv.svg",
-                gauge : 1,
-                position : {
-                    x : 20,
-                    y : 20
-                },
-                connection : {
-                    x : 50,
-                    y : 50
-                }
-            },{
-                name : 'bateria',
-                color : "#616161",
-                image : "../images/battery.svg",
-                gauge : 1,
-                position : {
-                    x : 80,
-                    y : 20
-                },
-                connection : {
-                    x : 50,
-                    y : 50
-                }
-            },{
-                name : 'inversor',
-                color : "#616161",
-                image : "../images/inverter.svg",
-                gauge : 1,
-                position : {
-                    x : 50,
-                    y : 50
-                },
-                connection : {
-                    x : 80,
-                    y : 80
-                }
-            },{
-                name : 'red',
-                color : "#616161",
-                image : "../images/grid.svg",
-                gauge : 0,
-                position : {
-                    x : 20,
-                    y : 80
-                },
-                connection : {
-                    x : 50,
-                    y : 50
-                }
-            },{
-                name : 'carga',
-                color : "#616161",
-                image : "../images/consumption.svg",
-                gauge : 0,
-                position : {
-                    x : 80,
-                    y : 80
-                },
-            }
-        ]
-        let graphic = ConnectionGraph.chart("connectionChart", connectGraphNodes);
+		function getRandomInt(min, max) {
+			return Math.floor(Math.random() * (max - min)) + min;
+		}
 
-        function getRandomInt(min, max) {
-            return Math.floor(Math.random() * (max - min)) + min;
-        }
+		let AP = Highcharts.stockChart('container-ap', {
+			time: {
+				useUTC: false
+			},
+			credits: {
+				enabled: false
+			},
+			rangeSelector: {
+				buttons: [{
+					count: 1,
+					type: 'minute',
+					text: '1 M'
+				}, {
+					count: 5,
+					type: 'minute',
+					text: '5 M'
+				}, {
+					count: 10,
+					type: 'minute',
+					text: '10 M'
+				}],
+				inputEnabled: false,
+				selected: 0
+			},
+			exporting: {
+				enabled: false
+			},
+			yAxis: {
+				title: {
+					text: ''
+				},
+				plotLines: [{
+					value: 75,
+					color: 'red',
+					dashStyle: 'shortdash',
+					width: 2,
+					//label: { text: 'Último cuarto hasta maximo' }
+				}, {
+					value: 50,
+					color: 'yellow',
+					dashStyle: 'shortdash',
+					width: 2,
+					//label: { text: 'Última mitad hasta maximo' }
+				}]
+			},
+			series: [{
+				name: 'Potencia aparente',
+				type: 'area',
+				threshold: null,
+				fillColor: {
+					linearGradient: {
+						x1: 0,
+						y1: 0,
+						x2: 0,
+						y2: 1
+					},
+					stops: [
+						[0, Highcharts.getOptions().colors[0]],
+						[1, Highcharts.color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+					]
+				},
+				data: (function () {
+					// generate an array of random data
+					let data = [];
+					let time = (new Date()).getTime();
+					let i;
 
-        let AP = Highcharts.stockChart('container-ap', {
-            time: {
-                useUTC: false
-            },
-            credits: {
-                enabled: false
-            },
-            rangeSelector: {
-                buttons: [{
-                    count: 1,
-                    type: 'minute',
-                    text: '1 M'
-                }, {
-                    count: 5,
-                    type: 'minute',
-                    text: '5 M'
-                }, {
-                    count: 10,
-                    type: 'minute',
-                    text: '10 M'
-                }],
-                inputEnabled: false,
-                selected: 0
-            },
-            exporting: {
-                enabled: false
-            },
-            yAxis: {
-                title: {
-                    text: ''
-                },
-                plotLines: [{
-                    value: 75,
-                    color: 'red',
-                    dashStyle: 'shortdash',
-                    width: 2,
-                    //label: { text: 'Último cuarto hasta maximo' }
-                }, {
-                    value: 50,
-                    color: 'yellow',
-                    dashStyle: 'shortdash',
-                    width: 2,
-                    //label: { text: 'Última mitad hasta maximo' }
-                }]
-            },
-            series: [{
-                name: 'Potencia aparente',
-                type: 'area',
-                threshold: null,
-                fillColor: {
-                    linearGradient: {
-                        x1: 0,
-                        y1: 0,
-                        x2: 0,
-                        y2: 1
-                    },
-                    stops: [
-                        [0, Highcharts.getOptions().colors[0]],
-                        [1, Highcharts.color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
-                    ]
-                },
-                data: (function () {
-                    // generate an array of random data
-                    let data = [];
-                    let time = (new Date()).getTime();
-                    let i;
+					for (i = -600; i <= 0; i += 1) {
+						data.push([
+							time + i * 1000,
+							//0
+							Math.round(Math.random() * 100)
+						]);
+					}
+					return data;
+				}())
+			}],
+			responsive: {
+				rules: [{
+					condition: {
+						maxWidth: 500
+					},
+					chartOptions: {
+						chart: {
+							height: 300
+						},
+						subtitle: {
+							text: null
+						},
+						navigator: {
+							enabled: false
+						}
+					}
+				}]
+			}
+		});
+		let AC = Highcharts.stockChart('container-ac', {
+			time: {
+				useUTC: false
+			},
+			credits: {
+				enabled: false
+			},
+			rangeSelector: {
+				buttons: [{
+					count: 1,
+					type: 'minute',
+					text: '1 M'
+				}, {
+					count: 5,
+					type: 'minute',
+					text: '5 M'
+				}, {
+					count: 10,
+					type: 'minute',
+					text: '10 M'
+				}],
+				inputEnabled: false,
+				selected: 0
+			},
+			exporting: {
+				enabled: false
+			},
+			yAxis: {
+				title: {
+					text: ''
+				},
+				plotLines: [{
+					value: 75,
+					color: 'red',
+					dashStyle: 'shortdash',
+					width: 2,
+					//label: { text: 'Último cuarto hasta maximo' }
+				}, {
+					value: 50,
+					color: 'yellow',
+					dashStyle: 'shortdash',
+					width: 2,
+					//label: { text: 'Última mitad hasta maximo' }
+				}]
+			},
+			series: [{
+				name: 'Potencia activa',
+				type: 'area',
+				threshold: null,
+				fillColor: {
+					linearGradient: {
+						x1: 0,
+						y1: 0,
+						x2: 0,
+						y2: 1
+					},
+					stops: [
+						[0, Highcharts.getOptions().colors[0]],
+						[1, Highcharts.color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+					]
+				},
+				data: (function () {
+					// generate an array of random data
+					let data = [];
+					let time = (new Date()).getTime();
+					let i;
 
-                    for (i = -600; i <= 0; i += 1) {
-                        data.push([
-                            time + i * 1000,
-                            //0
-                            Math.round(Math.random() * 100)
-                        ]);
-                    }
-                    return data;
-                }())
-            }],
-            responsive: {
-                rules: [{
-                    condition: {
-                        maxWidth: 500
-                    },
-                    chartOptions: {
-                        chart: {
-                            height: 300
-                        },
-                        subtitle: {
-                            text: null
-                        },
-                        navigator: {
-                            enabled: false
-                        }
-                    }
-                }]
-            }
-        });
-        let AC = Highcharts.stockChart('container-ac', {
-            time: {
-                useUTC: false
-            },
-            credits: {
-                enabled: false
-            },
-            rangeSelector: {
-                buttons: [{
-                    count: 1,
-                    type: 'minute',
-                    text: '1 M'
-                }, {
-                    count: 5,
-                    type: 'minute',
-                    text: '5 M'
-                }, {
-                    count: 10,
-                    type: 'minute',
-                    text: '10 M'
-                }],
-                inputEnabled: false,
-                selected: 0
-            },
-            exporting: {
-                enabled: false
-            },
-            yAxis: {
-                title: {
-                    text: ''
-                },
-                plotLines: [{
-                    value: 75,
-                    color: 'red',
-                    dashStyle: 'shortdash',
-                    width: 2,
-                    //label: { text: 'Último cuarto hasta maximo' }
-                }, {
-                    value: 50,
-                    color: 'yellow',
-                    dashStyle: 'shortdash',
-                    width: 2,
-                    //label: { text: 'Última mitad hasta maximo' }
-                }]
-            },
-            series: [{
-                name: 'Potencia activa',
-                type: 'area',
-                threshold: null,
-                fillColor: {
-                    linearGradient: {
-                        x1: 0,
-                        y1: 0,
-                        x2: 0,
-                        y2: 1
-                    },
-                    stops: [
-                        [0, Highcharts.getOptions().colors[0]],
-                        [1, Highcharts.color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
-                    ]
-                },
-                data: (function () {
-                    // generate an array of random data
-                    let data = [];
-                    let time = (new Date()).getTime();
-                    let i;
+					for (i = -600; i <= 0; i += 1) {
+						data.push([
+							time + i * 1000,
+							//0
+							Math.round(Math.random() * 100)
+						]);
+					}
+					return data;
+				}())
+			}],
+			responsive: {
+				rules: [{
+					condition: {
+						maxWidth: 500
+					},
+					chartOptions: {
+						chart: {
+							height: 300
+						},
+						subtitle: {
+							text: null
+						},
+						navigator: {
+							enabled: false
+						}
+					}
+				}]
+			}
+		});
 
-                    for (i = -600; i <= 0; i += 1) {
-                        data.push([
-                            time + i * 1000,
-                            //0
-                            Math.round(Math.random() * 100)
-                        ]);
-                    }
-                    return data;
-                }())
-            }],
-            responsive: {
-                rules: [{
-                    condition: {
-                        maxWidth: 500
-                    },
-                    chartOptions: {
-                        chart: {
-                            height: 300
-                        },
-                        subtitle: {
-                            text: null
-                        },
-                        navigator: {
-                            enabled: false
-                        }
-                    }
-                }]
-            }
-        });
+		let gaugeVoltsOptions = {
+			chart: {
+				type: 'solidgauge'
+			},
+			title: null,
+			pane: {
+				center: ['50%', '85%'],
+				size: '140%',
+				startAngle: -90,
+				endAngle: 90,
+				background: {
+					backgroundColor: Highcharts.defaultOptions.legend.backgroundColor || '#EEE',
+					innerRadius: '60%',
+					outerRadius: '100%',
+					shape: 'arc'
+				}
+			},
+			tooltip: {
+				enabled: false
+			},
+			// the value axis
+			yAxis: {
+				stops: [
+					[0.1, '#55BF3B'], // green
+					[0.8, '#DDDF0D'], // yellow
+					[0.9, '#DF5353'] // red
+				],
+				lineWidth: 0,
+				minorTickInterval: null,
+				tickAmount: 2,
+				title: {
+					y: -70
+				},
+				labels: {
+					y: 16
+				}
+			},
+			plotOptions: {
+				solidgauge: {
+					dataLabels: {
+						y: 5,
+						borderWidth: 0,
+						useHTML: true
+					}
+				}
+			}
+		};
+		let chartvolt = Highcharts.chart('container-volt', Highcharts.merge(gaugeVoltsOptions, {
+			exporting: {
+				enabled: false
+			},
+			yAxis: {
+				min: 0,
+				max: 200,
+				//title: { text: 'Voltios' }
+			},
+			credits: {
+				enabled: false
+			},
+			series: [{
+				name: 'Voltios',
+				data: [0],
+				dataLabels: {
+					format: 
+						'<div style="text-align:center">' +
+						'<span style="font-size:25px">{y}</span><br/>' +
+						'<span style="font-size:12px;opacity:0.4">V</span>' +
+						'</div>'
+				},
+				tooltip: {
+					valueSuffix: ' V'
+				}
+			}]
+		}));
+		
+		let gaugeAmpsOptions = {
+			chart: {
+				type: 'solidgauge'
+			},
+			title: null,
+			pane: {
+				center: ['50%', '85%'],
+				size: '140%',
+				startAngle: -90,
+				endAngle: 90,
+				background: {
+					backgroundColor: Highcharts.defaultOptions.legend.backgroundColor || '#EEE',
+					innerRadius: '60%',
+					outerRadius: '100%',
+					shape: 'arc'
+				}
+			},
+			tooltip: {
+				enabled: false
+			},
+			// the value axis
+			yAxis: {
+				stops: [
+					[0.1, '#55BF3B'], // green
+					[0.5, '#DDDF0D'], // yellow
+					[0.9, '#DF5353'] // red
+				],
+				lineWidth: 0,
+				minorTickInterval: null,
+				tickAmount: 2,
+				title: {
+					y: -70
+				},
+				labels: {
+					y: 16
+				}
+			},
+			plotOptions: {
+				solidgauge: {
+					dataLabels: {
+						y: 5,
+						borderWidth: 0,
+						useHTML: true
+					}
+				}
+			}
+		};
+		let chartcurrent = Highcharts.chart('container-current', Highcharts.merge(gaugeAmpsOptions, {
+			exporting: {
+				enabled: false
+			},
+			yAxis: {
+				min: 0,
+				max: 100,
+				//title: { text: 'Amperios' }
+			},
+			credits: {
+				enabled: false
+			},
+			series: [{
+				name: 'Amperios',
+				data: [0],
+				dataLabels: {
+					format: 
+						'<div style="text-align:center">' +
+						'<span style="font-size:25px">{y}</span><br/>' +
+						'<span style="font-size:12px;opacity:0.4">A</span>' +
+						'</div>'
+				},
+				tooltip: {
+					valueSuffix: ' A'
+				}
+			}]
+		}));
 
-        let gaugeVoltsOptions = {
-            chart: {
-                type: 'solidgauge'
-            },
-            title: null,
-            pane: {
-                center: ['50%', '85%'],
-                size: '140%',
-                startAngle: -90,
-                endAngle: 90,
-                background: {
-                    backgroundColor: Highcharts.defaultOptions.legend.backgroundColor || '#EEE',
-                    innerRadius: '60%',
-                    outerRadius: '100%',
-                    shape: 'arc'
-                }
-            },
-            tooltip: {
-                enabled: false
-            },
-            // the value axis
-            yAxis: {
-                stops: [
-                    [0.1, '#55BF3B'], // green
-                    [0.8, '#DDDF0D'], // yellow
-                    [0.9, '#DF5353'] // red
-                ],
-                lineWidth: 0,
-                minorTickInterval: null,
-                tickAmount: 2,
-                title: {
-                    y: -70
-                },
-                labels: {
-                    y: 16
-                }
-            },
-            plotOptions: {
-                solidgauge: {
-                    dataLabels: {
-                        y: 5,
-                        borderWidth: 0,
-                        useHTML: true
-                    }
-                }
-            }
-        };
-        let chartvolt = Highcharts.chart('container-volt', Highcharts.merge(gaugeVoltsOptions, {
-            exporting: {
-                enabled: false
-            },
-            yAxis: {
-                min: 0,
-                max: 200,
-                //title: { text: 'Voltios' }
-            },
-            credits: {
-                enabled: false
-            },
-            series: [{
-                name: 'Voltios',
-                data: [0],
-                dataLabels: {
-                    format: 
-                        '<div style="text-align:center">' +
-                        '<span style="font-size:25px">{y}</span><br/>' +
-                        '<span style="font-size:12px;opacity:0.4">V</span>' +
-                        '</div>'
-                },
-                tooltip: {
-                    valueSuffix: ' V'
-                }
-            }]
-        }));
-        
-        let gaugeAmpsOptions = {
-            chart: {
-                type: 'solidgauge'
-            },
-            title: null,
-            pane: {
-                center: ['50%', '85%'],
-                size: '140%',
-                startAngle: -90,
-                endAngle: 90,
-                background: {
-                    backgroundColor: Highcharts.defaultOptions.legend.backgroundColor || '#EEE',
-                    innerRadius: '60%',
-                    outerRadius: '100%',
-                    shape: 'arc'
-                }
-            },
-            tooltip: {
-                enabled: false
-            },
-            // the value axis
-            yAxis: {
-                stops: [
-                    [0.1, '#55BF3B'], // green
-                    [0.5, '#DDDF0D'], // yellow
-                    [0.9, '#DF5353'] // red
-                ],
-                lineWidth: 0,
-                minorTickInterval: null,
-                tickAmount: 2,
-                title: {
-                    y: -70
-                },
-                labels: {
-                    y: 16
-                }
-            },
-            plotOptions: {
-                solidgauge: {
-                    dataLabels: {
-                        y: 5,
-                        borderWidth: 0,
-                        useHTML: true
-                    }
-                }
-            }
-        };
-        let chartcurrent = Highcharts.chart('container-current', Highcharts.merge(gaugeAmpsOptions, {
-            exporting: {
-                enabled: false
-            },
-            yAxis: {
-                min: 0,
-                max: 100,
-                //title: { text: 'Amperios' }
-            },
-            credits: {
-                enabled: false
-            },
-            series: [{
-                name: 'Amperios',
-                data: [0],
-                dataLabels: {
-                    format: 
-                        '<div style="text-align:center">' +
-                        '<span style="font-size:25px">{y}</span><br/>' +
-                        '<span style="font-size:12px;opacity:0.4">A</span>' +
-                        '</div>'
-                },
-                tooltip: {
-                    valueSuffix: ' A'
-                }
-            }]
-        }));
+		setInterval(function(){
+			
+			if (chartvolt) {
+				let point = chartvolt.series[0].points[0];
+				point.update(110 + Math.round(Math.random() * 2));
+			}
 
-        setInterval(function(){
-            
-            if (chartvolt) {
-                let point = chartvolt.series[0].points[0];
-                point.update(110 + Math.round(Math.random() * 2));
-            }
+			if (chartcurrent) {
+				let point = chartcurrent.series[0].points[0];
+				point.update(getRandomInt(10, 13));
+			}
 
-            if (chartcurrent) {
-                let point = chartcurrent.series[0].points[0];
-                point.update(getRandomInt(10, 13));
-            }
+			if (AP) {
+				let series = AP.series[0];
+				let x = (new Date()).getTime()
+				let y = getRandomInt(60, 70);
+				series.addPoint([x, y], true, true);
+			}
 
-            if (AP) {
-                let series = AP.series[0];
-                let x = (new Date()).getTime()
-                let y = getRandomInt(60, 70);
-                series.addPoint([x, y], true, true);
-            }
+			if (AC) {
+				let series = AC.series[0];
+				let x = (new Date()).getTime()
+				let y = getRandomInt(55, 65);
+				series.addPoint([x, y], true, true);
+			}
 
-            if (AC) {
-                let series = AC.series[0];
-                let x = (new Date()).getTime()
-                let y = getRandomInt(55, 65);
-                series.addPoint([x, y], true, true);
-            }
+			//c = "#00c853"; Verde
+			//c = "#9e9e9e"; Gris
+			//c = "#616161"; Gris oscuro
+			//c = "#d50000"; Rojo
+			// id valor direccion color-circulos radio-circulos color-centro
 
-            //c = "#00c853"; Verde
-            //c = "#9e9e9e"; Gris
-            //c = "#616161"; Gris oscuro
-            //c = "#d50000"; Rojo
-            // id valor "direccion color radio" (circulos) color (centro)
+			graphic.updateNode(0, getRandomInt(10, 5), 1, "#00c853", 50);  // Panel a inversor
+			graphic.updateNode(1, 30, 0, "#00c853", 50);  // bateria a inversor
+			graphic.updateNode(2, 0, 1, "#d50000", 70, "#d50000");  // Inversor a carga
+			graphic.updateNode(3, 0, 1, "#d50000", 70);// red a inversor
 
-            graphic.updateNode(0, getRandomInt(80, 90), 1, "#00c853", 90);  // Panel a inversor
-            graphic.updateNode(1, getRandomInt(50, 52), 0, "#00c853", 70);  // bateria a inversor
-            graphic.updateNode(2, getRandomInt(10, 15), 1, "#00c853", 30, "#00c853");  // Inversor a carga
-            graphic.updateNode(3, 0, -1, "#d50000");// red a inversor
+		}, 3000);
 
-        }, 3000);
+		function DeviceDataProcess (data) {
 
-        function DeviceDataProcess (data) {
+			console.log(data[0]);
 
-            console.log(data[0]);
+			/*if (chartvolt) {
+				let point = chartvolt.series[0].points[0];
+				point.update(data[0].value);
+			}
 
-            /*if (chartvolt) {
-                let point = chartvolt.series[0].points[0];
-                point.update(data[0].value);
-            }
+			if (chartcurrent) {
+				let point = chartcurrent.series[0].points[0];
+				point.update(data[0].C);
+			}
 
-            if (chartcurrent) {
-                let point = chartcurrent.series[0].points[0];
-                point.update(data[0].C);
-            }
+			if (AP) {
+				let series = AP.series[0];
+				let x = (new Date()).getTime()
+				let y = data[0].AP
+				series.addPoint([x, y], true, true);
+			}
 
-            if (AP) {
-                let series = AP.series[0];
-                let x = (new Date()).getTime()
-                let y = data[0].AP
-                series.addPoint([x, y], true, true);
-            }
+			if (AC) {
+				let series = AC.series[0];
+				let x = (new Date()).getTime()
+				let y = data[0].AC
+				series.addPoint([x, y], true, true);
+			}*/
+		}
 
-            if (AC) {
-                let series = AC.series[0];
-                let x = (new Date()).getTime()
-                let y = data[0].AC
-                series.addPoint([x, y], true, true);
-            }*/
-        }
-
-        let wasConnected = false;
-        let isConnected = false;
-        function connect() {
-            // if user is running mozilla then use it's built-in WebSocket
-            window.WebSocket = window.WebSocket || window.MozWebSocket;
-            if (window.WebSocket) {
-                // variable connection declarada en el archivo principal.
-                connection = new WebSocket('ws://'+ window.location.hostname + '?value=' + v + "&type=user");
-                connection.onopen = () => {
-                    if (wasConnected) {
-                        toastr.success('Hemos recuperado la comunicacion con el servidor.', 'Éxito!');
-                    }
-                    wasConnected = true;
-                    isConnected = true;
-                };
-                connection.onmessage = (message) => {
-                    //console.log(message);
-                    try {
-                        var json = JSON.parse(message.data);
-                        //console.log(json);
-                        DeviceDataProcess(json);
-                    } catch (e) {
-                        console.log('Invalid JSON: ', message.data);
-                        return;
-                    }
-                };
-                connection.onclose = (closeEvent) => {
-                    if (isConnected) {
-                        toastr.error('Lo sentimos, Hemos perdido comunicacion con el servidor. Intentando reconectar...', 'Error!');
-                        isConnected = false;
-                    }
-                    setTimeout ('connect()', 5000); 
-                };
-                connection.onerror = (error) => {
-                    if (isConnected) {
-                        toastr.error('Lo sentimos, Hay algún problema con la conexión. Intentando reconectar...', 'Error!');
-                        wasConnected = true;
-                        isConnected = false;
-                    }
-                    connection.close();
-                };
-            } else {
-                toastr.error('Lo sentimos, pero su navegador no es compatible con nuestros sitio web.', 'Error!');
-            }
-        }
-        connect();
-    </script>
+		let wasConnected = false;
+		let isConnected = false;
+		function connect() {
+			// if user is running mozilla then use it's built-in WebSocket
+			window.WebSocket = window.WebSocket || window.MozWebSocket;
+			if (window.WebSocket) {
+				// variable connection declarada en el archivo principal.
+				connection = new WebSocket('ws://'+ window.location.hostname + '?value=' + v + "&type=user");
+				connection.onopen = () => {
+					if (wasConnected) {
+						toastr.success('Hemos recuperado la comunicacion con el servidor.', 'Éxito!');
+					}
+					wasConnected = true;
+					isConnected = true;
+				};
+				connection.onmessage = (message) => {
+					//console.log(message);
+					try {
+						var json = JSON.parse(message.data);
+						//console.log(json);
+						DeviceDataProcess(json);
+					} catch (e) {
+						console.log('Invalid JSON: ', message.data);
+						return;
+					}
+				};
+				connection.onclose = (closeEvent) => {
+					if (isConnected) {
+						toastr.error('Lo sentimos, Hemos perdido comunicacion con el servidor. Intentando reconectar...', 'Error!');
+						isConnected = false;
+					}
+					setTimeout ('connect()', 5000); 
+				};
+				connection.onerror = (error) => {
+					if (isConnected) {
+						toastr.error('Lo sentimos, Hay algún problema con la conexión. Intentando reconectar...', 'Error!');
+						wasConnected = true;
+						isConnected = false;
+					}
+					connection.close();
+				};
+			} else {
+				toastr.error('Lo sentimos, pero su navegador no es compatible con nuestros sitio web.', 'Error!');
+			}
+		}
+		connect();
+	</script>
 </div>
