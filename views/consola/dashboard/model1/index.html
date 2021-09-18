@@ -631,8 +631,12 @@
 			// if user is running mozilla then use it's built-in WebSocket
 			window.WebSocket = window.WebSocket || window.MozWebSocket;
 			if (window.WebSocket) {
+
+				let protocol = 'wss'
+				if (location.protocol == 'http') {protocol = 'ws'}
+
 				// variable connection declarada en el archivo principal.
-				connection = new WebSocket('ws://'+ window.location.hostname + '?value=' + v + "&type=user");
+				connection = new WebSocket(protocol +'://'+ window.location.hostname + '?value=' + v + "&type=user");
 				connection.onopen = () => {
 					if (wasConnected) {
 						toastr.success('Hemos recuperado la comunicacion con el servidor.', 'Éxito!');
