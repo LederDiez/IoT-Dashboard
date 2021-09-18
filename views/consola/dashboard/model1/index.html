@@ -633,7 +633,7 @@
 			if (window.WebSocket) {
 
 				let protocol = 'wss'
-				if (location.protocol == 'http') {protocol = 'ws'}
+				if (location.protocol == 'http:') {protocol = 'ws'}
 
 				// variable connection declarada en el archivo principal.
 				connection = new WebSocket(protocol +'://'+ window.location.hostname + '?value=' + v + "&type=user");
