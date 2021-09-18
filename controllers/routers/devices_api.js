@@ -239,7 +239,7 @@ router.post("/device", function(req, res) {
 			title	  : 'Error!',
 			message	: 'Sesión no iniciada.',
 			action	 : 'redirect',
-			redirectTo : '../'
+			redirectTo : '/acceso'
 		});
 	}
 });

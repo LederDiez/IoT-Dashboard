@@ -122,7 +122,7 @@ router.post("/user", function(req, res) {
 					title	  : 'Error!',
 					message	: 'Sesión ya iniciada.',
 					action	 : 'redirect',
-					redirectTo : '../consola'
+					redirectTo : './consola'
 				});
 			}
 			break;
@@ -136,15 +136,15 @@ router.post("/user", function(req, res) {
 					title	  : 'Éxito',
 					message	: 'Sesión destruida.',
 					action	 : 'redirect',
-					redirectTo : '/acceso'
+					redirectTo : '../acceso'
 				});
 			} else {
 				res.status(200).send({
-					status	 : 'success',
-					title	  : 'Éxito',
-					message	: 'Sesión destruida.',
+					status	 : 'error',
+					title	  : 'Error!',
+					message	: 'Sesión ya destruida.',
 					action	 : 'redirect',
-					redirectTo : '/acceso'
+					redirectTo : '../acceso'
 				});
 			}
 			break;

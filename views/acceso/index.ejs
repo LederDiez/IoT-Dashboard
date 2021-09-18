@@ -2,8 +2,6 @@
 <html lang="es" xml:lang="es">
 <head>
 	<title><%= title %></title>
-  
-  <meta name="theme-color" content="#4285f4">
 
 	<meta name="description" content="Plataforma administrativa IoT">
 	<meta name="keywords" content="Acceso, IoT, Internet Of Things, cloud, platform, esp8266, arduino, Leder Diez, Internet de las cosas">
@@ -155,6 +153,10 @@
           window.location.reload();
         }, 1000);
       }
+    }
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./service-worker.js');
     }
 
 	</script>

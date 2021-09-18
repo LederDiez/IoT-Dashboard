@@ -2,7 +2,41 @@
 const
 	CACHE_NAME = 'v2_cache', 
 	urlsToCache = [
-		'/',
+
+		'/consola/',
+
+		'/favicon.ico',
+		'/images/AdminLTELogo.png',
+
+		'/plugins/fontawesome-free/webfonts/fa-regular-400.woff2',
+		'/plugins/fontawesome-free/webfonts/fa-solid-900.woff2',
+
+		'/plugins/toastr/toastr.min.css',
+		'/plugins/fontawesome-free/css/all.min.css',
+		'/plugins/icheck-bootstrap/icheck-bootstrap.min.css',
+		'/plugins/pace-progress/themes/red/pace-theme-minimal.css',
+
+		'/plugins/jquery/jquery.min.js',
+		'/plugins/bootstrap/js/bootstrap.bundle.min.js',
+		'/plugins/toastr/toastr.min.js',
+		'/plugins/pace-progress/pace.min.js',
+		'/plugins/particles/particles.min.js',
+		'/plugins/particles/particles-app.js',
+		'/plugins/snap-svg/snap.svg-min.js',
+		'/plugins/fastclick/fastclick.js',
+
+		'/propios/js/Graphics.js',
+		'/plugins/Highcharts-Stock/highstock.js',
+		'/plugins/Highcharts/highcharts-more.js',
+		'/plugins/Highcharts/modules/export-data.js',
+		'/plugins/Highcharts/modules/exporting.js',
+		'/plugins/Highcharts/modules/solid-gauge.js',
+		'/plugins/Highcharts/modules/accessibility.js',
+		'/plugins/Highcharts/modules/drilldown.js',
+
+		'/adminlte/css/adminlte.min.css',
+
+		'/adminlte/js/adminlte.min.js'
 	];
 
 //durante la fase de instalación, se almacena en caché los activos estáticos
@@ -10,7 +44,9 @@ self.addEventListener('install', e => {
 	e.waitUntil(
 		caches.open(CACHE_NAME).then(cache => {
 			return cache.addAll(urlsToCache).then(() => self.skipWaiting());
-		}).catch(err => console.log('Falló registro de cache', err))
+		}).catch(err => {
+			console.log('Falló registro de cache', err)
+		})
 	);
 });
 
@@ -64,10 +100,10 @@ self.addEventListener('push', function(event) {
 	event.waitUntil(self.registration.showNotification(title, options));
 });
 
-self.addEventListener('notificationclick', function(event) {  
+self.addEventListener('notificationclick', function(event) {
 	var messageId = event.notification.data;
 
-	event.notification.close();  
+	event.notification.close();
 
 	if (event.action === 'listo') {
 		//

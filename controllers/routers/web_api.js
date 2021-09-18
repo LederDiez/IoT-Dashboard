@@ -99,7 +99,7 @@ router.get("/consola", function(req, res) {
 			}
 		});
 	} else {
-		res.redirect('/'); 
+		res.redirect('/acceso'); 
 	}
 });
 
