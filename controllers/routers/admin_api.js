@@ -3,7 +3,7 @@
 const express = require('express');
 const router  = express.Router();
 
-const DeviceSchema = require('../models/device_schema');
+const { DevicesModel } = require('../../models/connection_models');
 
 /**********************************************
 *	Admin Devices controllers
@@ -25,7 +25,7 @@ router.post("/admin", function(req, res) {
 		switch (action) {
 			case 'all':
 			
-				DeviceSchema.find({}, function (err, data) {
+				DevicesModel.find({}, function (err, data) {
 					if (!err) {
 						if (data) {
 							var serials = new Array();
@@ -55,7 +55,7 @@ router.post("/admin", function(req, res) {
 				
 				var serial = req.body.serial;
 
-				DeviceSchema.findOne({'serialNumber': serial}, function (err, data) {
+				DevicesModel.findOne({'serialNumber': serial}, function (err, data) {
 					if (!err) {
 						if (data) {
 							res.status(200).send(data);
@@ -85,13 +85,13 @@ router.post("/admin", function(req, res) {
 				// Comprobar que esten los datos
 				if (serial != null && model != null) {
 					// Comprobar que el serial no este registrado
-					DeviceSchema.findOne({'serialNumber': serial}, function (err, data) {
+					DevicesModel.findOne({'serialNumber': serial}, function (err, data) {
 						//Error al tratar de buscar el serial en la base de datos
 						if (!err) {
 							// Comprobar de que no existan datos de un dispositivo
 							if (!data) {
 								
-								const newDevice = new DeviceSchema();
+								const newDevice = new DevicesModel();
 
 								newDevice.name						= '';
 								newDevice.associatedUser	= '';
@@ -146,7 +146,7 @@ router.post("/admin", function(req, res) {
 				// Comprobar que esten los datos
 				if (serial != null) {
 					//Eliminar el dispositivo
-					DeviceSchema.findOneAndDelete({'serialNumber' : serial}, function (err, data) {
+					DevicesModel.findOneAndDelete({'serialNumber' : serial}, function (err, data) {
 						//Error al tratar de buscar el serial en la base de datos
 						if (!err) {
 							// Comprobar de que existan datos de un dispositivo
@@ -201,7 +201,7 @@ router.post("/admin", function(req, res) {
 					};
 
 					var query	= {'serialNumber' : serial};
-					DeviceSchema.collection('devices').findOneAndUpdate(query, update, function (err, data) {
+					DevicesModel.collection('devices').findOneAndUpdate(query, update, function (err, data) {
 						if (!err) {
 							res.status(200).send({
 								status  : 'success',

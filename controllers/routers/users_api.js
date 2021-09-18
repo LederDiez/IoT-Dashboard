@@ -4,7 +4,7 @@ const express = require('express');
 const router  = express.Router();
 
 const bcrypt  = require('bcrypt-nodejs');
-const UserSchema   = require('../models/user_schema');
+const { UserModel }   = require('../../models/connection_models');
 
 // generating a hashs
 function generateHash (password) {
@@ -56,7 +56,7 @@ router.post("/user", function(req, res) {
 				// Comprobar que esten todos los datos
 				if (mail != null || pass1 != null) {
 					// Busca el email en la base de datos
-					UserSchema.findOne({'mail': mail}, function (err, data) {
+					UserModel.findOne({'mail': mail}, function (err, data) {
 						if (!err) {
 							if (data) {
 								if (validPassword(pass1, data.pass)) {
@@ -159,13 +159,13 @@ router.post("/user", function(req, res) {
 						if (pass1 === pass2) {
 							// Comprobar que el mail no este registrado
 							// data es la informacion del usuario encontrado con ese mail
-							UserSchema.findOne({'mail': mail}, function (err, data) {
+							UserModel.findOne({'mail': mail}, function (err, data) {
 								//Error al tratar de buscar el mail en la base de datos
 								if (!err) {
 									// Comprobar de que no existan datos de un usuario
 									if (!data) {
 										
-										const newUser = new UserSchema();
+										const newUser = new UserModel();
 	
 										newUser.type   = 'client';
 										newUser.user   = user;
@@ -262,7 +262,7 @@ router.post("/user", function(req, res) {
 			if (IsStarted) {
 				// Comprobar que el mail este registrado
 				// data es la informacion del usuario encontrada con ese mail
-				UserSchema.findOne({'mail': req.session.mail}, function (err, data) {
+				UserModel.findOne({'mail': req.session.mail}, function (err, data) {
 					//Error al tratar de buscar el mail en la base de datos
 					if (!err) {
 						// Comprobar de que no existan datos de un usuario

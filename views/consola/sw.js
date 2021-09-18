@@ -1,26 +1,8 @@
 //asignar un nombre y versión al cache
 const
-	CACHE_NAME = 'v1_cache_administracion', 
+	CACHE_NAME = 'v2_cache', 
 	urlsToCache = [
 		'/',
-		'/css/pace/red/pace.min.css',
-		'/css/animate.min.css',
-		'/css/font-awesome/font-awesome.min.css',
-		'/css/normalize/normalize.min.css',
-		'/css/toastr/toastr.min.css',
-		'https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic',
-		'/js/jquery/jquery.min.js',
-		'/js/pace/pace.min.js',
-		'/js/toastr/toastr.min.js',
-		'/consola/sw.js',
-		'/consola/manifest.json',
-		'/login.html',
-		'/favicon.ico',
-		'/images/cropped-favicon-180x180.png',
-		'/images/cropped-favicon-270x270.png',
-		'/images/boxed-bg.png',
-		'https://fonts.gstatic.com/s/sourcesanspro/v13/6xK3dSBYKcSV-LCoeQqfX1RYOo3qOK7l.woff2',
-		'https://fonts.gstatic.com/s/sourcesanspro/v13/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwlxdu.woff2'
 	];
 
 //durante la fase de instalación, se almacena en caché los activos estáticos
@@ -69,7 +51,6 @@ self.addEventListener('push', function(event) {
 	const title = 'Notificaciones activadas';
 	const options = {
 		"body": "Ahora se muestran notificaciones de los dispositivos",
-		"icon": "/images/cropped-favicon-270x270.png",
 		"vibrate": [200, 100, 200, 100, 200, 100, 400],
 		//"tag": "request",
 		actions: [  

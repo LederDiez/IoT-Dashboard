@@ -66,8 +66,12 @@
 		<!-- /.container-fluid -->
 	</section>
 	<script>
-		$( document ).ready(function() {
-		
+
+		function dibujar() {
+
+			$('#container-lol').empty();
+			$('#container-bars').empty();
+
 			Highcharts.chart('container-bars', {
 				chart: {
 					type: 'column'
@@ -399,6 +403,7 @@
 					]
 				}
 			});
-		});
+
+		}
 	</script>
 </div>

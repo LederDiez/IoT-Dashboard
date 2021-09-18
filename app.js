@@ -1,62 +1,34 @@
 'user strict'
 
-const webSocketServer = require('websocket').server;
-const CryptoJS        = require("crypto-js");
 const webpush         = require("web-push");
 
-const dotenv     = require('dotenv').config();
+const {PUBLIC_VAPID_KEY, PRIVATE_VAPID_KEY, PORT, NODE_ENV, SERIAL_CRYPTO_KEY}= require('./config/config');
+const { SessionStore, DevicesDataSchema } = require('./models/connection_models');
+const controlers = require('./controllers/controllers');
+
+const webSocketServer = require('websocket').server;
+const CryptoJS        = require("crypto-js");
+const http            = require('http');
+const mongoose   = require('mongoose');
+
 const bodyParser = require('body-parser');
 const express    = require('express');
 const morgan     = require('morgan');
 const colors     = require('colors');
 const path       = require('path');
 
-const mongoose   = require('mongoose');
-const session    = require('express-session');
-const MongoStore = require('connect-mongo')(session);
-const deviceData = require('./models/device_data_schema');
-
-const dbConnectionStr = require('./models/session_conecction');
-const web_router = require('./routers/web');
-const api_router = require('./routers/api');
-
-const fs         = require('fs');
-const http       = require('http');
-
 const app = express();
-
-webpush.setVapidDetails (
-    'mailto:lederdiez00@gmail.com',
-    process.env.PUBLIC_VAPID_KEY,
-    process.env.PRIVATE_VAPID_KEY
-);
-
 
 // settings
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
-app.set('port', process.env.PORT || 80);
+app.set('port', PORT);
 
 // middlewares
 app.use(morgan('dev'));
-//app.use(morgan('[:date[clf]] :status :method :remote-addr :user-agent :url'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
-
-const sessionStore = new MongoStore({
-    mongooseConnection: dbConnectionStr,
-    collection: 'sessions'
-});
-app.use(session({  
-    secret: process.env.SESSION_SECRET,
-    cookie: {
-        maxAge: 604800000 // 1 week
-    },
-    resave: false,
-    saveUninitialized: false,
-    unset: 'destroy',
-    store: sessionStore
-}));
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(SessionStore);
 
 // static files
 app.use(express.static('public'));
@@ -67,15 +39,20 @@ var notification;
 // Route https
 app.use(function (req, res, next) {
     // The 'x-forwarded-proto' check is for Heroku
-    if (!req.secure && req.get('x-forwarded-proto') !== 'https' && process.env.NODE_ENV !== "development") {
+    if (!req.secure && req.get('x-forwarded-proto') !== 'https' && NODE_ENV !== "development") {
         return res.redirect('https://' + req.get('Host') + req.url);
     }
     next();    
 });
 
 // routers
-app.use("/", web_router);
-app.use("/api", api_router);
+app.use(controlers);
+
+webpush.setVapidDetails (
+    'mailto:lederdiez00@gmail.com',
+    PUBLIC_VAPID_KEY,
+    PRIVATE_VAPID_KEY
+);
 
 app.use('/consola/subscription', function (req, res) {
     res.status(200).send('Hola mundo!!!');
@@ -141,7 +118,7 @@ wsServer.on('request', (req) => {
 
     connection.type   = type;
     var encryptSerial = value.replace(/ /g, "+");
-    var bytes  = CryptoJS.AES.decrypt(encryptSerial, process.env.SERIAL_CRYPTO_KEY); // Decrypt
+    var bytes  = CryptoJS.AES.decrypt(encryptSerial, SERIAL_CRYPTO_KEY); // Decrypt
     connection.serial = bytes.toString(CryptoJS.enc.Utf8);
     
 
@@ -179,7 +156,7 @@ wsServer.on('request', (req) => {
 
                 // Guardar historial
                 
-                let data_schema = mongoose.model('device-' + connection.serial, deviceData);
+                let data_schema = mongoose.model('device-' + connection.serial, DevicesDataSchema);
                 let new_data = new data_schema();
                 new_data.registerDate = Date.now();
                 new_data.data = data;
