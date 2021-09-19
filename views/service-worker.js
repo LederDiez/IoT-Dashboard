@@ -3,8 +3,6 @@ const
 	CACHE_NAME = 'v2_cache', 
 	urlsToCache = [
 
-		'/consola/',
-
 		'/favicon.ico',
 		'/images/AdminLTELogo.png',
 

@@ -242,5 +242,11 @@
     <script src="/plugins/particles/particles.min.js"></script>
     <!-- Particles config -->
     <script src="/plugins/particles/particles-home.js"></script>
+
+    <script type="text/javascript">
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('../service-worker.js');
+      }
+    </script>
   </body>
 </html>

@@ -6,7 +6,7 @@
 	"theme_color": "#212121",
 	"orientation": "any",
 	"display": "fullscreen",
-	"start_url": "./?utm_source=web_app_manifest",
+	"start_url": "./consola?utm_source=web_app_manifest",
 	"scope": "./",
 	"lang": "es-ES",
 	"icons": [{

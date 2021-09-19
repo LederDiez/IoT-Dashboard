@@ -5,7 +5,7 @@
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <title>Consola</title>
 
-  <link rel="manifest" href="./manifest.json">
+  <link rel="manifest" href="../manifest.json">
 
   <meta name="theme-color" content="#212121">
   <meta name="msapplication-navbutton-color" content="#212121">
@@ -443,7 +443,7 @@
     window.addEventListener('load', function() {
       if ('serviceWorker' in navigator && 'PushManager' in window) {
         console.log('Service Worker and Push is supported');
-        navigator.serviceWorker.register('./service-worker.js').then(function(swReg) {
+        navigator.serviceWorker.register('../service-worker.js').then(function(swReg) {
           console.log('Service Worker is registered', swReg);
 
           if (swReg) {
