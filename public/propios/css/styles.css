@@ -6,9 +6,6 @@ body {
   background-color: #212121;
   color: white; }
 
-#particles-js {
-  height: 594px; }
-
 .particles-js-canvas-el {
   top: 0px;
   /*max-height: 594px;*/
