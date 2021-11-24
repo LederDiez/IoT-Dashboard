@@ -43,20 +43,25 @@
 					</div>
 					<!-- /.card -->
 					<div class="card card-outline card-dark">
-					<div class="card-header">
-					<h5 class="card-title">Monthly Recap Report</h5>
-
+						<div class="card-header">
+							<h3 class="card-title">Bootstrap Switch</h3>
+						</div>
+						<div class="card-body">
+							<input type="checkbox" name="my-checkbox" checked data-bootstrap-switch data-off-color="danger" data-on-color="success">
+						</div>
 					</div>
-					<!-- /.card-header -->
-					<div class="card-body">
-
-					<div class="d-flex justify-content-center">
-					<!-- Sales Chart Canvas -->
-						<div id="container-current" class="gauge"></div>
-					</div>
-					<!-- /.chart-responsive -->
-
-					</div>
+					<!-- /.card -->
+					<div class="card card-outline card-dark">
+						<div class="card-header">
+							<h5 class="card-title">Gauge corriente</h5>
+						</div>
+						<!-- /.card-header -->
+						<div class="card-body">
+							<div class="d-flex justify-content-center">
+								<div id="container-current" class="gauge"></div>
+							</div>
+							<!-- /.chart-responsive -->
+						</div>
 					</div>
 					<!-- /.card -->
 				</div>
@@ -143,6 +148,10 @@
 	<!-- /.content -->
 
 	<script type="text/javascript">
+
+		$("input[data-bootstrap-switch]").each(function(){
+      $(this).bootstrapSwitch('state', $(this).prop('checked'));
+    })
 
 		let connectGraphNodes = [
 			{
