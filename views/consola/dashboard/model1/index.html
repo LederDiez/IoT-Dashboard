@@ -1,8 +1,8 @@
 <div id="dashboard">
 	<style>
 		.gauge {
-			width: 290px;
-			height: 220px;
+			width: 300px;
+    	height: 200px;
 		}
 		.gauge-unit {
 			opacity: 0.8;
@@ -13,15 +13,15 @@
 			content: "%";
 			font-size: medium;
 		}
-		.card-values-grid {
+		.card-grid-values {
 			display: grid;
 			grid-template-columns: 50% 50%;
 			justify-items: center;
 		}
-		.card-values-grid h1 {
+		.card-grid-values h1 {
 			margin-bottom: 35px;
 		}
-		.card-values-grid p {
+		.card-grid-values p {
 			margin-bottom: 0;
 		}
 		.card-value-volt::after{
@@ -51,7 +51,7 @@
 			left: 0;
 			right: 0;
 			bottom: 0;
-			background-color:var(--success);
+			background-color: gray;
 			-webkit-transition: .4s;
 			transition: .4s;
 			padding: 5px;
@@ -103,123 +103,167 @@
 	<div id="dashboard_contend" class="content">
 		<div class="container-fluid">
 			<div class="row">
+
 				<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
 					<div class="card card-outline card-dark">
 						<div class="card-header">
 							<div class="d-flex justify-content-between">
 								<h3 class="card-title">Conecciones y distribuciones</h3>
 							</div>
-						</div>
+						</div><!-- /.card header -->
 						<div class="card-body">
 							<div class="d-flex justify-content-center chart">
 								<svg id="connectionChart" width="320" height="320" version="1.1" xmlns="http://www.w3.org/2000/svg"></svg>
 							</div>
-						</div>
+						</div><!-- /.card body -->
 					</div><!-- /.card -->
-				</div>
+				</div><!-- /.col -->
+
 				<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-					
 					<div class="card card-outline card-dark">
 						<div class="card-header">
 							<h3 class="card-title">Información general</h3>
-						</div>
+						</div><!-- /.card header -->
 						<div class="card-body">
-							<div class="card-values-grid">
+							<div class="card-grid-values">
 								<p>Voltaje en F1</p>
 								<p>Voltaje en F2</p>
-								<h1 class="card-value-volt">120.2</h1>
-								<h1 class="card-value-volt">120.1</h1>
+								<h1 class="card-value-volt" id="voltF1">0</h1>
+								<h1 class="card-value-volt" id="voltF2">0</h1>
 								
 								<p>Corriente en F1</p>
 								<p>Corriente en F2</p>
-								<h1 class="card-value-amp">12.2</h1>
-								<h1 class="card-value-amp">13.1</h1>
+								<h1 class="card-value-amp" id="currentF1">0</h1>
+								<h1 class="card-value-amp" id="currentF2">0</h1>
 								
 								<p>Frecuencia en fases</p>
 								<p>Estado actual</p>
-								<h1 class="card-value-fre">59.9</h1>
+								<h1 class="card-value-fre" id="freq">0</h1>
 								<label class="switchBtn">
-										<input type="checkbox">
-										<div class="slide">Encendid</div>
+										<input type="checkbox" id="control" onclick="controlClick()">
+										<div class="slide" id="controlTitle">- - - - - -</div>
 								</label>
-								
-							</div>
-						</div>
+							</div><!-- /.card grid values-->
+						</div><!-- /.card body -->
 					</div><!-- /.card -->
-				</div>
+				</div><!-- /.col -->
+
 				<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
 					<div class="card card-outline card-dark">
 						<div class="card-header">
 							<h5 class="card-title">Nivel de carga en F1</h5>
 						</div> <!-- /.card-header -->
-						<div class="card-body">
-							<div class="d-flex justify-content-center">
-								<div id="LoadF1" class="gauge"></div>
-							</div> <!-- /.chart-responsive -->
+						<div class="card-body d-flex justify-content-center">
+							<div id="LoadF1" class="gauge"></div><!-- /.chart-responsive -->
 						</div>
 					</div> <!-- /.card -->
-				</div>
-				<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-					<div class="card card-outline card-dark">
-					<div class="card-header">
-					<h5 class="card-title">Nivel de carga en F2</h5>
-
-					</div>
-					<!-- /.card-header -->
-					<div class="card-body">
-
-					<div class="d-flex justify-content-center">
-					<!-- Sales Chart Canvas -->
-						<div id="LoadF2" class="gauge"></div>
-					</div>
-					<!-- /.chart-responsive -->
-
-					</div>
-					</div>
-				</div>
+				</div><!-- /.col -->
 
 				<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
 					<div class="card card-outline card-dark">
-					<div class="card-header">
-					<h5 class="card-title">Potencia en F1</h5>
-					</div>
-					<!-- /.card-header -->
-					<div class=" card-body p-0">
-						<div id="container-ap"></div>
-					</div>
-					</div>
-				</div>
+						<div class="card-header">
+							<h5 class="card-title">Nivel de carga en F2</h5>
+						</div><!-- /.card-header -->
+						<div class="card-body d-flex justify-content-center">
+							<div id="LoadF2" class="gauge"></div><!-- /.chart-responsive -->
+						</div><!-- /.card body -->
+					</div><!-- /.card -->
+				</div><!-- /.col -->
+
 				<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-
 					<div class="card card-outline card-dark">
-					<div class="card-header">
-					<h5 class="card-title">Potencia en F2</h5>
+						<div class="card-header">
+							<h5 class="card-title">Potencia en F1</h5>
+						</div><!-- /.card-header -->
+						<div class=" card-body p-0">
+							<div id="WattsF1"></div>
+						</div><!-- /.card body -->
+					</div><!-- /.card -->
+				</div><!-- /.col -->
 
-					</div>
-					<!-- /.card-header -->
-					<div class="card-body p-0">
+				<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+					<div class="card card-outline card-dark">
+						<div class="card-header">
+							<h5 class="card-title">Potencia en F2</h5>
+						</div><!-- /.card-header -->
+						<div class="card-body p-0">
+							<div id="WattsF2"></div><!-- /.chart-responsive -->
+						</div><!-- /.card body -->
+					</div><!-- /.card -->
+				</div><!-- /.col -->
 
-					<div class="chart ">
-					<!-- Sales Chart Canvas -->
-						<div id="container-ac"></div>
-					</div>
-					<!-- /.chart-responsive -->
-
-					</div>
-					</div>
-
-				</div>
-			</div>
-		</div>
-		<!-- /.container-fluid -->
-	</div>
-	<!-- /.content -->
+			</div><!-- /.row -->
+		</div><!-- /.container-fluid -->
+	</div><!-- /.content -->
 
 	<script type="text/javascript">
 
-		$("input[data-bootstrap-switch]").each(function(){
-		$(this).bootstrapSwitch('state', $(this).prop('checked'));
-	})
+		let voltF1 = document.getElementById("voltF1");
+		let voltF2 = document.getElementById("voltF2");
+
+		let currentF1 = document.getElementById("currentF1");
+		let currentF2 = document.getElementById("currentF2");
+
+		let Freq = document.getElementById("freq");
+
+		let controlSwitch = document.getElementById("control");
+		let controlTitle = document.getElementById("controlTitle");
+
+		let changeState = true; // Se debe cambiar el valor a true para permitir cambiar nuevamente
+
+		function controlClick() {
+			changeState = false;
+			controlSwitch.disabled = true;
+			if (!controlSwitch.checked) {
+				controlTitle.innerHTML = "Encendid";
+				controlTitle.style.backgroundColor = "#28a745";
+			} else {
+				controlTitle.innerHTML = "Apagado";
+				controlTitle.style.backgroundColor = "#dc3545";
+			}
+
+			toastr.info('Enviando orden.');
+
+			setTimeout (function() {
+				toastr.success("Orden enviada con exito.");
+				controlSend();
+			}, 3000);
+
+		}
+
+		// Funcion de confirmacion de recibido
+		function controlSend() {
+			changeState = true;
+		}
+
+		function controlState(state) {
+			if (changeState) {
+				if (state == "on") {
+					controlTitle.innerHTML = "Encendid";
+					controlTitle.style.backgroundColor = "#28a745";
+					controlSwitch.checked = false;
+					controlSwitch.disabled = false;
+				} else if (state == "off") {
+					controlTitle.innerHTML = "Apagado";
+					controlTitle.style.backgroundColor = "#dc3545";
+					controlSwitch.checked = true;
+					controlSwitch.disabled = false;
+				} else {
+					controlTitle.innerHTML = "- - - - - -";
+					controlTitle.style.backgroundColor = "gray";
+					controlSwitch.checked = true;
+					controlSwitch.disabled = true;
+				}
+			}
+		}
+
+		function getRandomInt(min, max) {
+			return Math.round(Math.random() * (max - min)) + min;
+		}
+
+		function getRandomFloat(min, max) {
+			return (Math.random() * (max - min) + min).toFixed(1);
+		}
 
 		let connectGraphNodes = [
 			{
@@ -287,11 +331,7 @@
 		]
 		let graphic = ConnectionGraph.chart("connectionChart", connectGraphNodes);
 
-		function getRandomInt(min, max) {
-			return Math.floor(Math.random() * (max - min)) + min;
-		}
-
-		let AP = Highcharts.stockChart('container-ap', {
+		let wattsF1 = Highcharts.stockChart('WattsF1', {
 			time: {
 				useUTC: false
 			},
@@ -387,7 +427,7 @@
 				}]
 			}
 		});
-		let AC = Highcharts.stockChart('container-ac', {
+		let wattsF2 = Highcharts.stockChart('WattsF2', {
 			time: {
 				useUTC: false
 			},
@@ -484,7 +524,7 @@
 			}
 		});
 
-		let gaugeVoltsOptions = {
+		let gaugeLoadOptions = {
 			chart: {
 				type: 'solidgauge'
 			},
@@ -531,122 +571,86 @@
 				}
 			}
 		};
-		let chartvolt = Highcharts.chart('LoadF2', Highcharts.merge(gaugeVoltsOptions, {
+		let loadF1 = Highcharts.chart('LoadF1', Highcharts.merge(gaugeLoadOptions, {
 			exporting: {
 				enabled: false
 			},
 			yAxis: {
 				min: 0,
 				max: 100,
-				//title: { text: 'Voltios' }
 			},
 			credits: {
 				enabled: false
 			},
 			series: [{
-				name: 'Voltios',
+				name: 'Carga F1',
 				data: [0],
 				dataLabels: {
-					format: '<span class="gauge-unit">{y}</span><br/>'
+					format: 
+					'<span class="gauge-unit">{y}</span><br/>'+
+					'<span style="font-size:12px;opacity:0">%</span>'
 				},
 				tooltip: {
-					valueSuffix: ' V'
+					valueSuffix: ' %'
 				}
 			}]
 		}));
-
-		let gaugeAmpsOptions = {
-			chart: {
-				type: 'solidgauge'
-			},
-			title: null,
-			pane: {
-				center: ['50%', '85%'],
-				size: '140%',
-				startAngle: -90,
-				endAngle: 90,
-				background: {
-					backgroundColor: Highcharts.defaultOptions.legend.backgroundColor || '#EEE',
-					innerRadius: '60%',
-					outerRadius: '100%',
-					shape: 'arc'
-				}
-			},
-			tooltip: {
-				enabled: false
-			},
-			// the value axis
-			yAxis: {
-				stops: [
-					[0.1, '#55BF3B'], // green
-					[0.8, '#DDDF0D'], // yellow
-					[0.9, '#DF5353'] // red
-				],
-				lineWidth: 0,
-				minorTickInterval: null,
-				tickAmount: 2,
-				title: {
-					y: -70
-				},
-				labels: {
-					y: 16
-				}
-			},
-			plotOptions: {
-				solidgauge: {
-					dataLabels: {
-						y: 5,
-						borderWidth: 0,
-						useHTML: true
-					}
-				}
-			}
-		};
-		let chartcurrent = Highcharts.chart('LoadF1', Highcharts.merge(gaugeAmpsOptions, {
+		let loadF2 = Highcharts.chart('LoadF2', Highcharts.merge(gaugeLoadOptions, {
 			exporting: {
 				enabled: false
 			},
 			yAxis: {
 				min: 0,
 				max: 100,
-				//title: { text: 'Amperios' }
 			},
 			credits: {
 				enabled: false
 			},
 			series: [{
-				name: 'Amperios',
+				name: 'Carga F2',
 				data: [0],
 				dataLabels: {
-					format: '<span class="gauge-unit" style="font-size:25px">{y}</span><br/>'
+					format: 
+					'<span class="gauge-unit" style="font-size:25px">{y}</span><br/>'+
+					'<span style="font-size:12px;opacity:0">%</span>'
 				},
 				tooltip: {
-					valueSuffix: ' A'
+					valueSuffix: ' %'
 				}
 			}]
 		}));
 
-		setInterval(function(){
+		setInterval (function() {
 
-			if (chartvolt) {
-				let point = chartvolt.series[0].points[0];
+			voltF1.innerHTML = getRandomFloat(120, 121);
+			voltF2.innerHTML = getRandomFloat(120, 121);
+
+			currentF1.innerHTML = getRandomFloat(10, 11);
+			currentF2.innerHTML = getRandomFloat(13, 14);
+
+			Freq.innerHTML = getRandomFloat(59.9, 60.1);
+
+			controlState("on");
+
+			if (loadF1) {
+				let point = loadF1.series[0].points[0];
 				point.update(getRandomInt(70, 90));
 			}
 
-			if (chartcurrent) {
-				let point = chartcurrent.series[0].points[0];
+			if (loadF2) {
+				let point = loadF2.series[0].points[0];
 				point.update(getRandomInt(70, 90));
 			}
 
-			if (AP) {
-				let series = AP.series[0];
+			if (wattsF1) {
+				let series = wattsF1.series[0];
 				let x = (new Date()).getTime()
 				let y = getRandomInt(50, 75);
 				series.addPoint([x, y], true, true);
 			}
 
-			if (AC) {
-				let series = AC.series[0];
+			if (wattsF2) {
+				let series = wattsF2.series[0];
 				let x = (new Date()).getTime()
 				let y = getRandomInt(50, 75);
 				series.addPoint([x, y], true, true);
@@ -669,27 +673,27 @@
 
 			console.log(data[0]);
 
-			/*if (chartvolt) {
-				let point = chartvolt.series[0].points[0];
+			/*if (loadF1) {
+				let point = loadF1.series[0].points[0];
 				point.update(data[0].value);
 			}
 
-			if (chartcurrent) {
-				let point = chartcurrent.series[0].points[0];
+			if (loadF2) {
+				let point = loadF2.series[0].points[0];
 				point.update(data[0].C);
 			}
 
-			if (AP) {
-				let series = AP.series[0];
+			if (wattsF1) {
+				let series = wattsF1.series[0];
 				let x = (new Date()).getTime()
-				let y = data[0].AP
+				let y = data[0].wattsF1
 				series.addPoint([x, y], true, true);
 			}
 
-			if (AC) {
-				let series = AC.series[0];
+			if (wattsF2) {
+				let series = wattsF2.series[0];
 				let x = (new Date()).getTime()
-				let y = data[0].AC
+				let y = data[0].wattsF2
 				series.addPoint([x, y], true, true);
 			}*/
 		}
