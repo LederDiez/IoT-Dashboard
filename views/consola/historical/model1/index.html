@@ -62,9 +62,10 @@
 
 				</div>
 		  </div>
-	  </div>
-		<!-- /.container-fluid -->
+	  </div><!-- /.container-fluid -->
 	</section>
+	<link rel="stylesheet" href="../plugins/MCDatePicker/css/mc-calendar.min.css" />
+	<script src="../plugins/MCDatePicker/js/mc-calendar.min.js"></script>
 	<script>
 
 		function dibujar() {
@@ -404,6 +405,46 @@
 				}
 			});
 
+			const myDatePicker = MCDatepicker.create({
+				customWeekDays: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
+				customMonths: [
+					'Enero',
+					'Febrero',
+					'Marzo',
+					'Abril',
+					'Mayo',
+					'Junio',
+					'Julio',
+					'Agosto',
+					'Septiembre',
+					'Octubre',
+					'Noviembre',
+					'Diciembre'
+				],
+				context: document.body,
+				autoClose: false,
+				closeOndblclick: true,
+				closeOnBlur: false,
+				customOkBTN: 'Aceptar',
+				customClearBTN: 'Limpiar',
+				customCancelBTN: 'Cancelar',
+				firstWeekday: 1, // ex: 1 accept numbers 0-6;
+				showCalendarDisplay: false,
+				selectedDate: new Date(), // today
+				//minDate: new Date(),
+      	maxDate: new Date(),
+				jumpToMinMax: true,
+				jumpOverDisabled: true,
+				//disableDates: [], // ex: [new Date(2019,11, 25), new Date(2019, 11, 26)]
+			});
+
+			console.log(myDatePicker);
+
+			// open
+			myDatePicker.open();
+
 		}
+
+		dibujar();
 	</script>
 </div>
