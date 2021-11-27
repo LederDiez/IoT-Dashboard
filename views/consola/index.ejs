@@ -40,17 +40,14 @@
 					<a class="nav-link d-block d-md-block d-lg-none" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
 				</li>
 				<li class="nav-item d-none d-sm-inline-block">
-					<a href="#" class="nav-link">Inicio</a>
-				</li>
-				<li class="nav-item d-none d-sm-inline-block">
-					<a href="#" class="nav-link">Contacto</a>
+					<a class="nav-link"><%= user %></a>
 				</li>
 			</ul>
-			<!-- Right navbar links -->
+			<!-- Right navbar links  -->
 			<ul class="navbar-nav ml-auto">
 				<li class="nav-item">
 					<div class="nav-link">
-						<p class="d-none d-md-inline"><%= user %></p>
+						<p class="d-none d-md-inline"><%=deviceName%></p>
 					</div>
 				</li>
 				<!-- Notifications Dropdown Menu -->
@@ -336,8 +333,8 @@
 			}
 		}
 
-		// Se mantiene la variable status por compativilidad // eliminacion futura
-		function requestsProcess (status, response) {
+		// Muestra mensajes y aplica respuestas enviadas desde el servidor.
+		function processResponse (response) {
 			if (response.status == "success") {
 				toastr.success(response.message, response.title);
 			} else if (response.status == "error") {
@@ -372,7 +369,7 @@
 				page : 'logout'
 			},
 			function(response, status){
-				requestsProcess("", response);
+				processResponse(response);
 			});
 		}
 
@@ -392,7 +389,8 @@
 			const padding = '='.repeat((4 - base64String.length % 4) % 4);
 			const base64 = (base64String + padding)
 				.replace(/\-/g, '+')
-				.replace(/_/g, '/');
+				.replace(/_/g, '/')
+			;
 
 			const rawData = window.atob(base64);
 			const outputArray = new Uint8Array(rawData.length);
@@ -418,9 +416,9 @@
 			const PUBLIC_VAPID_KEY = 'BIu88NQdjuLjWMNt8p4iBhnvaksI3bOTlNOLlNDWCZi7cSKB6X1drO8Q3b4kvgTM-pMJf3zA8qWfml5cScMkhVU';
 			window.addEventListener('load', function() {
 				if ('serviceWorker' in navigator && 'PushManager' in window) {
-					console.log('Service Worker and Push is supported');
+					//console.log('Service Worker and Push is supported');
 					navigator.serviceWorker.register('../service-worker.js').then(function(swReg) {
-						console.log('Service Worker is registered', swReg);
+						//console.log('Service Worker is registered', swReg);
 
 						if (swReg) {
 
@@ -434,7 +432,7 @@
 								userVisibleOnly: true,
 								applicationServerKey: applicationServerKey
 							}).then(function(subscription) {
-								console.log('User is subscribed:', subscription);
+								//console.log('User is subscribed:', subscription);
 
 								subscriber(subscription).then();
 

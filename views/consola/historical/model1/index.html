@@ -8,13 +8,20 @@
 				</div>
 				<div class="col-sm-6">
 					<ol class="breadcrumb float-sm-right">
-						<li id="tablerodevicenameli" class="breadcrumb-item active"></li>
-						<script>document.getElementById("tablerodevicenameli").innerHTML='<a><i class="fa fa-laptop"></i> '+DEVICE_NAME+'</a>';</script>
+						<li class="breadcrumb-item active">
+							<div class="input-group">
+								<input type="text" id="datepicker" disabled value="dd-mm-aaaa" class="form-control rounded-0" style="width: 120px;">
+								<span class="input-group-append">
+									<button type="button" id="BtnDatepicker" class="btn btn-block btn-warning btn-flat float-right" id="daterange-btn">
+										<i class="far fa-calendar-alt"></i> Seleccionar fecha
+									</button>
+								</span>
+							</div>
+						</li>
 					</ol>
 				</div>
 			</div>
-		</div>
-		<!-- /.container-fluid -->
+		</div><!-- /.container-fluid -->
 	</div>
 	<section id="historical_contend" class="content">
 		<div class="container-fluid">
@@ -68,7 +75,121 @@
 	<script src="../plugins/MCDatePicker/js/mc-calendar.min.js"></script>
 	<script>
 
-		function dibujar() {
+		let BtnDatepicker = document.getElementById("BtnDatepicker");
+
+		let datepicker = MCDatepicker.create({
+			el: '#datepicker',
+			customWeekDays: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+			customMonths: [
+				'Enero',
+				'Febrero',
+				'Marzo',
+				'Abril',
+				'Mayo',
+				'Junio',
+				'Julio',
+				'Agosto',
+				'Septiembre',
+				'Octubre',
+				'Noviembre',
+				'Diciembre'
+			],
+			context: document.body,
+			//autoClose: true,
+			closeOndblclick: true,
+			closeOnBlur: false,
+			customOkBTN: 'Aceptar',
+			customClearBTN: 'Cancelar',
+			customCancelBTN: '',
+			firstWeekday: 1,
+			showCalendarDisplay: false,
+			selectedDate: new Date(), // today
+			minDate: new Date(2021, 9, 10),
+			maxDate: new Date(),
+			jumpToMinMax: true,
+			jumpOverDisabled: true,
+			theme: {
+				theme_color: '#8f96a3',
+				active_text_color: '#28a745',
+				display: {
+					foreground: 'rgba(255, 255, 255, 0.8)',
+					background: '#5e636e'
+				},
+				picker: {
+					background: '#343a40'
+				},
+				picker_header: {
+					active: 'rgba(255, 255, 255, 0.8)',
+					inactive: 'rgba(255, 255, 255, 0.1)'
+				},
+				weekday: {
+					foreground: 'rgba(255, 255, 255, 0.8)'
+				},
+				button: {
+					success: {
+							foreground: '#ffc107'
+					},
+					danger: {
+							foreground: '#e65151'
+					}
+				},
+				date: {
+					active: {
+						default: {
+							foreground: 'rgba(255, 255, 255, 0.8)'
+						},
+						picked: {
+							foreground: '#ffffff',
+							background: '#8f96a3'
+						},
+						today: {
+							foreground: 'rgba(255, 255, 255, 0.8)',
+							background: '#2f3237'
+						}
+					},
+					inactive: {
+						default: {
+							foreground: 'rgba(255, 255, 255, 0.1)'
+						}
+					},
+					marcked: {
+						foreground: '#38ada9'
+					}
+				},
+				month_year_preview: {
+					active: {
+						default: {
+							foreground: 'rgba(255, 255, 255, 0.8)'
+						},
+						picked: {
+							foreground: '#ffffff',
+							background: '#8f96a3'
+						}
+					},
+					inactive: {
+						default: {
+							foreground: 'rgba(255, 255, 255, 0.1)'
+						}
+					}
+				}
+			},
+			//disableDates: [], // ex: [new Date(2019,11, 25), new Date(2019, 11, 26)]
+		});
+		datepicker.open();
+		datepicker.onClear(() => {
+			datepicker.close();
+		});
+
+		BtnDatepicker.onclick = function () {
+			datepicker.open();
+		}
+
+		datepicker.onSelect((date, formatedDate) => {
+			let unix = date.getTime() / 1000;
+			dibujar(unix);
+		});
+
+		function dibujar(unix) {
 
 			$('#container-lol').empty();
 			$('#container-bars').empty();
@@ -405,46 +526,6 @@
 				}
 			});
 
-			const myDatePicker = MCDatepicker.create({
-				customWeekDays: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
-				customMonths: [
-					'Enero',
-					'Febrero',
-					'Marzo',
-					'Abril',
-					'Mayo',
-					'Junio',
-					'Julio',
-					'Agosto',
-					'Septiembre',
-					'Octubre',
-					'Noviembre',
-					'Diciembre'
-				],
-				context: document.body,
-				autoClose: false,
-				closeOndblclick: true,
-				closeOnBlur: false,
-				customOkBTN: 'Aceptar',
-				customClearBTN: 'Limpiar',
-				customCancelBTN: 'Cancelar',
-				firstWeekday: 1, // ex: 1 accept numbers 0-6;
-				showCalendarDisplay: false,
-				selectedDate: new Date(), // today
-				//minDate: new Date(),
-      	maxDate: new Date(),
-				jumpToMinMax: true,
-				jumpOverDisabled: true,
-				//disableDates: [], // ex: [new Date(2019,11, 25), new Date(2019, 11, 26)]
-			});
-
-			console.log(myDatePicker);
-
-			// open
-			myDatePicker.open();
-
 		}
-
-		dibujar();
 	</script>
 </div>

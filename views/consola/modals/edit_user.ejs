@@ -117,7 +117,7 @@
 						if (response.status == "success") {
 							$('#modal-edit-user').modal('toggle');
 						}
-						requestsProcess("", response);
+						processResponse(response);
 					},
 					error : function() {
 						alert('Bummer: there was an error!');
