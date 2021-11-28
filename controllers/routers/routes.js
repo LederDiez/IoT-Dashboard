@@ -6,6 +6,8 @@ const { DevicesModel } = require('../../models/connection_models');
 
 const router = express.Router();
 
+const fs = require('fs');
+
 router.get("/", function(req, res) {
 	if (req.session.IsStarted != true) {
 		res.render("web/index");
@@ -58,7 +60,6 @@ router.get("/consola", function(req, res) {
 			check		: check,
 			NDevices	 : 0,
 			deviceName 	 : null,
-			deviceModel  : null,
 			deviceSerial : null,
 			devices		 : null
 		};
@@ -79,7 +80,6 @@ router.get("/consola", function(req, res) {
 					var encryptedSerial = CryptoJS.AES.encrypt(deviceSerial, SERIAL_CRYPTO_KEY);
 					
 					RenderData.deviceName	= deviceName,
-					RenderData.deviceModel  = deviceModel,
 					RenderData.NDevices	 	= result.length,
 					RenderData.deviceSerial = encryptedSerial,
 					RenderData.devices	  = JSON.stringify(result)
@@ -87,8 +87,6 @@ router.get("/consola", function(req, res) {
 					req.session.deviceName   = deviceName;
 					req.session.deviceModel  = deviceModel;
 					req.session.deviceSerial = deviceSerial;
-
-					
 
 				}
 
@@ -98,6 +96,37 @@ router.get("/consola", function(req, res) {
 				res.status(500).send('Error del servidor');
 			}
 		});
+	} else {
+		res.redirect('/acceso'); 
+	}
+});
+
+router.post("/models", function(req, res) {
+	if (req.session.IsStarted == true) {
+
+		const viewName = req.body.viewName  || null;
+		const model = req.session.deviceModel;
+
+		if (viewName != null) {
+
+			const path = "models/" + viewName + "/" + model + "/index.ejs";
+			const filePath = "./views/" + path;
+
+			fs.access(filePath, function (error) {
+				if (error) {
+					res.render("models/error/index", {
+						viewName: viewName
+					});
+				} else {
+					res.render(path, {
+						viewName: viewName
+					});
+				}
+			});
+
+		} else {
+			res.redirect('/acceso'); 
+		}
 	} else {
 		res.redirect('/acceso'); 
 	}

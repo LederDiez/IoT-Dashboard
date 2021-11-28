@@ -118,7 +118,7 @@
 						</li>
 						<!-- ----------------------------------------------------------------------------------------- -->
 						<li class="nav-item">
-							<a href="#" class="notifications nav-link">
+							<a href="#" class="options nav-link">
 								<i class="nav-icon far fa-image"></i>
 								<p>Opciones</p>
 							</a>
@@ -263,13 +263,11 @@
 		};
 
 		const DEVICE_NAME   = "<%=deviceName%>";
-		const DEVICE_MODEL  = "<%=deviceModel%>";
+		const DEVICES  = parseInt("<%=NDevices%>", 10);
 
 		var connection;
 
 		let v         = "<%=deviceSerial%>";
-		let nDevices  = <%=NDevices%>;
-		let model     = "<%=deviceModel%>";
 		let pages     = [];
 		let lastPage  = "something";
 		let container = $('.content-wrapper');
@@ -313,7 +311,12 @@
 				}
 			} else {
 				Pace.restart();
-				$.ajax({url: "./" + page + "/" + model + "/index.html",
+				$.ajax({
+					type: 'POST',
+					url: "/models/",
+					data: {
+						'viewName': page
+					},
 					success: function(result){
 						$(container).append(result);
 						pages.push(page);
@@ -374,7 +377,7 @@
 		}
 
 		(function () {
-			if (nDevices > 0) {
+			if (DEVICES > 0) {
 				var localLastPage = 'dashboard'
 				if (window.localStorage.getItem("localLastPage") != null) {
 					localLastPage = window.localStorage.getItem("localLastPage");
