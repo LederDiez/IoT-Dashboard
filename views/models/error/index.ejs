@@ -155,5 +155,17 @@
 			
 			onSVGLoaded();
 		})();
+
+    (function () {
+      let view = document.getElementById("<%= viewName %>");
+
+      view.addEventListener("OnVisible", function () {
+				//viewport visible
+			});
+			view.addEventListener("OnInvisible", function () {
+				//viewport invisible
+			});
+
+    })();
 	</script>
 </div>

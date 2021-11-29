@@ -75,6 +75,8 @@
 
 		let BtnDatepicker = document.getElementById("BtnDatepicker");
 
+		var selectedDate = 0;
+
 		let datepicker = MCDatepicker.create({
 			el: '#datepicker',
 			customWeekDays: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
@@ -93,12 +95,12 @@
 				'Diciembre'
 			],
 			context: document.body,
-			//autoClose: true,
+			autoClose: true,
 			closeOndblclick: true,
 			closeOnBlur: false,
-			customOkBTN: 'Aceptar',
-			customClearBTN: 'Cancelar',
-			customCancelBTN: '',
+			customOkBTN: '',
+			customClearBTN: '',
+			customCancelBTN: 'Cancelar',
 			firstWeekday: 1,
 			showCalendarDisplay: false,
 			selectedDate: new Date(), // today
@@ -125,10 +127,10 @@
 				},
 				button: {
 					success: {
-							foreground: '#ffc107'
+							foreground: '#e65151'
 					},
 					danger: {
-							foreground: '#e65151'
+							foreground: '#ffc107'
 					}
 				},
 				date: {
@@ -183,8 +185,8 @@
 		}
 
 		datepicker.onSelect((date, formatedDate) => {
-			let unix = date.getTime() / 1000;
-			dibujar(unix);
+			selectedDate = date.getTime() / 1000;
+			dibujar(selectedDate);
 		});
 
 		function dibujar(unix) {
@@ -523,7 +525,19 @@
 					]
 				}
 			});
-
 		}
+		(function () {
+			let view = document.getElementById("<%= viewName %>");
+
+			view.addEventListener("OnVisible", function () {
+				if (selectedDate == 0) {
+					datepicker.open();
+				}
+			});
+			view.addEventListener("OnInvisible", function () {
+				datepicker.close();
+			});
+
+		})();
 	</script>
 </div>

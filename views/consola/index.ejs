@@ -300,8 +300,14 @@
 					for (let i = 0; i < pages.length; i++) {
 						if (pages[i] !== page) {
 							$("#" + pages[i]).css( "display", "none" );
+
+							var event = new Event("OnInvisible", {bubbles: true});
+							document.getElementById(pages[i]).dispatchEvent(event);
 						} else {
 							$("#" + pages[i]).css( "display", "block" );
+
+							var event = new Event("OnVisible", {bubbles: true});
+							document.getElementById(pages[i]).dispatchEvent(event);
 						}
 					}
 					$('.' + lastPage).removeClass( "active" );
@@ -323,6 +329,9 @@
 						for (let i = 0; i < pages.length; i++) {
 							if (pages[i] !== page) {
 								$("#" + pages[i]).css( "display", "none" );
+
+								var event = new Event("OnInvisible", {bubbles: true});
+								document.getElementById(pages[i]).dispatchEvent(event);
 							}
 						}
 						$('.' + lastPage).removeClass( "active" );
