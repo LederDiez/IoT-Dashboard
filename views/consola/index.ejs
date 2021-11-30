@@ -272,6 +272,14 @@
 		let lastPage  = "something";
 		let container = $('.content-wrapper');
 
+		function getRandomInt(min, max) {
+			return Math.round(Math.random() * (max - min)) + min;
+		}
+
+		function getRandomFloat(min, max) {
+			return (Math.random() * (max - min) + min).toFixed(1);
+		}
+
 		$( ".dashboard"    ).click(function() { loadView($(this).attr("class")); });
 		$( ".historical"   ).click(function() { loadView($(this).attr("class")); });
 		$( ".comparisons"  ).click(function() { loadView($(this).attr("class")); });

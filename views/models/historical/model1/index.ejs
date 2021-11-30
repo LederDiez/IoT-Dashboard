@@ -25,206 +25,288 @@
 	</section>
 	<section id="historical_contend" class="content">
 		<div class="container-fluid">
-		  <div class="row">
-		  <div class="col-12">
+				<div class="row">
 
-				<div class="card card-outline card-dark">
-				<div class="card-header">
-				<h5 class="card-title">Monthly Recap Report</h5>
+					<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+						<div class="card card-outline card-dark">
+							<div class="card-header">
+								<h3 class="card-title">Máximo reportados</h3>
+							</div><!-- /.card header -->
+							<div class="card-body">
+								<div class="card-grid-values">
+									<p>Voltaje en F1</p>
+									<p>Voltaje en F2</p>
+									<h1 class="card-value-volt" id="maxVoltF1">0</h1>
+									<h1 class="card-value-volt" id="maxVoltF2">0</h1>
+									
+									<p>Corriente en F1</p>
+									<p>Corriente en F2</p>
+									<h1 class="card-value-amp" id="maxCurrentF1">0</h1>
+									<h1 class="card-value-amp" id="maxCurrentF2">0</h1>
+									
+									<p>Potencia total</p>
+									<p>Porcentaje de batería</p>
+									<h1 class="card-value-power" id="maxPower">0</h1>
+									<h1 class="card-value-battery" id="maxBattery">0</h1>
+								</div><!-- /.card grid values-->
+							</div><!-- /.card body -->
+						</div><!-- /.card -->
+					</div><!-- /.col -->
+
+					<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+						<div class="card card-outline card-dark">
+							<div class="card-header">
+								<h3 class="card-title">Mínimo reportados</h3>
+							</div><!-- /.card header -->
+							<div class="card-body">
+								<div class="card-grid-values">
+									<p>Voltaje en F1</p>
+									<p>Voltaje en F2</p>
+									<h1 class="card-value-volt" id="minVoltF1">0</h1>
+									<h1 class="card-value-volt" id="minVoltF2">0</h1>
+									
+									<p>Corriente en F1</p>
+									<p>Corriente en F2</p>
+									<h1 class="card-value-amp" id="minCurrentF1">0</h1>
+									<h1 class="card-value-amp" id="minCurrentF2">0</h1>
+									
+									<p>Potencia total</p>
+									<p>Porcentaje de batería</p>
+									<h1 class="card-value-power" id="minPower">0</h1>
+									<h1 class="card-value-battery" id="minBattery">0</h1>
+								</div><!-- /.card grid values-->
+							</div><!-- /.card body -->
+						</div><!-- /.card -->
+					</div><!-- /.col -->
+
+					<div class="col-12">
+						<div class="card card-outline card-dark">
+							<div class="card-header">
+								<h5 class="card-title">Resumen de consumo</h5>
+							</div><!-- /.card-header -->
+							<div class="card-body p-0">
+								<div id="powersChart"></div><!-- /.chart-responsive -->
+							</div>
+						</div>
+					</div>
+
+					<div class="col-12">
+						<div class="card card-outline card-dark">
+							<div class="card-header">
+								<h5 class="card-title">Resumen de batería</h5>
+							</div><!-- /.card-header -->
+							<div class="card-body p-0">
+								<div id="batteryChart"></div><!-- /.chart-responsive -->
+							</div>
+						</div>
+					</div>
+
+					<div class="col-12">
+						<div class="card card-outline card-dark">
+							<div class="card-header">
+								<h5 class="card-title">Resumen de los últimos 7 días</h5>
+							</div><!-- /.card-header -->
+							<div class="card-body p-0">
+								<div id="weekChart"></div><!-- /.chart-responsive -->
+							</div>
+						</div>
+					</div>
 
 				</div>
-				<!-- /.card-header -->
-				<div class="card-body p-0">
-
-				<div class="chart ">
-				<!-- Sales Chart Canvas -->
-				  <div id="container-lol"></div>
-				</div>
-				<!-- /.chart-responsive -->
-
-				</div>
-				</div>
-
-				</div>
-		  </div>
-		  <div class="row">
-		  <div class="col-12">
-
-				<div class="card card-outline card-dark">
-				<div class="card-header">
-				<h5 class="card-title">Monthly Recap Report</h5>
-
-				</div>
-				<!-- /.card-header -->
-				<div class="card-body p-0">
-
-				<div class="chart ">
-				<!-- Sales Chart Canvas -->
-				  <div id="container-bars"></div>
-				</div>
-				<!-- /.chart-responsive -->
-
-				</div>
-				</div>
-
-				</div>
-		  </div>
-	  </div><!-- /.container-fluid -->
+			</div><!-- /.container-fluid -->
 	</section>
 	<script>
+		(function () {
 
-		let BtnDatepicker = document.getElementById("BtnDatepicker");
-
-		var selectedDate = 0;
-
-		let datepicker = MCDatepicker.create({
-			el: '#datepicker',
-			customWeekDays: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-			customMonths: [
-				'Enero',
-				'Febrero',
-				'Marzo',
-				'Abril',
-				'Mayo',
-				'Junio',
-				'Julio',
-				'Agosto',
-				'Septiembre',
-				'Octubre',
-				'Noviembre',
-				'Diciembre'
-			],
-			context: document.body,
-			autoClose: true,
-			closeOndblclick: true,
-			closeOnBlur: false,
-			customOkBTN: '',
-			customClearBTN: '',
-			customCancelBTN: 'Cancelar',
-			firstWeekday: 1,
-			showCalendarDisplay: false,
-			selectedDate: new Date(), // today
-			minDate: new Date(2021, 9, 10),
-			maxDate: new Date(),
-			jumpToMinMax: true,
-			jumpOverDisabled: true,
-			theme: {
-				theme_color: '#8f96a3',
-				active_text_color: '#28a745',
-				display: {
-					foreground: 'rgba(255, 255, 255, 0.8)',
-					background: '#5e636e'
+			let powersChartConfig = {
+				exporting: {
+					enabled: false
 				},
-				picker: {
-					background: '#343a40'
+				title: {
+					text: null
 				},
-				picker_header: {
-					active: 'rgba(255, 255, 255, 0.8)',
-					inactive: 'rgba(255, 255, 255, 0.1)'
-				},
-				weekday: {
-					foreground: 'rgba(255, 255, 255, 0.8)'
-				},
-				button: {
-					success: {
-							foreground: '#e65151'
-					},
-					danger: {
-							foreground: '#ffc107'
-					}
-				},
-				date: {
-					active: {
-						default: {
-							foreground: 'rgba(255, 255, 255, 0.8)'
-						},
-						picked: {
-							foreground: '#ffffff',
-							background: '#8f96a3'
-						},
-						today: {
-							foreground: 'rgba(255, 255, 255, 0.8)',
-							background: '#2f3237'
-						}
-					},
-					inactive: {
-						default: {
-							foreground: 'rgba(255, 255, 255, 0.1)'
-						}
-					},
-					marcked: {
-						foreground: '#38ada9'
-					}
-				},
-				month_year_preview: {
-					active: {
-						default: {
-							foreground: 'rgba(255, 255, 255, 0.8)'
-						},
-						picked: {
-							foreground: '#ffffff',
-							background: '#8f96a3'
-						}
-					},
-					inactive: {
-						default: {
-							foreground: 'rgba(255, 255, 255, 0.1)'
-						}
-					}
-				}
-			},
-			//disableDates: [], // ex: [new Date(2019,11, 25), new Date(2019, 11, 26)]
-		});
-		datepicker.open();
-		datepicker.onClear(() => {
-			datepicker.close();
-		});
-
-		BtnDatepicker.onclick = function () {
-			datepicker.open();
-		}
-
-		datepicker.onSelect((date, formatedDate) => {
-			selectedDate = date.getTime() / 1000;
-			dibujar(selectedDate);
-		});
-
-		function dibujar(unix) {
-
-			$('#container-lol').empty();
-			$('#container-bars').empty();
-
-			Highcharts.chart('container-bars', {
 				chart: {
 					type: 'column'
 				},
-				title: {
-					text: 'Column chart with negative values'
+				subtitle: {
+					text: 'Potencia total consumida por cada hora del día en W'
 				},
 				xAxis: {
-					categories: ['Apples', 'Oranges', 'Pears', 'Grapes', 'Bananas']
+					title: {
+						text: 'Horas del día'
+					},
+					categories: [
+						'12 a.m', 
+						'1 a.m', 
+						'2 a.m', 
+						'3 a.m', 
+						'4 a.m', 
+						'5 a.m', 
+						'6 a.m', 
+						'7 a.m', 
+						'8 a.m', 
+						'9 a.m', 
+						'10 a.m', 
+						'11 a.m', 
+						'12 p.m', 
+						'1 p.m', 
+						'2 p.m', 
+						'3 p.m', 
+						'4 p.m', 
+						'5 p.m', 
+						'6 p.m', 
+						'7 p.m', 
+						'8 p.m', 
+						'9 p.m', 
+						'10 p.m', 
+						'11 p.m'
+					]
+				},
+				yAxis: {
+					title: {
+						text: null
+					},
+					labels: {
+						format: '{value}W'
+					},
+					plotLines: [{
+						value: 5500,
+						color: 'red',
+						dashStyle: 'shortdash',
+						width: 2,
+						label: { 
+							text: 'Consumo máximo' 
+						}
+					}]
 				},
 				credits: {
-					enabled: true
+					enabled: false
+				},
+				legend: {
+					enabled: false
+				},
+				tooltip: {
+					headerFormat: '<b>{point.x}</b><br/>',
+					pointFormat: '{series.name}: {point.y}W'
 				},
 				series: [{
-					name: 'John',
-					data: [5, 3, 4, 7, 2]
-				}, {
-					name: 'Jane',
-					data: [2, -2, -3, 2, 1]
-				}, {
-					name: 'Joe',
-					data: [3, 4, 4, -2, 5]
+					name: "Consumo",
+					data: (function () {
+						let data = [];
+						for (let index = 0; index < 24; index++) {
+							data.push(0);
+						}
+						return data;
+					}())
 				}]
-			});
-
-			Highcharts.chart('container-lol', {
+			};
+			
+			let batteryChartConfig = {
+				exporting: {
+					enabled: false
+				},
+				title: {
+					text: null
+				},
+				chart: {
+					type: 'areaspline'
+				},
+				subtitle: {
+					text: 'Porcentaje de bateria por cada hora del día'
+				},
+				xAxis: {
+					title: {
+						text: 'Horas del día'
+					},
+					categories: [
+						'12 a.m', 
+						'1 a.m', 
+						'2 a.m', 
+						'3 a.m', 
+						'4 a.m', 
+						'5 a.m', 
+						'6 a.m', 
+						'7 a.m', 
+						'8 a.m', 
+						'9 a.m', 
+						'10 a.m', 
+						'11 a.m', 
+						'12 p.m', 
+						'1 p.m', 
+						'2 p.m', 
+						'3 p.m', 
+						'4 p.m', 
+						'5 p.m', 
+						'6 p.m', 
+						'7 p.m', 
+						'8 p.m', 
+						'9 p.m', 
+						'10 p.m', 
+						'11 p.m'
+					]
+				},
+				yAxis: {
+					title: {
+						text: null
+					},
+					labels: {
+						format: '{value}%'
+					},
+					plotLines: [{
+						value: 75,
+						color: 'green',
+						dashStyle: 'shortdash',
+						width: 2,
+						label: { 
+							text: 'Batería optima' 
+						}
+					}, {
+						value: 10,
+						color: 'red',
+						dashStyle: 'shortdash',
+						width: 2,
+						label: { 
+							text: 'Batería descargada' 
+						}
+					}]
+				},
+				credits: {
+					enabled: false
+				},
+				legend: {
+					enabled: false
+				},
+				tooltip: {
+					headerFormat: '<b>{point.x}</b><br/>',
+					pointFormat: '{series.name}: {point.y}%'
+				},
+				plotOptions: {
+					areaspline: {
+						fillOpacity: 0.5
+					}
+				},
+				series: [{
+					name: "Batería",
+					
+					data: (function () {
+						let data = [];
+						for (let index = 0; index < 24; index++) {
+							data.push(0);
+						}
+						return data;
+					}())
+				}]
+			};
+			
+			let weekChartConfig = {
+				exporting: {
+					enabled: false
+				},
 				chart: {
 					type: 'column'
 				},
 				title: {
-					text: 'Browser market shares. January, 2018'
+					text: null
 				},
 				subtitle: {
 					text: 'Click the columns to view versions. Source: <a href="http://statcounter.com" target="_blank">statcounter.com</a>'
@@ -239,9 +321,11 @@
 				},
 				yAxis: {
 					title: {
-						text: 'Total percent market share'
+						text: null
 					}
-
+				},
+				credits: {
+					enabled: false
 				},
 				legend: {
 					enabled: false
@@ -261,49 +345,40 @@
 					pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
 				},
 
-				series: [
-					{
-						name: "Browsers",
-						colorByPoint: true,
-						data: [
-							{
-								name: "Chrome",
-								y: 62.74,
-								drilldown: "Chrome"
-							},
-							{
-								name: "Firefox",
-								y: 10.57,
-								drilldown: "Firefox"
-							},
-							{
-								name: "Internet Explorer",
-								y: 7.23,
-								drilldown: "Internet Explorer"
-							},
-							{
-								name: "Safari",
-								y: 5.58,
-								drilldown: "Safari"
-							},
-							{
-								name: "Edge",
-								y: 4.02,
-								drilldown: "Edge"
-							},
-							{
-								name: "Opera",
-								y: 1.92,
-								drilldown: "Opera"
-							},
-							{
-								name: "Other",
-								y: 7.62,
-								drilldown: null
-							}
-						]
-					}
-				],
+				series: [{
+					name: "Browsers",
+					colorByPoint: true,
+					data: 
+					[{
+						name: "Chrome",
+						y: 62.74,
+						drilldown: "Chrome"
+					},{
+						name: "Firefox",
+						y: 10.57,
+						drilldown: "Firefox"
+					},{
+						name: "Internet Explorer",
+						y: 7.23,
+						drilldown: "Internet Explorer"
+					},{
+						name: "Safari",
+						y: 5.58,
+						drilldown: "Safari"
+					},{
+						name: "Edge",
+						y: 4.02,
+						drilldown: "Edge"
+					},{
+						name: "Opera",
+						y: 1.92,
+						drilldown: "Opera"
+					},{
+						name: "Other",
+						y: 7.62,
+						drilldown: null
+					}]
+				}],
 				drilldown: {
 					series: [
 						{
@@ -524,13 +599,195 @@
 						}
 					]
 				}
-			});
-		}
-		(function () {
-			let view = document.getElementById("<%= viewName %>");
+			};
 
+			let powersChart = Highcharts.chart('powersChart', powersChartConfig);
+			let batteryChart = Highcharts.chart('batteryChart', batteryChartConfig);
+			let weekChart = Highcharts.chart('weekChart', weekChartConfig);
+
+			function updateCharts(response) {
+
+				let minVoltF1 = document.getElementById("minVoltF1");
+				let minVoltF2 = document.getElementById("minVoltF2");
+				let minCurrentF1 = document.getElementById("minCurrentF1");
+				let minCurrentF2 = document.getElementById("minCurrentF2");
+				let minPower = document.getElementById("minPower");
+				let minBattery = document.getElementById("minBattery");
+
+				let maxVoltF1 = document.getElementById("maxVoltF1");
+				let maxVoltF2 = document.getElementById("maxVoltF2");
+				let maxCurrentF1 = document.getElementById("maxCurrentF1");
+				let maxCurrentF2 = document.getElementById("maxCurrentF2");
+				let maxPower = document.getElementById("maxPower");
+				let maxBattery = document.getElementById("maxBattery");
+
+				minVoltF1.innerHTML = getRandomFloat(119, 120);
+				minVoltF2.innerHTML = getRandomFloat(119, 120);
+				minCurrentF1.innerHTML = getRandomFloat(10, 11);
+				minCurrentF2.innerHTML = getRandomFloat(10, 14);
+				minPower.innerHTML = getRandomInt(1200, 2000);
+				minBattery.innerHTML = getRandomInt(10, 20);
+
+				maxVoltF1.innerHTML = getRandomFloat(120, 121);
+				maxVoltF2.innerHTML = getRandomFloat(120, 121);
+				maxCurrentF1.innerHTML = getRandomFloat(16, 21);
+				maxCurrentF2.innerHTML = getRandomFloat(16, 21);
+				maxPower.innerHTML = getRandomInt(4800, 5000);
+				maxBattery.innerHTML = getRandomInt(80, 90);
+
+				powersChart.update({
+					series: [{
+						data: (function () {
+							let data = [];
+							for (let index = 0; index < 24; index++) {
+								data.push(getRandomInt(4500, 5000));
+							}
+							return data;
+						}())
+					}]
+				});
+
+				batteryChart.update({
+					series: [{
+						data: (function () {
+							let data = [];
+							for (let index = 0; index < 24; index++) {
+								data.push(getRandomInt(50, 75));
+							}
+							return data;
+						}())
+					}]
+				});
+
+			}
+
+			function loadDataFromServer(unix) {
+				updateCharts(unix);
+			}
+
+			function loadWeekDataFromServer() {
+				//
+			}
+			loadWeekDataFromServer();
+
+			let BtnDatepicker = document.getElementById("BtnDatepicker");
+			let datepicker = MCDatepicker.create({
+				el: '#datepicker',
+				customWeekDays: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+				customMonths: [
+					'Enero',
+					'Febrero',
+					'Marzo',
+					'Abril',
+					'Mayo',
+					'Junio',
+					'Julio',
+					'Agosto',
+					'Septiembre',
+					'Octubre',
+					'Noviembre',
+					'Diciembre'
+				],
+				context: document.body,
+				autoClose: true,
+				closeOndblclick: true,
+				closeOnBlur: false,
+				customOkBTN: '',
+				customClearBTN: '',
+				customCancelBTN: 'Cancelar',
+				firstWeekday: 1,
+				showCalendarDisplay: false,
+				selectedDate: new Date(),
+				minDate: new Date(2021, 9, 10),
+				maxDate: new Date(),
+				jumpToMinMax: true,
+				jumpOverDisabled: true,
+				theme: {
+					theme_color: '#8f96a3',
+					active_text_color: '#28a745',
+					display: {
+						foreground: 'rgba(255, 255, 255, 0.8)',
+						background: '#5e636e'
+					},
+					picker: {
+						background: '#343a40'
+					},
+					picker_header: {
+						active: 'rgba(255, 255, 255, 0.8)',
+						inactive: 'rgba(255, 255, 255, 0.1)'
+					},
+					weekday: {
+						foreground: 'rgba(255, 255, 255, 0.8)'
+					},
+					button: {
+						success: {
+								foreground: '#e65151'
+						},
+						danger: {
+								foreground: '#ffc107'
+						}
+					},
+					date: {
+						active: {
+							default: {
+								foreground: 'rgba(255, 255, 255, 0.8)'
+							},
+							picked: {
+								foreground: '#ffffff',
+								background: '#8f96a3'
+							},
+							today: {
+								foreground: 'rgba(255, 255, 255, 0.8)',
+								background: '#2f3237'
+							}
+						},
+						inactive: {
+							default: {
+								foreground: 'rgba(255, 255, 255, 0.1)'
+							}
+						},
+						marcked: {
+							foreground: '#38ada9'
+						}
+					},
+					month_year_preview: {
+						active: {
+							default: {
+								foreground: 'rgba(255, 255, 255, 0.8)'
+							},
+							picked: {
+								foreground: '#ffffff',
+								background: '#8f96a3'
+							}
+						},
+						inactive: {
+							default: {
+								foreground: 'rgba(255, 255, 255, 0.1)'
+							}
+						}
+					}
+				},
+				//disableDates: [], // ex: [new Date(2019,11, 25), new Date(2019, 11, 26)]
+			});
+			datepicker.open();
+			datepicker.onClear(() => {
+				datepicker.close();
+			});
+
+			BtnDatepicker.onclick = function () {
+				datepicker.open();
+			}
+
+			let dateSelected = false;
+			datepicker.onSelect((date, formatedDate) => {
+				dateSelected = true;
+				let unix = date.getTime() / 1000;
+				loadDataFromServer(unix);
+			});
+
+			let view = document.getElementById("<%= viewName %>");
 			view.addEventListener("OnVisible", function () {
-				if (selectedDate == 0) {
+				if (!dateSelected) {
 					datepicker.open();
 				}
 			});

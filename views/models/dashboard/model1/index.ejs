@@ -1,87 +1,4 @@
 <div id="<%= viewName %>">
-	<style>
-		.gauge {
-			width: 300px;
-    	height: 200px;
-		}
-		.gauge-unit {
-			opacity: 0.8;
-			justify-items: center;
-			font-size: 25px;
-		}
-		.gauge-unit::after {
-			content: "%";
-			font-size: medium;
-		}
-		.card-grid-values {
-			display: grid;
-			grid-template-columns: 50% 50%;
-			justify-items: center;
-		}
-		.card-grid-values h1 {
-			margin-bottom: 35px;
-		}
-		.card-grid-values p {
-			margin-bottom: 0;
-		}
-		.card-value-volt::after{
-			content: "V";
-			font-size: medium;
-		}
-		.card-value-amp::after{
-			content: "A";
-			font-size: medium;
-		}
-		.card-value-fre::after{
-			content: "Hz";
-			font-size: medium;
-		}
-		.switchBtn {
-			position: relative;
-			display: inline-block;
-			margin-top: 8px;
-			width: 110px;
-			height: 34px;
-		}
-		.switchBtn input {display:none;}
-		.slide {
-			position: absolute;
-			cursor: pointer;
-			top: 0;
-			left: 0;
-			right: 0;
-			bottom: 0;
-			background-color: gray;
-			-webkit-transition: .4s;
-			transition: .4s;
-			padding: 5px;
-			padding-left: 8px;
-			color: #fff;
-			border-radius: 34px;
-		}
-		.slide::before {
-			position: absolute;
-			content: "";
-			height: 26px;
-			width: 26px;
-			left: 78px;
-			bottom: 4px;
-			background-color: white;
-			-webkit-transition: .4s;
-			transition: .4s;
-			border-radius: 50%;
-		}
-		input:checked + .slide {
-			background-color: var(--danger);
-			padding-left: 35px;
-		}
-		input:checked + .slide::before {
-			-webkit-transform: translateX(26px);
-			-ms-transform: translateX(26px);
-			transform: translateX(26px);
-			left: -20px;
-		}
-	</style>
 	<!-- Content Header (Page header) -->
 	<section class="content-header">
 		<div class="container-fluid">
@@ -256,14 +173,6 @@
 			}
 		}
 
-		function getRandomInt(min, max) {
-			return Math.round(Math.random() * (max - min)) + min;
-		}
-
-		function getRandomFloat(min, max) {
-			return (Math.random() * (max - min) + min).toFixed(1);
-		}
-
 		let connectGraphNodes = [
 			{
 				name : 'panel',
@@ -329,8 +238,8 @@
 			}
 		]
 		let graphic = ConnectionGraph.chart("connectionChart", connectGraphNodes);
-
-		let wattsF1 = Highcharts.stockChart('WattsF1', {
+		
+		let wattsF1Config = {
 			time: {
 				useUTC: false
 			},
@@ -425,8 +334,10 @@
 					}
 				}]
 			}
-		});
-		let wattsF2 = Highcharts.stockChart('WattsF2', {
+		}
+		let wattsF1 = Highcharts.stockChart('WattsF1', wattsF1Config);
+
+		let wattsF2Config =  {
 			time: {
 				useUTC: false
 			},
@@ -455,7 +366,7 @@
 			},
 			yAxis: {
 				title: {
-					text: ''
+					text: null
 				},
 				plotLines: [{
 					value: 75,
@@ -521,7 +432,8 @@
 					}
 				}]
 			}
-		});
+		};
+		let wattsF2 = Highcharts.stockChart('WattsF2', wattsF2Config);
 
 		let gaugeLoadOptions = {
 			chart: {
