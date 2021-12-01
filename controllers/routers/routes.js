@@ -13,7 +13,7 @@ router.get("/", function(req, res) {
 		res.render("web/index");
 	} else {
 		if (req.session.type == 'client') {
-			res.redirect('./consola'); 
+			res.redirect('./consola/'); 
 		} else {
 			res.redirect('./admin'); 
 		}
@@ -28,9 +28,9 @@ router.get("/acceso", function(req, res) {
 		});
 	} else {
 		if (req.session.type == 'client') {
-			res.redirect('../consola'); 
+			res.redirect('../consola/'); 
 		} else {
-			res.redirect('../admin'); 
+			res.redirect('../admin/'); 
 		}
 		
 	}
