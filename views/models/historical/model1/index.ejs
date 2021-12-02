@@ -25,110 +25,110 @@
 	</section>
 	<section id="historical_contend" class="content">
 		<div class="container-fluid">
-				<div class="row">
+			<div class="row">
 
-					<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-						<div class="card card-outline card-dark">
-							<div class="card-header">
-								<h3 class="card-title">Máximo reportados</h3>
-							</div><!-- /.card header -->
-							<div class="card-body">
-								<div class="card-grid-values">
-									<p>Voltaje en F1</p>
-									<p>Voltaje en F2</p>
-									<h1 class="card-value-volt" id="maxVoltF1">0</h1>
-									<h1 class="card-value-volt" id="maxVoltF2">0</h1>
-									
-									<p>Corriente en F1</p>
-									<p>Corriente en F2</p>
-									<h1 class="card-value-amp" id="maxCurrentF1">0</h1>
-									<h1 class="card-value-amp" id="maxCurrentF2">0</h1>
-									
-									<p>Potencia total</p>
-									<p>Porcentaje de batería</p>
-									<h1 class="card-value-power" id="maxPower">0</h1>
-									<h1 class="card-value-battery" id="maxBattery">0</h1>
-								</div><!-- /.card grid values-->
-							</div><!-- /.card body -->
-							<div class="overlay dark" id="maxCardOverlay">
-								<i class="fas fa-2x fa-sync-alt fa-spin"></i>
-							</div>
-						</div><!-- /.card -->
-					</div><!-- /.col -->
+				<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+					<div class="card card-outline card-dark">
+						<div class="card-header">
+							<h3 class="card-title">Máximo reportados</h3>
+						</div><!-- /.card header -->
+						<div class="card-body">
+							<div class="card-grid-values">
+								<p>Voltaje en F1</p>
+								<p>Voltaje en F2</p>
+								<h1 class="card-value-volt" id="maxVoltF1">0</h1>
+								<h1 class="card-value-volt" id="maxVoltF2">0</h1>
+								
+								<p>Corriente en F1</p>
+								<p>Corriente en F2</p>
+								<h1 class="card-value-amp" id="maxCurrentF1">0</h1>
+								<h1 class="card-value-amp" id="maxCurrentF2">0</h1>
+								
+								<p>Potencia total</p>
+								<p>Porcentaje de batería</p>
+								<h1 class="card-value-power" id="maxPower">0</h1>
+								<h1 class="card-value-battery" id="maxBattery">0</h1>
+							</div><!-- /.card grid values-->
+						</div><!-- /.card body -->
+						<div class="overlay dark" id="maxCardOverlay">
+							<i class="fas fa-2x fa-sync-alt fa-spin"></i>
+						</div>
+					</div><!-- /.card -->
+				</div><!-- /.col -->
 
-					<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-						<div class="card card-outline card-dark">
-							<div class="card-header">
-								<h3 class="card-title">Mínimo reportados</h3>
-							</div><!-- /.card header -->
-							<div class="card-body">
-								<div class="card-grid-values">
-									<p>Voltaje en F1</p>
-									<p>Voltaje en F2</p>
-									<h1 class="card-value-volt" id="minVoltF1">0</h1>
-									<h1 class="card-value-volt" id="minVoltF2">0</h1>
-									
-									<p>Corriente en F1</p>
-									<p>Corriente en F2</p>
-									<h1 class="card-value-amp" id="minCurrentF1">0</h1>
-									<h1 class="card-value-amp" id="minCurrentF2">0</h1>
-									
-									<p>Potencia total</p>
-									<p>Porcentaje de batería</p>
-									<h1 class="card-value-power" id="minPower">0</h1>
-									<h1 class="card-value-battery" id="minBattery">0</h1>
-								</div><!-- /.card grid values-->
-							</div><!-- /.card body -->
-							<div class="overlay dark" id="minCardOverlay">
-								<i class="fas fa-2x fa-sync-alt fa-spin"></i>
-							</div>
-						</div><!-- /.card -->
-					</div><!-- /.col -->
+				<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+					<div class="card card-outline card-dark">
+						<div class="card-header">
+							<h3 class="card-title">Mínimo reportados</h3>
+						</div><!-- /.card header -->
+						<div class="card-body">
+							<div class="card-grid-values">
+								<p>Voltaje en F1</p>
+								<p>Voltaje en F2</p>
+								<h1 class="card-value-volt" id="minVoltF1">0</h1>
+								<h1 class="card-value-volt" id="minVoltF2">0</h1>
+								
+								<p>Corriente en F1</p>
+								<p>Corriente en F2</p>
+								<h1 class="card-value-amp" id="minCurrentF1">0</h1>
+								<h1 class="card-value-amp" id="minCurrentF2">0</h1>
+								
+								<p>Potencia total</p>
+								<p>Porcentaje de batería</p>
+								<h1 class="card-value-power" id="minPower">0</h1>
+								<h1 class="card-value-battery" id="minBattery">0</h1>
+							</div><!-- /.card grid values-->
+						</div><!-- /.card body -->
+						<div class="overlay dark" id="minCardOverlay">
+							<i class="fas fa-2x fa-sync-alt fa-spin"></i>
+						</div>
+					</div><!-- /.card -->
+				</div><!-- /.col -->
 
-					<div class="col-12">
-						<div class="card card-outline card-dark">
-							<div class="card-header">
-								<h5 class="card-title">Resumen de consumo</h5>
-							</div><!-- /.card-header -->
-							<div class="card-body p-0">
-								<div id="powersChart"></div><!-- /.chart-responsive -->
-							</div>
-							<div class="overlay dark" id="powerCardOverlay">
-								<i class="fas fa-2x fa-sync-alt fa-spin"></i>
-							</div>
+				<div class="col-12">
+					<div class="card card-outline card-dark">
+						<div class="card-header">
+							<h5 class="card-title">Resumen de consumo</h5>
+						</div><!-- /.card-header -->
+						<div class="card-body p-0">
+							<div id="powersChart"></div><!-- /.chart-responsive -->
+						</div>
+						<div class="overlay dark" id="powerCardOverlay">
+							<i class="fas fa-2x fa-sync-alt fa-spin"></i>
 						</div>
 					</div>
-
-					<div class="col-12">
-						<div class="card card-outline card-dark">
-							<div class="card-header">
-								<h5 class="card-title">Resumen de batería</h5>
-							</div><!-- /.card-header -->
-							<div class="card-body p-0">
-								<div id="batteryChart"></div><!-- /.chart-responsive -->
-							</div>
-							<div class="overlay dark" id="batteryCardOverlay">
-								<i class="fas fa-2x fa-sync-alt fa-spin"></i>
-							</div>
-						</div>
-					</div>
-
-					<div class="col-12">
-						<div class="card card-outline card-dark">
-							<div class="card-header">
-								<h5 class="card-title">Resumen de los últimos 7 días</h5>
-							</div><!-- /.card-header -->
-							<div class="card-body p-0">
-								<div id="weekChart"></div><!-- /.chart-responsive -->
-							</div>
-							<div class="overlay dark" id="weekCardOverlay">
-								<i class="fas fa-2x fa-sync-alt fa-spin"></i>
-							</div>
-						</div>
-					</div>
-
 				</div>
-			</div><!-- /.container-fluid -->
+
+				<div class="col-12">
+					<div class="card card-outline card-dark">
+						<div class="card-header">
+							<h5 class="card-title">Resumen de batería</h5>
+						</div><!-- /.card-header -->
+						<div class="card-body p-0">
+							<div id="batteryChart"></div><!-- /.chart-responsive -->
+						</div>
+						<div class="overlay dark" id="batteryCardOverlay">
+							<i class="fas fa-2x fa-sync-alt fa-spin"></i>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-12">
+					<div class="card card-outline card-dark">
+						<div class="card-header">
+							<h5 class="card-title">Resumen de los últimos 7 días</h5>
+						</div><!-- /.card-header -->
+						<div class="card-body p-0">
+							<div id="weekChart"></div><!-- /.chart-responsive -->
+						</div>
+						<div class="overlay dark" id="weekCardOverlay">
+							<i class="fas fa-2x fa-sync-alt fa-spin"></i>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div><!-- /.container-fluid -->
 	</section>
 	<script>
 		(function () {
