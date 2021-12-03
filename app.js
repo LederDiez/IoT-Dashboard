@@ -6,6 +6,7 @@ const {PUBLIC_VAPID_KEY, PRIVATE_VAPID_KEY, PORT, NODE_ENV, SERIAL_CRYPTO_KEY}= 
 const { SessionStore, DevicesDataSchema } = require('./models/connection_models');
 const controlers = require('./controllers/controllers');
 
+const { DevicesModel, UserModel } = require('./models/connection_models');
 const webSocketServer = require('websocket').server;
 const CryptoJS        = require("crypto-js");
 const http            = require('http');
@@ -79,16 +80,8 @@ httpServer.listen(app.get('port'), () => {
 
 //////////////////////////////////////////////////////////////////////////////////////
 
-function originIsAllowed(req) {
-  
-    var type = req.resourceURL.query.type;
-    var value = req.resourceURL.query.value;
-
-    if (type != null && value != null) {
-        return true;
-    } else {
-        return false;
-    }
+function reject(req) {
+    
 }
 
 var wsServer = new webSocketServer({
@@ -103,68 +96,88 @@ var devices = new Array();
 
 wsServer.on('request', (req) => {
 
-    if (!originIsAllowed(req)) {
-      // Make sure we only accept requests from an allowed origin
-      req.reject();
-      console.log(`${new Date()} Connection from origin ${req.origin} rejected.`.bgRed);
-      return;
-    }
-
     // Variables con valores propios de cada cliente
-    var connection = req.accept(null, req.origin);
+    var type = req.resourceURL.query.type || null;
+    var connection;
 
-    var type = req.resourceURL.query.type;
-    var value = req.resourceURL.query.value;
-
-    connection.type   = type;
-    var encryptSerial = value.replace(/ /g, "+");
-    var bytes  = CryptoJS.AES.decrypt(encryptSerial, SERIAL_CRYPTO_KEY); // Decrypt
-    connection.serial = bytes.toString(CryptoJS.enc.Utf8);
-    
-
-    if (connection.type == "user") {
-        clients.push(connection) - 1;
-        console.log(`${(new Date())} Connection accepted from ${(connection.type)} serial ${(connection.serial)}.`.bgGrey);
-        console.log(`There are ${clients.length} clients connected.`.bgBlue);
-    } else {
-        devices.push(connection) - 1;
-        console.log(`${(new Date())} Connection accepted from ${(connection.type)} serial ${(connection.serial)}.`.bgMagenta);
-        console.log(`There are ${devices.length} devices connected.`.bgBlue);
+    // Make sure we only accept requests from an allowed origin
+    if (type == null) {
+        req.reject();
+        console.log(`${new Date()} Connection from origin ${req.origin} rejected.`.bgRed);
+        return;
     }
+
+    connection = req.accept(null, req.origin);
+    connection.type   = type;
 
     // user or device sent some message
     connection.on('message', (message) => {
         if (message.type === 'utf8') {
 
-            if (connection.type == "user") { // Cliente envio un dato
-                
-                var data = message.utf8Data;
-                for (var i = 0; i < devices.length; i++) {
-                    if (devices[i].serial == connection.serial) {
-                        devices[i].sendUTF(data);
-                    }
-                }
+            if (connection.type == "user" && connection.serial == null) {
+                const filter = { uuid: message.utf8Data };
+                const update = { uuid: '' };
 
-            } else if (connection.type == "device") { // Dispositivo envio un dato
-                
-                var data = message.utf8Data;
-                for (var i = 0; i < clients.length; i++) {
-                    if (clients[i].serial == connection.serial) {
-                        clients[i].sendUTF(data);
-                    }
-                }
-
-                // Guardar historial
-                
-                let data_schema = mongoose.model('device-' + connection.serial, DevicesDataSchema);
-                let new_data = new data_schema();
-                new_data.registerDate = Date.now();
-                new_data.data = data;
-                new_data.save((err) => {
+                UserModel.findOneAndUpdate(filter, update, {new: true}, function(err, data) {
                     if (err) {
-                        console.log('error al guardar datos del dispositivo'.bgRed);
+                        error = true;
+                    } else {
+                        connection.serial = data.deviceAuth;
+
+                        clients.push(connection) - 1;
+                        console.log(`${(new Date())} Connection accepted from user serial ${(connection.serial)}.`.bgGrey);
+                        console.log(`There are ${clients.length} clients connected.`.bgBlue);
                     }
                 });
+            } else if (connection.type == "device" && connection.serial == null) {
+                
+                const filter = { uuid: message.utf8Data };
+                const update = { uuid: '' };
+
+                DevicesModel.findOneAndUpdate(filter, update, {new: true}, function(err, data) {
+                    if (err) {
+                        error = true;
+                    } else {
+                        connection.serial = data.serialNumber;
+
+                        devices.push(connection) - 1;
+                        console.log(`${(new Date())} Connection accepted from device serial ${(connection.serial)}.`.bgMagenta);
+                        console.log(`There are ${devices.length} devices connected.`.bgBlue);
+                    }
+                });
+            } else {
+
+                if (connection.type == "user") { // Cliente envio un dato
+                
+                    var data = message.utf8Data;
+                    for (var i = 0; i < devices.length; i++) {
+                        if (devices[i].serial == connection.serial) {
+                            devices[i].sendUTF(data);
+                        }
+                    }
+    
+                } else if (connection.type == "device") { // Dispositivo envio un dato
+                    
+                    var data = message.utf8Data;
+                    for (var i = 0; i < clients.length; i++) {
+                        if (clients[i].serial == connection.serial) {
+                            clients[i].sendUTF(data);
+                        }
+                    }
+    
+                    // Guardar historial
+                    
+                    let data_schema = mongoose.model('device-' + connection.serial, DevicesDataSchema);
+                    let new_data = new data_schema();
+                    new_data.registerDate = Date.now();
+                    new_data.data = data;
+                    new_data.save((err) => {
+                        if (err) {
+                            console.log('error al guardar datos del dispositivo'.bgRed);
+                        }
+                    });
+                }
+
             }
         }
     });

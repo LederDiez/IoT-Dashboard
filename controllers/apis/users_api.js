@@ -55,8 +55,12 @@ router.post("/user", function(req, res) {
 			if (!IsStarted) {
 				// Comprobar que esten todos los datos
 				if (mail != null || pass1 != null) {
+
+					const filter = { 'mail': mail };
+					const update = { 'lastLogin': Date.now() };
+
 					// Busca el email en la base de datos
-					UserModel.findOne({'mail': mail}, function (err, data) {
+					UserModel.findOneAndUpdate(filter, update, function (err, data) {
 						if (!err) {
 							if (data) {
 								if (validPassword(pass1, data.pass)) {
@@ -89,6 +93,7 @@ router.post("/user", function(req, res) {
 								} else {
 									res.status(200).send({
 										status  : 'error',
+										code		: 1,
 										title   : 'Error!',
 										message : 'Contraseña incorrecta.'
 									});
@@ -96,6 +101,7 @@ router.post("/user", function(req, res) {
 							} else {
 								res.status(200).send({
 									status  : 'error',
+									code		: 2,
 									title   : 'Error!',
 									message : 'Email no registrado.'
 								});
@@ -103,6 +109,7 @@ router.post("/user", function(req, res) {
 						} else {
 							res.status(200).send({
 								status  : 'error',
+								code		: 3,
 								title   : 'Error!',
 								message : 'No se puede iniciar sesión, error del servidor'
 							});
@@ -111,6 +118,7 @@ router.post("/user", function(req, res) {
 				} else {
 					res.status(200).send({
 						status  : 'error',
+						code		: 4,
 						title   : 'Error!',
 						message : 'Datos no validos.',
 						action  : 'reload'
@@ -119,6 +127,7 @@ router.post("/user", function(req, res) {
 			} else {
 				res.status(200).send({
 					status	 : 'error',
+					code		: 5,
 					title	  : 'Error!',
 					message	: 'Sesión ya iniciada.',
 					action	 : 'redirect',
@@ -141,6 +150,7 @@ router.post("/user", function(req, res) {
 			} else {
 				res.status(200).send({
 					status	 : 'error',
+					code		: 6,
 					title	  : 'Error!',
 					message	: 'Sesión ya destruida.',
 					action	 : 'redirect',
@@ -185,6 +195,7 @@ router.post("/user", function(req, res) {
 											} else {
 												res.status(200).send({
 													status  : 'error',
+													code		: 7,
 													title   : 'Error!',
 													message : 'El usuario no pudo ser registrado.'
 												});
@@ -193,6 +204,7 @@ router.post("/user", function(req, res) {
 									} else {
 										res.status(200).send({  // Bad request
 											status  : 'error',
+											code		: 8,
 											title   : 'Error!',
 											message : 'Email ya registado.'
 										});
@@ -200,6 +212,7 @@ router.post("/user", function(req, res) {
 								} else {
 									res.status(200).send({ // Server error
 										status  : 'error',
+										code		: 9,
 										title   : 'Error!',
 										message : 'El usuario no pudo ser registrado.'
 									});
@@ -208,6 +221,7 @@ router.post("/user", function(req, res) {
 						} else {
 							res.status(200).send({  // Unauthorized
 								status  : 'error',
+								code		: 10,
 								title   : 'Error!',
 								message : 'Contraseñas no validas.',
 								action  : 'reload'
@@ -216,6 +230,7 @@ router.post("/user", function(req, res) {
 					} else {
 						res.status(200).send({
 							status  : 'error',
+							code		: 11,
 							title   : 'Error!',
 							message : 'Correo invalido.',
 							action  : 'reload'
@@ -224,6 +239,7 @@ router.post("/user", function(req, res) {
 				} else {
 					res.status(200).send({
 						status  : 'error',
+						code		: 12,
 						title   : 'Error!',
 						message : 'Datos no validos.',
 						action  : 'reload'
@@ -232,6 +248,7 @@ router.post("/user", function(req, res) {
 			} else {
 				res.status(200).send({
 					status	 : 'error',
+					code		: 13,
 					title	  : 'Error!',
 					message	: 'Sesión ya iniciada.',
 					action	 : 'redirect',
@@ -279,6 +296,7 @@ router.post("/user", function(req, res) {
 										// Nuevo correo invalido
 										res.status(200).send({
 											status  : 'error',
+											code		: 14,
 											title   : 'Error!',
 											message : 'Correo invalido.'
 										});
@@ -293,6 +311,7 @@ router.post("/user", function(req, res) {
 										// Contraseñas invalidas // no deberia ocurrir
 										res.status(200).send({  // Unauthorized
 											status  : 'error',
+											code		: 15,
 											title   : 'Error!',
 											message : 'Contraseñas no validas.',
 											action  : 'reload'
@@ -315,6 +334,7 @@ router.post("/user", function(req, res) {
 										} else {
 											res.status(200).send({ // Server error
 												status  : 'error',
+												code		: 16,
 												title   : 'Error!',
 												message : 'El usuario no pudo ser modificado. ERROR CODE #1',
 											});
@@ -324,6 +344,7 @@ router.post("/user", function(req, res) {
 							} else {
 								res.status(200).send({
 									status  : 'error',
+									code		: 17,
 									title   : 'Error!',
 									message : 'Contraseña de usuario incorrecta.'
 								});
@@ -331,6 +352,7 @@ router.post("/user", function(req, res) {
 						} else {
 							res.status(200).send({
 								status  : 'error',
+								code		: 18,
 								title   : 'Error!',
 								message : 'Email no registrado.'
 							});
@@ -338,6 +360,7 @@ router.post("/user", function(req, res) {
 					} else {
 						res.status(200).send({ // Server error
 							status  : 'error',
+							code		: 19,
 							title   : 'Error!',
 							message : 'El usuario no pudo ser modificado. ERROR CODE #2'
 						});
@@ -346,6 +369,7 @@ router.post("/user", function(req, res) {
 			} else {
 				res.status(200).send({
 					status	 : 'error',
+					code		: 0,
 					title	  : 'Error!',
 					message	: 'Sesión no iniciada.',
 					action	 : 'redirect',
@@ -357,6 +381,7 @@ router.post("/user", function(req, res) {
 		default:
 			res.status(200).send({
 				status  : 'error',
+				code		: 0,
 				title   : 'Error!',
 				message : 'Datos no validos.',
 				action  : 'reload'

@@ -612,51 +612,61 @@
 		let wasConnected = false;
 		let isConnected = false;
 		function connect() {
-			// if user is running mozilla then use it's built-in WebSocket
-			window.WebSocket = window.WebSocket || window.MozWebSocket;
-			if (window.WebSocket) {
 
-				let protocol = 'wss'
-				if (location.protocol == 'http:') {protocol = 'ws'}
+			$.post("../authentication", {},
+			function(response, status){
+				if (status == 'success') {
+					// if user is running mozilla then use it's built-in WebSocket
+					window.WebSocket = window.WebSocket || window.MozWebSocket;
+					if (window.WebSocket) {
 
-				// variable connection declarada en el archivo principal.
-				connection = new WebSocket(protocol +'://'+ window.location.hostname + '?value=' + v + "&type=user");
-				connection.onopen = () => {
-					if (wasConnected) {
-						toastr.success('Hemos recuperado la comunicacion con el servidor.', 'Éxito!');
+						let protocol = 'wss'
+						if (location.protocol == 'http:') {protocol = 'ws'}
+
+						// variable connection declarada en el archivo principal.
+						connection = new WebSocket(protocol +'://'+ window.location.hostname + '?type=user');
+						connection.onopen = () => {
+							connection.send(response);
+							if (wasConnected) {
+								toastr.success('Hemos recuperado la comunicacion con el servidor.', 'Éxito!');
+							}
+							wasConnected = true;
+							isConnected = true;
+						};
+						connection.onmessage = (message) => {
+							//console.log(message);
+							try {
+								var json = JSON.parse(message.data);
+								//console.log(json);
+								DeviceDataProcess(json);
+							} catch (e) {
+								console.log('Invalid JSON: ', message.data);
+								return;
+							}
+						};
+						connection.onclose = (closeEvent) => {
+							if (isConnected) {
+								toastr.error('Lo sentimos, Hemos perdido comunicacion con el servidor. Intentando reconectar...', 'Error!');
+								isConnected = false;
+							}
+							setTimeout ('connect()', 5000);
+						};
+						connection.onerror = (error) => {
+							if (isConnected) {
+								toastr.error('Lo sentimos, Hay algún problema con la conexión. Intentando reconectar...', 'Error!');
+								wasConnected = true;
+								isConnected = false;
+							}
+							connection.close();
+						};
+					} else {
+						toastr.error('Lo sentimos, pero su navegador no es compatible con nuestros sitio web.', 'Error!');
 					}
-					wasConnected = true;
-					isConnected = true;
-				};
-				connection.onmessage = (message) => {
-					//console.log(message);
-					try {
-						var json = JSON.parse(message.data);
-						//console.log(json);
-						DeviceDataProcess(json);
-					} catch (e) {
-						console.log('Invalid JSON: ', message.data);
-						return;
-					}
-				};
-				connection.onclose = (closeEvent) => {
-					if (isConnected) {
-						toastr.error('Lo sentimos, Hemos perdido comunicacion con el servidor. Intentando reconectar...', 'Error!');
-						isConnected = false;
-					}
+				} else {
+					toastr.error('Lo sentimos, No hemos podido autenticar con el servidor. Intentando reconectar...', 'Error!');
 					setTimeout ('connect()', 5000);
-				};
-				connection.onerror = (error) => {
-					if (isConnected) {
-						toastr.error('Lo sentimos, Hay algún problema con la conexión. Intentando reconectar...', 'Error!');
-						wasConnected = true;
-						isConnected = false;
-					}
-					connection.close();
-				};
-			} else {
-				toastr.error('Lo sentimos, pero su navegador no es compatible con nuestros sitio web.', 'Error!');
-			}
+				}
+			});
 		}
 		connect();
 		(function () {
