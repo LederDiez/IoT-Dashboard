@@ -3,7 +3,7 @@
 const express = require('express');
 const router  = express.Router();
 
-const { DevicesModel } = require('../../models/connection_models');
+const { DevicesModel } = require('../models/connection_models');
 
 /**********************************************
 *	Admin Devices controllers

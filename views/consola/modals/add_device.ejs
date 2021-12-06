@@ -1,64 +1,49 @@
-<div class="modal fade" id="modal-add-device" >
+<div class="modal fade" id="modal-add-device">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-				<span aria-hidden="true">X</span>
-				</button>
-				<h3 style="margin-top: 0px;margin-bottom: 0px;">Agregar un nuevo dispositivo</h3>
+				<h4 class="modal-title">Agregar un nuevo dispositivo</h4>
 			</div>
 			<div class="modal-body">
-				<form role="form" onSubmit="add_device(); return false;">
-					<!-- text input -->
+				<form role="form" id="fromAdd" onSubmit="addDevice(); return false;">
 					<div class="form-group">
 						<label>Nombre del dispositivo</label>
-						<input type="text" class="form-control" id="inputAddName">
+						<input required autocomplete="off" type="text" class="form-control rounded-0" placeholder="Nombre" id="inputAddName">
 					</div>
-					<!-- text input -->
 					<div class="form-group">
 						<label>Serial del dispositivo</label>
-						<input type="text" class="form-control" id="inputAddSerial">
+						<input required autocomplete="off" type="text" class="form-control rounded-0" placeholder="Serial" id="inputAddSerial">
 					</div>
-					<% if (check) { %>
-					<!-- text input -->
-					<div class="form-group">
-						<label>Contraseña de usuario</label>
-						<input type="text" class="form-control" id="inputAddPass">
-					</div>
-					<% } %>
 				</form>
 			</div>
-			<div class="modal-footer">
+			<div class="modal-footer justify-content-between">
 				<% if (NDevices > 0) { %>
-				<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+				<% } else { %>
+				<div></div>
 				<% } %>
-				<button type="button" class="btn btn-primary" onclick="add_device();" >	AGREGAR</button>
+				<button type="submit" form="fromAdd" class="btn btn-primary" >Agregar</button>
 			</div>
-		</div>
-		<!-- /.modal-content -->
-	</div>
-	<!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 <script>
-	function add_device () {
+	function addDevice () {
 		Pace.restart();
 				
-		let addName   = $('#inputAddName').val();
-		let addSerial = $('#inputAddSerial').val();
-		let pass1 	  = null;
-		
-		if (<%=check%>) {
-			pass1 = $('#inputAddPass').val();
+		let addName   = document.getElementById("inputAddName").value;
+		let addSerial = document.getElementById("inputAddSerial").value;
+
+		if (addName != '' && addSerial != '') {
+			$.post("../user/device/add", {
+				name   : addName,
+				serial : addSerial
+			},
+			function (response, status) {
+				processResponse(response);
+			});
+		} else {
+			toastr.error('Debe rellenar todos los campos.', 'Error!');
 		}
-		
-		$.post("../api/device", {
-			action : 'add',
-			name   : addName,
-			serial : addSerial
-		},
-		function (response, status) {
-			processResponse(response);
-		});
 	}
 </script>

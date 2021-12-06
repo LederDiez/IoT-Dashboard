@@ -613,7 +613,7 @@
 		let isConnected = false;
 		function connect() {
 
-			$.post("../authentication", {},
+			$.post("../authentication/user", {},
 			function(response, status){
 				if (status == 'success') {
 					// if user is running mozilla then use it's built-in WebSocket

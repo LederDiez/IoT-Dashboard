@@ -14,54 +14,7 @@
 			<!-- The time line -->
 			<div class="row">
 				<div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
-					<!-- Main node for this component -->
 					<div class="timeline" id="timeline">
-						<!-- Timeline time label -->
-						<div class="time-label">
-							<span class="bg-red">23 Aug. 2019</span>
-						</div>
-						<div>
-						<!-- Before each timeline item corresponds to one icon on the left scale -->
-							<i class="fas fa-desktop bg-blue"></i>
-							<!-- Timeline item -->
-							<div class="timeline-item">
-							<!-- Time -->
-								<span class="time"><i class="fas fa-clock"></i> 12:05</span>
-								<!-- Header. Optional -->
-								<h3 class="timeline-header"><a href="#">Dispositivo </a></h3>
-								<!-- Body -->
-								<div class="timeline-body">
-									Test 1 ha enviado: Alerta de alto consumo.
-								</div> <!-- Placement of additional controls. Optional -->
-								<div class="timeline-footer d-flex justify-content-end">
-									<a class="btn btn-danger btn-sm">Borrar</a>
-								</div>
-							</div>
-						</div> <!-- The last icon means the story is complete -->
-						<div class="time-label">
-							<span class="bg-green">3 Jan. 2014</span>
-						</div>
-						<div>
-							<!-- Before each timeline item corresponds to one icon on the left scale -->
-								<i class="fas fa-tools bg-blue"></i>
-								<!-- Timeline item -->
-								<div class="timeline-item">
-								<!-- Time -->
-									<span class="time"><i class="fas fa-clock"></i> 12:05</span>
-									<!-- Header. Optional -->
-									<h3 class="timeline-header"><a href="#">Sistema</a></h3>
-									<!-- Body -->
-									<div class="timeline-body">
-										Su dispositivo ha perdido comunicacion con nuestra plataforma.
-									</div> <!-- Placement of additional controls. Optional -->
-									<div class="timeline-footer d-flex justify-content-end">
-										<a class="btn btn-danger btn-sm">Delete</a>
-									</div>
-								</div>
-							</div> <!-- The last icon means the story is complete -->
-						<div>
-							<i class="fas fa-clock bg-gray"></i>
-						</div>
 					</div>
 				</div>
 				<!-- /.col -->
@@ -70,9 +23,65 @@
 		</div><!-- /.container-fluid -->
 	</section>
 	<script>
+
+		function deleteNotifi(id) {
+			$.post("../api/notification/delete", {
+				id: id
+			},
+			function(response, status){
+				if (status == 'success') {
+					toastr.info('Notificación marcada como leída.', 'Mensaje');
+					getNotifications();
+				}
+			});
+		}
+
+		function getNotifications() {
+			$.post("../api/notifications", {},
+			function(response, status){
+
+				let months = ['Ene.', 'Feb.', 'Mar.', 'Abr.', 'May.', 'Jun.', 'Jul.', 'Ago.', 'Sep.', 'Oct.', 'Nov.', 'Dic.'];
+
+				let timeline = document.getElementById("timeline");
+				timeline.innerHTML = "";
+				
+				let count = response.notifications.length;
+				for (let i = 0; i < count; i++) {
+					let noti = response.notifications[i];
+					let d = new Date(noti.generatedDate);
+
+					let hour = d.getHours() + ":" + d.getMinutes();
+					let date = d.getDate() +" "+ months[d.getMonth()] + " " + d.getFullYear();
+
+					let message = noti.message
+					let id = noti._id;
+
+					let total = 
+					"<div class='time-label'><span class='bg-purple'>" + date +"</span></div>" +
+					"<div>" +
+						"<i class='fas fa-desktop bg-gray'></i>" +
+						"<div class='timeline-item'>" +
+							"<span class='time'><i class='fas fa-clock'></i> " + hour + "</span>" +
+							"<h3 class='timeline-header'><a href='#'>Dispositivo </a></h3>" +
+							"<div class='timeline-body'>" +
+								"El dispositivo ha enviado: " + message + "." +
+							"</div>" +
+							"<div class='timeline-footer d-flex justify-content-end'>" +
+								"<a class='btn btn-danger btn-sm' onclick='deleteNotifi(\"" + id + "\")'>Borrar</a>" +
+							"</div>" +
+						"</div>" +
+					"</div>";
+
+					timeline.innerHTML += total;
+				}
+
+				timeline.innerHTML += "<div><i class='fas fa-clock bg-gray'></i></div>";
+			});
+		}
+
 		(function () {
 
-			//
+			getNotifications();
 
 			let view = document.getElementById("<%= viewName %>");
 			view.addEventListener("OnVisible", function () {

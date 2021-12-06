@@ -4,7 +4,7 @@ const express = require('express');
 const router  = express.Router();
 
 const bcrypt  = require('bcrypt-nodejs');
-const { UserModel }   = require('../../models/connection_models');
+const { UserModel }   = require('../models/connection_models');
 
 // generating a hashs
 function generateHash (password) {

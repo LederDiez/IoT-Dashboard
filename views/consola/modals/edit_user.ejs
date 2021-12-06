@@ -2,54 +2,39 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 		<div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-			<span aria-hidden="true">X</span>
-			</button>
-			<h3 style="margin-top: 0px;margin-bottom: 0px;">Datos de usuario</h3>
+			<h4 class="modal-title">Datos de usuario</h4>
 		</div>
 		<div class="modal-body">
-			<div class="form-group">
-				<label for="inputNewUser">Editar usuario</label>
-				<input type="name" class="form-control" id="inputNewUser" placeholder="No ingresar para no cambiar">
-			</div>
-			<div class="form-group">
-				<label for="inputNewEmail">Editar correo</label>
-				<input type="user" class="form-control" id="inputNewEmail" placeholder="No ingresar para no cambiar">
-			</div>
-			<div class="row" style="margin-right: -5px;margin-left: -5px;">
-				<div class="col-lg-6">
-					<div class="form-group">
-						<label for="inputNewPass1">Nueva contraseña</label>
-						<input type="password" class="form-control" id="inputNewPass1"  placeholder="No ingresar para no cambiar">
-					</div>
+			<form role="form" id="fromUser" onSubmit="changeUserData(); return false;">
+				<div class="form-group">
+					<label for="inputNewUser">Nombre de usuario</label>
+					<input type="name" autocomplete="off" class="form-control rounded-0" id="inputNewUser" placeholder="Nombre">
 				</div>
-				<!-- /.col-lg-6 -->
-				<div class="col-lg-6">
-					<div class="form-group">
-						<label for="inputNewPass2">Repetir contraseña</label>
-						<input type="password" class="form-control" id="inputNewPass2" placeholder="No ingresar para no cambiar">
+				<div class="row" style="margin-right: -5px;margin-left: -5px;">
+					<div class="col-lg-6">
+						<div class="form-group">
+							<label for="inputNewPass1">Nueva contraseña</label>
+							<input type="password" autocomplete="off" class="form-control rounded-0" id="inputNewPass1"  placeholder="Contraseña">
+						</div>
 					</div>
+					<!-- /.col-lg-6 -->
+					<div class="col-lg-6">
+						<div class="form-group">
+							<label for="inputNewPass2">Repetir contraseña</label>
+							<input type="password" autocomplete="off" class="form-control rounded-0" id="inputNewPass2" placeholder="Contraseña">
+						</div>
+					</div>
+					<!-- /.col-lg-6 -->
 				</div>
-				<!-- /.col-lg-6 -->
-			</div>
-			<div class="checkbox">
-				<label>
-					<input type="checkbox" id="inputPassCheck"> Solicitar contraseña para modificar dispositivos
-				</label>
-			</div>
-			<div class="form-group">
-				<label for="inputFile">Cagar imagen</label>
-				<input type="file" id="inputFile" name="image" accept=".jpg, .jpeg, .png, .gif">
-				<p class="help-block">Selecciona una imagen de perfil</p>
-			</div>
-			<div class="form-group">
-				<label for="inputOldPass">Contraseña actual</label>
-				<input type="password" class="form-control" id="inputOldPass" placeholder="Se debe ingresar para realizar los cambios">
-			</div>
+				<div class="form-group">
+					<label for="inputOldPass">Contraseña actual</label>
+					<input required autocomplete="off" type="password" class="form-control rounded-0" id="inputOldPass" placeholder="Contraseña">
+				</div>
+			</form>
 		</div>
-		<div class="modal-footer">
-			<button type="button" data-dismiss="modal" class="btn btn-default pull-left">Cerrar</button>
-			<button type="button"onclick="changeUserData()" class="btn btn-primary">Guardar cambios</button>
+		<div class="modal-footer justify-content-between">
+			<button type="button" data-dismiss="modal" class="btn btn-default">Cerrar</button>
+			<button type="submit" form="fromUser" class="btn btn-primary">Guardar</button>
 		</div>
 		</div>
 		<!-- /.modal-content -->
@@ -65,20 +50,14 @@
 			let error = false;
 
 			let user  = document.getElementById("inputNewUser").value;
-			let mail  = document.getElementById("inputNewEmail").value;
 			let pass1 = document.getElementById("inputNewPass1").value;
 			let pass2 = document.getElementById("inputNewPass2").value;
-			let check = document.getElementById("inputPassCheck").checked;
-			let image = document.getElementById("inputFile").files[0];
 			let pass3 = document.getElementById("inputOldPass").value;
 
 			var data = new FormData();
 			data.append('page', 'edit');
 			if (user != "") {
 				data.append('user', user);
-			}
-			if (mail != "") {
-				data.append('mail', mail);
 			}
 			if (pass1 != "") { changePass1 = true; } else { changePass1 = false; }
 			if (pass2 != "") { changePass2 = true; } else { changePass2 = false; }
@@ -93,10 +72,6 @@
 			} else if (changePass1 == true || changePass2 == true) {
 				toastr.error("Las contraseñas no coinciden.", "Error!");
 				error = true;
-			}
-			data.append('check', check);
-			if (image != "") {
-				data.append('image', image);
 			}
 			if (pass3 != "") {
 				data.append('pass3', pass3);

@@ -54,7 +54,7 @@
 				<li class="nav-item">
 					<a class="notifications nav-link" href="#" role="button">
 						<i class="far fa-bell"></i>
-						<span class="badge badge-danger navbar-badge">0</span>
+						<span id="notificationCount" class="badge badge-danger navbar-badge" style="display: none;">0</span>
 					</a>
 				</li>
 				<li class="nav-item">
@@ -114,32 +114,6 @@
 							<a href="#" class="notifications nav-link">
 								<i class="nav-icon far fa-bell"></i>
 								<p>Notificaciones</p>
-							</a>
-						</li>
-						<!-- ----------------------------------------------------------------------------------------- -->
-						<li class="nav-item">
-							<a href="#" class="options nav-link">
-								<i class="nav-icon far fa-image"></i>
-								<p>Opciones</p>
-							</a>
-						</li>
-						<li class="nav-header">Redes sociales</li>
-						<li class="nav-item">
-							<a href="#" class="nav-link">
-								<i class="nav-icon far fa-circle text-danger"></i>
-								<p class="text">YouTube</p>
-							</a>
-						</li>
-						<li class="nav-item">
-							<a href="#" class="nav-link">
-								<i class="nav-icon far fa-circle text-warning"></i>
-								<p>Twitter</p>
-							</a>
-						</li>
-						<li class="nav-item">
-							<a href="#" class="nav-link">
-								<i class="nav-icon far fa-circle text-info"></i>
-								<p>Facebook</p>
 							</a>
 						</li>
 					</ul>
@@ -251,7 +225,7 @@
 		toastr.options = {
 			"closeButton": true,
 			"debug": false,
-			"newestOnTop": false,
+			"newestOnTop": true,
 			"progressBar": false,
 			"positionClass": "toast-bottom-right",
 			"preventDuplicates": false,
@@ -271,6 +245,8 @@
 		let pages     = [];
 		let lastPage  = "something";
 		let container = $('.content-wrapper');
+
+		let lastNotificationCount = 0;
 
 		function getRandomInt(min, max) {
 			return Math.round(Math.random() * (max - min)) + min;
@@ -392,6 +368,21 @@
 			});
 		}
 
+		function checkNotifications() {
+			Pace.restart();
+			$.post("../api/notifications/count", {},
+				function(response, status){
+					if (lastNotificationCount != response.count) {
+						let indicator = document.getElementById("notificationCount");
+						indicator.innerHTML = response.count;
+						indicator.style.display = "block";
+						//Reproducir un sonido?
+					}
+					lastNotificationCount = response.count;
+				}
+			);
+		}
+
 		(function () {
 			if (DEVICES > 0) {
 				var localLastPage = 'dashboard'
@@ -402,6 +393,17 @@
 			} else {
 				$("#modal-add-device").modal({backdrop: 'static', keyboard: true});
 			}
+
+			$.post("../api/notifications/count", {},
+			function(response, status){
+				document.getElementById("notificationCount").innerHTML = response.count;
+			});
+
+			checkNotifications();
+
+			setInterval(function () {
+				checkNotifications();
+			}, 60000); //Cada minuto?
 		})();
 
 		function urlB64ToUint8Array(base64String) {

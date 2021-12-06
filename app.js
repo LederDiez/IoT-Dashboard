@@ -80,10 +80,6 @@ httpServer.listen(app.get('port'), () => {
 
 //////////////////////////////////////////////////////////////////////////////////////
 
-function reject(req) {
-    
-}
-
 var wsServer = new webSocketServer({
     httpServer: httpServer
 });
@@ -168,13 +164,15 @@ wsServer.on('request', (req) => {
                     // Guardar historial
                     
                     let data_schema = mongoose.model('device-' + connection.serial, DevicesDataSchema);
-                    let new_data = new data_schema();
-                    new_data.registerDate = Date.now();
-                    new_data.data = data;
-                    new_data.save((err) => {
+                    let newData = new data_schema();
+                    newData.registerDate = Date.now();
+                    newData.data = data;
+                    newData.save(function (err) {
                         if (err) {
                             console.log('error al guardar datos del dispositivo'.bgRed);
-                        }
+                            return handleError(err)
+                        };
+                        // saved!
                     });
                 }
 

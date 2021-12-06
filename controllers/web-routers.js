@@ -1,8 +1,8 @@
 const CryptoJS = require("crypto-js");
 const express  = require('express');
 
-const { SERIAL_CRYPTO_KEY } = require('../../config/config');
-const { DevicesModel } = require('../../models/connection_models');
+const { SERIAL_CRYPTO_KEY } = require('../config/config');
+const { DevicesModel } = require('../models/connection_models');
 
 const router = express.Router();
 
@@ -40,11 +40,7 @@ router.get("/consola", function(req, res) {
 	if (req.session.IsStarted == true) {
 
 		/* Indica que dispositivo tiene seleccionado el usuario */
-		var deviceId = 0;
-		if (req.query.device != null) {
-			deviceId = req.query.device;
-		}
-		/******************************************************/
+		var deviceId = req.query.device || 0;
 
 		var userid = req.session.userid;
 		var user   = req.session.user;
@@ -67,6 +63,7 @@ router.get("/consola", function(req, res) {
 		DevicesModel.find({'associatedUser' : userid}, function(err, result) {
 			if (!err) {
 				if (result.toString() != "") {
+					
 					if (result.length <= deviceId) {
 						req.query.device = 0;
 						deviceId = 0;
@@ -75,18 +72,14 @@ router.get("/consola", function(req, res) {
 					deviceName   = result[deviceId].name;
 					deviceModel  = result[deviceId].modelName;
 					deviceSerial = result[deviceId].serialNumber;
-
-					// Encrypt
-					var encryptedSerial = CryptoJS.AES.encrypt(deviceSerial, SERIAL_CRYPTO_KEY);
 					
-					RenderData.deviceName	= deviceName,
-					RenderData.NDevices	 	= result.length,
-					RenderData.deviceSerial = encryptedSerial,
-					RenderData.devices	  = JSON.stringify(result)
-
 					req.session.deviceName   = deviceName;
 					req.session.deviceModel  = deviceModel;
 					req.session.deviceSerial = deviceSerial;
+
+					RenderData.deviceName	= deviceName,
+					RenderData.NDevices	 	= result.length,
+					RenderData.devices	  = JSON.stringify(result)
 
 				}
 
@@ -109,7 +102,7 @@ router.post("/models", function(req, res) {
 
 		if (viewName != null) {
 
-			const path = "models/" + viewName + "/" + model + "/index.ejs";
+			let path = "models/" + viewName + "/" + model + "/index.ejs";
 			const filePath = "./views/" + path;
 
 			fs.access(filePath, function (error) {
