@@ -170,7 +170,6 @@ wsServer.on('request', (req) => {
                     newData.save(function (err) {
                         if (err) {
                             console.log('error al guardar datos del dispositivo'.bgRed);
-                            return handleError(err)
                         };
                         // saved!
                     });

@@ -266,6 +266,9 @@
 			exporting: {
 				enabled: false
 			},
+			xAxis: {
+				type: 'datetime'
+			},
 			yAxis: {
 				title: {
 					text: ''
@@ -303,14 +306,13 @@
 				data: (function () {
 					// generate an array of random data
 					let data = [];
-					let time = (new Date()).getTime();
+					let time = Date.now();
 					let i;
 
-					for (i = -600; i <= 0; i += 1) {
+					for (i = -600; i <= 0; i += 5) {
 						data.push([
-							time + i * 1000,
-							//0
-							getRandomInt(50, 75)
+							time + (i * 1000),
+							0
 						]);
 					}
 					return data;
@@ -364,6 +366,9 @@
 			exporting: {
 				enabled: false
 			},
+			xAxis: {
+				type: 'datetime'
+			},
 			yAxis: {
 				title: {
 					text: null
@@ -401,14 +406,13 @@
 				data: (function () {
 					// generate an array of random data
 					let data = [];
-					let time = (new Date()).getTime();
+					let time = Date.now();
 					let i;
 
-					for (i = -600; i <= 0; i += 1) {
+					for (i = -600; i <= 0; i += 5) {
 						data.push([
-							time + i * 1000,
-							//0
-							getRandomInt(50, 75)
+							time + (i * 1000),
+							0
 						]);
 					}
 					return data;
@@ -531,39 +535,46 @@
 			}]
 		}));
 
-		setInterval (function() {
+		function DeviceDataProcess (data) {
 
-			voltF1.innerHTML = getRandomFloat(120, 121);
-			voltF2.innerHTML = getRandomFloat(120, 121);
+			if (data.s == 1) {
+				controlState("on");
+			} else {
+				controlState("off");
+			}
 
-			currentF1.innerHTML = getRandomFloat(10, 11);
-			currentF2.innerHTML = getRandomFloat(13, 14);
+			voltF1.innerHTML = data.v1;
+			voltF2.innerHTML = data.v2;
+
+			currentF1.innerHTML = data.a1;
+			currentF2.innerHTML = data.a2;
 
 			Freq.innerHTML = getRandomFloat(59.9, 60.1);
 
-			controlState("on");
+			let loadp1 = Math.round((100/2500) * data.p1);
+			let loadp2 = Math.round((100/2500) * data.p2);
 
 			if (loadF1) {
 				let point = loadF1.series[0].points[0];
-				point.update(getRandomInt(70, 90));
+				point.update(loadp1);
 			}
 
 			if (loadF2) {
 				let point = loadF2.series[0].points[0];
-				point.update(getRandomInt(70, 90));
+				point.update(loadp2);
 			}
 
 			if (wattsF1) {
 				let series = wattsF1.series[0];
-				let x = (new Date()).getTime()
-				let y = getRandomInt(50, 75);
+				let x = Date.now();
+				let y = parseInt(data.p1, 10);
 				series.addPoint([x, y], true, true);
 			}
 
 			if (wattsF2) {
 				let series = wattsF2.series[0];
-				let x = (new Date()).getTime()
-				let y = getRandomInt(50, 75);
+				let x = Date.now();
+				let y = parseInt(data.p2, 10);
 				series.addPoint([x, y], true, true);
 			}
 
@@ -577,36 +588,6 @@
 			graphic.updateNode(1, 30, 0, "#00c853", 50);  // bateria a inversor
 			graphic.updateNode(2, 0, 1, "#d50000", 70, "#d50000");  // Inversor a carga
 			graphic.updateNode(3, 0, 1, "#d50000", 70);// red a inversor
-
-		}, 3000);
-
-		function DeviceDataProcess (data) {
-
-			console.log(data[0]);
-
-			/*if (loadF1) {
-				let point = loadF1.series[0].points[0];
-				point.update(data[0].value);
-			}
-
-			if (loadF2) {
-				let point = loadF2.series[0].points[0];
-				point.update(data[0].C);
-			}
-
-			if (wattsF1) {
-				let series = wattsF1.series[0];
-				let x = (new Date()).getTime()
-				let y = data[0].wattsF1
-				series.addPoint([x, y], true, true);
-			}
-
-			if (wattsF2) {
-				let series = wattsF2.series[0];
-				let x = (new Date()).getTime()
-				let y = data[0].wattsF2
-				series.addPoint([x, y], true, true);
-			}*/
 		}
 
 		let wasConnected = false;
@@ -640,6 +621,7 @@
 								//console.log(json);
 								DeviceDataProcess(json);
 							} catch (e) {
+								console.log(e);
 								console.log('Invalid JSON: ', message.data);
 								return;
 							}

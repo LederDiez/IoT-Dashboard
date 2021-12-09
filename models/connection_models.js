@@ -73,7 +73,7 @@ const DeviceSchema = new Schema({
 var devicesModel = mongoose.model(DEVICE_COLECTION, DeviceSchema);
 
 const DevicesDataSchema = new Schema({
-	registerDate	: {type: Number, required: true},
+	registerDate	: {type: Number, required: true, index: true},
 	data					: {type: Object, required: true}
 });
 

@@ -132,9 +132,9 @@ router.get("/admin", function(req, res) {
 	});
 });
 
-router.get("/test", function(req, res) {
-	res.render("test", {
-		title: 'Test web'
+router.get("/simulador/inversor", function(req, res) {
+	res.render("inversor", {
+		title: 'Simulador web'
 	});
 });
 

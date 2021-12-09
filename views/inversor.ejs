@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title><%= title %></title>
+</head>
+<body>
+	<style>
+		* { 
+			font-family:tahoma; 
+			font-size:12px;
+		}
+		.wrapper {
+			text-align: center;
+		}
+		.content {
+			display: grid;
+			grid-template-columns: 50% 50%;
+			margin-bottom: 10px;
+		}
+		h3 {
+			margin-bottom: 0px;
+		}
+		.group {
+			margin-bottom: 10px;
+		}
+		input { 
+			border-radius:2px; 
+			border:1px solid #ccc;
+		}
+		span { 
+			display:block;
+			margin-top:15px; 
+		}
+	</style>
+	<div class="wrapper">
+
+		<div>
+			<div class="group">
+				<h3>Estado</h3>
+				<input type="number" value="1" id="state"/>
+			</div>
+		</div>
+		<hr>
+
+		<h3>Bateria</h3>
+		<div class="content">
+			<div class="group">
+				<span>Minima</span>
+				<input type="number" value="48" id="minBatt"/>
+			</div>
+			<div class="group">
+				<span>Maxima</span>
+				<input type="number" value="49" id="maxBatt"/>
+			</div>
+		</div>
+		<hr>
+
+		<h3>Voltaje 1</h3>
+		<div class="content">
+			<div class="group">
+				<span>Minimo</span>
+				<input type="number" value="119.5" id="minVolt1"/>
+			</div>
+			<div class="group">
+				<span>Maximo</span>
+				<input type="number" value="120.5" id="maxVolt1"/>
+			</div>
+		</div>
+		<hr>
+		<h3>Voltaje 2</h3>
+		<div class="content">
+			<div class="group">
+				<span>Minimo</span>
+				<input type="number" value="119.5" id="minVolt2"/>
+			</div>
+			<div class="group">
+				<span>Maximo</span>
+				<input type="number" value="120.5" id="maxVolt2"/>
+			</div>
+		</div>
+		<hr>
+
+		<h3>Amperios 1</h3>
+		<div class="content">
+			<div class="group">
+				<span>Minimo</span>
+				<input type="number" value="5.5" id="minAmp1"/>
+			</div>
+			<div class="group">
+				<span>Maximo</span>
+				<input type="number" value="6.5" id="maxAmp1"/>
+			</div>
+		</div>
+		<hr>
+		<h3>Amperios 2</h3>
+		<div class="content">
+			<div class="group">
+				<span>Minimo</span>
+				<input type="number" value="9.5" id="minAmp2"/>
+			</div>
+			<div class="group">
+				<span>Maximo</span>
+				<input type="number" value="10.5" id="maxAmp2"/>
+			</div>
+		</div>
+		<hr>
+
+		<h3>Potencia en regulador</h3>
+		<div class="content">
+			<div class="group">
+				<span>Minima</span>
+				<input type="number" value="1500" id="minRPower"/>
+			</div>
+			<div class="group">
+				<span>Maxima</span>
+				<input type="number" value="1200" id="maxRPower"/>
+			</div>
+		</div>
+		<hr>
+
+		<button onclick="getValues()">Aplicar</button>
+
+	</div>
+
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+	<script>
+
+		let state;
+
+		let minBatt = 0;
+		let maxBatt = 0;
+
+		let minVolt1 = 0;
+		let maxVolt1 = 0;
+		let minVolt2 = 0;
+		let maxVolt2 = 0;
+
+		let minAmp1 = 0;
+		let maxAmp1 = 0;
+		let minAmp2 = 0;
+		let maxAmp2 = 0;
+
+		let minPower1 = 0;
+		let maxPower1 = 0;
+		let minPower2 = 0;
+		let maxPower2 = 0;
+
+		let cPower1 = 0;
+		let cPower2 = 0;
+
+		let minRPower = 0;
+		let maxRPower = 0;
+
+		let connection;
+
+		let wasConnected = false;
+		let isConnected = false;
+
+		function getRandomInt(min, max) {
+			return (Math.random() * (max - min) + min).toFixed(0);
+		}
+
+		function getRandomFloat(min, max) {
+			return (Math.random() * (max - min) + min).toFixed(1);
+		}
+
+		function connect() {
+
+			$.post("../authentication/device", {
+				DeviceKey: 'ASDFGHJKLZXCVBNM'
+			},
+			function(response, status){
+				if (status == 'success') {
+
+					window.WebSocket = window.WebSocket || window.MozWebSocket;
+					if (window.WebSocket) {
+
+						let protocol = 'wss'
+						if (location.protocol == 'http:') {protocol = 'ws'}
+
+						connection = new WebSocket(protocol +'://'+ window.location.hostname + '?type=device');
+						connection.onopen = () => {
+							connection.send(response);
+							if (wasConnected) {
+								console.log('Hemos recuperado la comunicacion con el servidor.');
+							} else {
+								console.log('Comunicacion establecida con el servidor.');
+							}
+							wasConnected = true;
+							isConnected = true;
+						};
+						connection.onmessage = (message) => {
+							console.log(message);
+							try {
+								var json = JSON.parse(message.data);
+								console.log(json);
+							} catch (e) {
+								console.log('Invalid JSON: ', message.data);
+								return;
+							}
+						};
+						connection.onclose = (closeEvent) => {
+							if (isConnected) {
+								console.log('Lo sentimos, Hemos perdido comunicacion con el servidor. Intentando reconectar...');
+								isConnected = false;
+							}
+							setTimeout ('connect()', 5000);
+						};
+						connection.onerror = (error) => {
+							if (isConnected) {
+								console.log('Lo sentimos, Hay algún problema con la conexión. Intentando reconectar...');
+								wasConnected = true;
+								isConnected = false;
+							}
+							connection.close();
+						};
+					} else {
+						console.log('Lo sentimos, pero su navegador no es compatible con nuestros sitio web.');
+					}
+				} else {
+					console.log('Lo sentimos, No hemos podido autenticar con el servidor. Intentando reconectar...');
+					setTimeout ('connect()', 5000);
+				}
+			});
+		}
+		connect();
+
+		function getValues() {
+
+			state = parseFloat(document.getElementById("state").value);
+
+			minBatt = parseFloat(document.getElementById("minBatt").value);
+			maxBatt = parseFloat(document.getElementById("maxBatt").value);
+			
+			minVolt1 = parseFloat(document.getElementById('minVolt1').value);
+			maxVolt1 = parseFloat(document.getElementById('maxVolt1').value);
+			maxVolt2 = parseFloat(document.getElementById('maxVolt2').value);
+			minVolt2 = parseFloat(document.getElementById('minVolt2').value);
+
+			minAmp1 = parseFloat(document.getElementById('minAmp1').value);
+			maxAmp1 = parseFloat(document.getElementById('maxAmp1').value);
+			maxAmp2 = parseFloat(document.getElementById('maxAmp2').value);
+			minAmp2 = parseFloat(document.getElementById('minAmp2').value);
+
+			maxRPower = parseFloat(document.getElementById('maxRPower').value);
+			minRPower = parseFloat(document.getElementById('minRPower').value);
+
+			minPower1 = (minVolt1 * minAmp1);
+			maxPower1 = (maxVolt1 * maxAmp1);
+			minPower2 = (maxVolt2 * maxAmp2);
+			maxPower2 = (minVolt2 * minAmp2);
+
+			console.log("Valores actualizados...");
+		}
+		getValues();
+
+		setInterval(function(){
+			if (isConnected) {
+				cPower1 += (getRandomInt(minPower1, maxPower1) / 3600);
+				cPower2 += (getRandomInt(minPower2, maxPower2) / 3600);
+			}
+		}, 1000); 
+
+		setInterval(function(){
+			if (isConnected) {
+
+				let data = JSON.stringify({
+					s:  state,
+					b:  getRandomFloat(minBatt, maxBatt),
+					v1: getRandomFloat(minVolt1, maxVolt1),
+					v2: getRandomFloat(minVolt2, maxVolt2),
+					a1: getRandomFloat(minAmp1, maxAmp1),
+					a2: getRandomFloat(minAmp2, maxAmp2),
+					p1: getRandomInt(minPower1, maxPower1),
+					p2: getRandomInt(minPower2, maxPower2),
+					pc1: cPower1.toFixed(4),
+					pc2: cPower2.toFixed(4),
+					rp: getRandomInt(minRPower, maxRPower),
+				});
+
+				cPower1 = 0;
+				cPower2 = 0;
+
+				connection.send(data);
+			}
+		}, 5000); 
+	</script>
+</body>
+</html>
