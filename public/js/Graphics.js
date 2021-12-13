@@ -192,9 +192,11 @@
                         array = lastd[id];
                     }
 
+                    element.setAttribute("r", calculateCirclesPixels(r))
+                    element.setAttribute("fill", c);
+
                     if (array[i] != d) {
-                        element.setAttribute("r", calculateCirclesPixels(r))
-                        element.setAttribute("fill", c);
+                        
                         if (d == 1) {
                             element.animate([
                                 {   // from
@@ -222,7 +224,18 @@
                                 iterations: Infinity
                             });
                         } else {
-                            element.animate([], {});
+                            element.animate([
+                                {   // from
+                                    transform : 'translate(0px, 0px)'
+                                },
+                                {   // to
+                                    transform : 'translate(0px, 0px)'
+                                }
+                            ], {
+                                delay     : delay,
+                                duration  : t,
+                                iterations: Infinity
+                            });
                         }
                         array[i] = d
                     }

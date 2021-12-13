@@ -37,10 +37,15 @@
 	</style>
 	<div class="wrapper">
 
-		<div>
+		<h3>Estados</h3>
+		<div class="content">
 			<div class="group">
-				<h3>Estado</h3>
-				<input type="number" value="1" id="state"/>
+				<span>Estado inversor</span>
+				<input type="number" value="1" id="istate"/>
+			</div>
+			<div class="group">
+				<span>Estado regulador</span>
+				<input type="number" value="1" id="rstate"/>
 			</div>
 		</div>
 		<hr>
@@ -54,6 +59,19 @@
 			<div class="group">
 				<span>Maxima</span>
 				<input type="number" value="49" id="maxBatt"/>
+			</div>
+		</div>
+		<hr>
+
+		<h3>Potencia en regulador</h3>
+		<div class="content">
+			<div class="group">
+				<span>Minima</span>
+				<input type="number" value="1500" id="minRPower"/>
+			</div>
+			<div class="group">
+				<span>Maxima</span>
+				<input type="number" value="1200" id="maxRPower"/>
 			</div>
 		</div>
 		<hr>
@@ -83,6 +101,19 @@
 		</div>
 		<hr>
 
+		<h3>Frecuencia en fases</h3>
+		<div class="content">
+			<div class="group">
+				<span>Minima</span>
+				<input type="number" value="59.9" id="minFreq"/>
+			</div>
+			<div class="group">
+				<span>Maxima</span>
+				<input type="number" value="60.1" id="maxFreq"/>
+			</div>
+		</div>
+		<hr>
+
 		<h3>Amperios 1</h3>
 		<div class="content">
 			<div class="group">
@@ -108,19 +139,6 @@
 		</div>
 		<hr>
 
-		<h3>Potencia en regulador</h3>
-		<div class="content">
-			<div class="group">
-				<span>Minima</span>
-				<input type="number" value="1500" id="minRPower"/>
-			</div>
-			<div class="group">
-				<span>Maxima</span>
-				<input type="number" value="1200" id="maxRPower"/>
-			</div>
-		</div>
-		<hr>
-
 		<button onclick="getValues()">Aplicar</button>
 
 	</div>
@@ -128,7 +146,8 @@
 	<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 	<script>
 
-		let state;
+		let istate = 1;
+		let rstate = 1;
 
 		let minBatt = 0;
 		let maxBatt = 0;
@@ -137,6 +156,9 @@
 		let maxVolt1 = 0;
 		let minVolt2 = 0;
 		let maxVolt2 = 0;
+
+		let minFreq = 0;
+		let maxFreq = 0;
 
 		let minAmp1 = 0;
 		let maxAmp1 = 0;
@@ -167,70 +189,10 @@
 			return (Math.random() * (max - min) + min).toFixed(1);
 		}
 
-		function connect() {
-
-			$.post("../authentication/device", {
-				DeviceKey: 'ASDFGHJKLZXCVBNM'
-			},
-			function(response, status){
-				if (status == 'success') {
-
-					window.WebSocket = window.WebSocket || window.MozWebSocket;
-					if (window.WebSocket) {
-
-						let protocol = 'wss'
-						if (location.protocol == 'http:') {protocol = 'ws'}
-
-						connection = new WebSocket(protocol +'://'+ window.location.hostname + '?type=device');
-						connection.onopen = () => {
-							connection.send(response);
-							if (wasConnected) {
-								console.log('Hemos recuperado la comunicacion con el servidor.');
-							} else {
-								console.log('Comunicacion establecida con el servidor.');
-							}
-							wasConnected = true;
-							isConnected = true;
-						};
-						connection.onmessage = (message) => {
-							console.log(message);
-							try {
-								var json = JSON.parse(message.data);
-								console.log(json);
-							} catch (e) {
-								console.log('Invalid JSON: ', message.data);
-								return;
-							}
-						};
-						connection.onclose = (closeEvent) => {
-							if (isConnected) {
-								console.log('Lo sentimos, Hemos perdido comunicacion con el servidor. Intentando reconectar...');
-								isConnected = false;
-							}
-							setTimeout ('connect()', 5000);
-						};
-						connection.onerror = (error) => {
-							if (isConnected) {
-								console.log('Lo sentimos, Hay algún problema con la conexión. Intentando reconectar...');
-								wasConnected = true;
-								isConnected = false;
-							}
-							connection.close();
-						};
-					} else {
-						console.log('Lo sentimos, pero su navegador no es compatible con nuestros sitio web.');
-					}
-				} else {
-					console.log('Lo sentimos, No hemos podido autenticar con el servidor. Intentando reconectar...');
-					setTimeout ('connect()', 5000);
-				}
-			});
-		}
-		connect();
-
 		function getValues() {
 
-			state = parseFloat(document.getElementById("state").value);
+			istate = parseFloat(document.getElementById("istate").value);
+			rstate = parseFloat(document.getElementById("rstate").value);
 
 			minBatt = parseFloat(document.getElementById("minBatt").value);
 			maxBatt = parseFloat(document.getElementById("maxBatt").value);
@@ -239,6 +201,9 @@
 			maxVolt1 = parseFloat(document.getElementById('maxVolt1').value);
 			maxVolt2 = parseFloat(document.getElementById('maxVolt2').value);
 			minVolt2 = parseFloat(document.getElementById('minVolt2').value);
+
+			maxFreq = parseFloat(document.getElementById('maxFreq').value);
+			minFreq = parseFloat(document.getElementById('minFreq').value);
 
 			minAmp1 = parseFloat(document.getElementById('minAmp1').value);
 			maxAmp1 = parseFloat(document.getElementById('maxAmp1').value);
@@ -268,10 +233,12 @@
 			if (isConnected) {
 
 				let data = JSON.stringify({
-					s:  state,
+					is:  istate,
+					rs:  rstate,
 					b:  getRandomFloat(minBatt, maxBatt),
 					v1: getRandomFloat(minVolt1, maxVolt1),
 					v2: getRandomFloat(minVolt2, maxVolt2),
+					f : getRandomFloat(minFreq, maxFreq),
 					a1: getRandomFloat(minAmp1, maxAmp1),
 					a2: getRandomFloat(minAmp2, maxAmp2),
 					p1: getRandomInt(minPower1, maxPower1),
@@ -286,7 +253,76 @@
 
 				connection.send(data);
 			}
-		}, 5000); 
+		}, 5000);
+
+		function UserDataProcess(data) {
+			document.getElementById("istate").value = data.control;
+
+			getValues();
+		}
+
+		function connect() {
+			try {
+				$.post("../authentication/device", {
+					DeviceKey: 'ASDFGHJKLZXCVBNM'
+				},
+				function(response, status){
+					if (status == 'success') {
+
+						window.WebSocket = window.WebSocket || window.MozWebSocket;
+						if (window.WebSocket) {
+
+							let protocol = 'wss'
+							if (location.protocol == 'http:') {protocol = 'ws'}
+
+							connection = new WebSocket(protocol +'://'+ window.location.hostname + '?type=device');
+							connection.onopen = () => {
+								connection.send(response);
+								if (wasConnected) {
+									console.log('Hemos recuperado la comunicacion con el servidor.');
+								} else {
+									console.log('Comunicacion establecida con el servidor.');
+								}
+								wasConnected = true;
+								isConnected = true;
+							};
+							connection.onmessage = (message) => {
+								try {
+									var json = JSON.parse(message.data);
+									UserDataProcess(json);
+								} catch (e) {
+									console.log('Invalid JSON: ', message.data);
+									return;
+								}
+							};
+							connection.onclose = (closeEvent) => {
+								if (isConnected) {
+									console.log('Lo sentimos, Hemos perdido comunicacion con el servidor. Intentando reconectar...');
+									isConnected = false;
+								}
+								setTimeout ('connect()', 5000);
+							};
+							connection.onerror = (error) => {
+								if (isConnected) {
+									console.log('Lo sentimos, Hay algún problema con la conexión. Intentando reconectar...');
+									wasConnected = true;
+									isConnected = false;
+								}
+								connection.close();
+							};
+						} else {
+							console.log('Lo sentimos, pero su navegador no es compatible con nuestros sitio web.');
+						}
+					} else {
+						console.log('Lo sentimos, No hemos podido autenticar con el servidor. Intentando reconectar...');
+						setTimeout ('connect()', 5000);
+					}
+				});
+			} catch (error) {
+				console.log(error);
+			}
+		}
+		connect();
 	</script>
 </body>
 </html>

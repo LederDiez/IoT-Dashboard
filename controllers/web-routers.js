@@ -132,8 +132,8 @@ router.get("/admin", function(req, res) {
 	});
 });
 
-router.get("/simulador/inversor", function(req, res) {
-	res.render("inversor", {
+router.get("/simuladores/inversor", function(req, res) {
+	res.render("simuladores/inversor", {
 		title: 'Simulador web'
 	});
 });
