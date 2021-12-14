@@ -97,3 +97,9 @@ input:checked + .slide::before {
   -ms-transform: translateX(26px);
   transform: translateX(26px);
   left: -20px; }
+
+.no-seleccionable {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none; }
