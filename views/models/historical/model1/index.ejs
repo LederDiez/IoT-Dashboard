@@ -439,47 +439,120 @@
 			let batteryChart = Highcharts.chart('batteryChart', batteryChartConfig);
 			let weekChart = Highcharts.chart('weekChart', weekChartConfig);
 
-			function updateCharts(response) {
+			function updateCharts(res) {
+
+				let v1Min = 0;
+				let v1Max = 0;
+				let v2Min = 0;
+				let v2Max = 0;
+
+				let a1Min = 0;
+				let a1Max = 0;
+				let a2Min = 0;
+				let a2Max = 0;
+
+				let pMin = 0;
+				let pMax = 0;
+
+				let bMin = 0;
+				let bMax = 0;
+
+				let powerDataArray = new Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+				let bateryDataArray = new Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+				let bateryHourCount = new Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+
+				if (res.length > 0 ) {
+					
+					for (let i = 0; i < res.length; i++) {
+						const elem = res[i];
+						const data = JSON.parse(elem.data);
+
+						const v1 = parseFloat(data.v1);
+						const v2 = parseFloat(data.v2);
+						const a1 = parseFloat(data.a1);
+						const a2 = parseFloat(data.a2);
+						const p  = parseInt(data.p1) + parseInt(data.p2);
+						let	  b  = parseFloat(data.b);
+
+						const pc1 = parseFloat(data.pc1);
+						const pc2 = parseFloat(data.pc2);
+						const tPC = (pc1 + pc2);
+
+						if (b >= 44) {
+							b = Math.round((100 / 9) * (b - 44));
+						} else { b = 0; }
+
+						if (v1Max < v1) { v1Max = v1; }
+						if (v2Max < v2) { v2Max = v2; }
+						if (a1Max < a1) { a1Max = a1; }
+						if (a2Max < a2) { a2Max = a2; }
+						if (pMax < p) { pMax = p; }
+						if (bMax < b) { bMax = b; }
+
+						if (v1Min > v1 || v1Min == 0) { v1Min = v1; }
+						if (v2Min > v2 || v2Min == 0) { v2Min = v2; }
+						if (a1Min > a1 || a1Min == 0) { a1Min = a1; }
+						if (a2Min > a2 || a2Min == 0) { a2Min = a2; }
+						if (pMin > p || pMin == 0) { pMin = p; }
+						if (bMin > b || bMin == 0) { bMin = b; }
+
+						const reg = new Date(elem.registerDate);
+						const hour = reg.getHours();
+
+						powerDataArray[hour] += tPC;
+
+						bateryHourCount[hour] += 1;
+						bateryDataArray[hour] += parseInt(b);
+					}
+
+					document.getElementById("minVoltF1").innerHTML = v1Min;
+					document.getElementById("minVoltF2").innerHTML = v2Min;
+					document.getElementById("minCurrentF1").innerHTML = a1Min;
+					document.getElementById("minCurrentF2").innerHTML = a2Min;
+					document.getElementById("minPower").innerHTML = pMin;
+					document.getElementById("minBattery").innerHTML = bMin;
+
+					document.getElementById("maxVoltF1").innerHTML = v1Max;
+					document.getElementById("maxVoltF2").innerHTML = v2Max;
+					document.getElementById("maxCurrentF1").innerHTML = a1Max;
+					document.getElementById("maxCurrentF2").innerHTML = a2Max;
+					document.getElementById("maxPower").innerHTML = pMax;
+					document.getElementById("maxBattery").innerHTML = bMax;
+
+					powersChart.update({
+						series: [{
+							data: (function () {
+								let data = [];
+								for (let i = 0; i < 24; i++) {
+									data.push(Math.round(powerDataArray[i]));
+								}
+								return data;
+							}())
+						}]
+					});
+
+					batteryChart.update({
+						series: [{
+							data: (function () {
+								let data = [];
+								for (let i = 0; i < 24; i++) {
+									if (bateryHourCount[i] > 0) {
+										data.push(Math.round(bateryDataArray[i] / bateryHourCount[i]));
+									} else {
+										data.push(0);
+									}
+								}
+								console.log(data);
+								return data;
+							}())
+						}]
+					});
+
+				} else {
+					alert("No se encontraron datos para el día seleccionado.");
+				}
+
 				loadFinished();
-
-				document.getElementById("minVoltF1").innerHTML = getRandomFloat(119, 120);
-				document.getElementById("minVoltF2").innerHTML = getRandomFloat(119, 120);
-				document.getElementById("minCurrentF1").innerHTML = getRandomFloat(1, 2);
-				document.getElementById("minCurrentF2").innerHTML = getRandomFloat(1, 3);
-				document.getElementById("minPower").innerHTML = getRandomInt(1200, 2000);
-				document.getElementById("minBattery").innerHTML = getRandomInt(10, 20);
-
-				document.getElementById("maxVoltF1").innerHTML = getRandomFloat(120, 121);
-				document.getElementById("maxVoltF2").innerHTML = getRandomFloat(120, 121);
-				document.getElementById("maxCurrentF1").innerHTML = getRandomFloat(16, 21);
-				document.getElementById("maxCurrentF2").innerHTML = getRandomFloat(16, 21);
-				document.getElementById("maxPower").innerHTML = getRandomInt(4800, 5000);
-				document.getElementById("maxBattery").innerHTML = getRandomInt(80, 90);
-
-				powersChart.update({
-					series: [{
-						data: (function () {
-							let data = [];
-							for (let i = 0; i < 24; i++) {
-								data.push(getRandomInt(300, 400));
-							}
-							return data;
-						}())
-					}]
-				});
-
-				batteryChart.update({
-					series: [{
-						data: (function () {
-							let data = [];
-							for (let i = 0; i < 24; i++) {
-								data.push(getRandomInt(50, 75));
-							}
-							return data;
-						}())
-					}]
-				});
-
 			}
 
 			function updateWeekChart(response) {
@@ -487,7 +560,19 @@
 			}
 
 			function loadDataFromServer(unix) {
-				updateCharts(unix);
+				unix *= 1000
+				unix ;
+				let unixMin = unix - 18000000;
+				let unixmax = unixMin + 86399999;
+				let url = "../data/" + unixMin + "/" + unixmax;
+				try {
+					$.post(url, {},
+					function(response, status){
+						updateCharts(response);
+					});
+				} catch (error) {
+					console.log(error);
+				}
 			}
 
 			function loadWeekDataFromServer() {

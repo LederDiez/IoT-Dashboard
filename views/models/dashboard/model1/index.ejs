@@ -33,7 +33,7 @@
 							</div>
 						</div><!-- /.card body -->
 						<div class="overlay dark" id="DistOverlay" style="display: flex;">
-							<h3 class="text-bold text-light bg-dark p-4">Dispositivo desconectado</h3>
+							<h3 class="text-bold text-center text-light bg-dark p-4">Dispositivo desconectado</h3>
 						</div>
 					</div><!-- /.card -->
 				</div><!-- /.col -->
@@ -65,7 +65,7 @@
 							</div><!-- /.card grid values-->
 						</div><!-- /.card body -->
 						<div class="overlay dark" id="ValuesOverlay" style="display: flex;">
-							<h3 class="text-bold text-light bg-dark p-4">Dispositivo desconectado</h3>
+							<h3 class="text-bold text-center text-light bg-dark p-4">Dispositivo desconectado</h3>
 						</div>
 					</div><!-- /.card -->
 				</div><!-- /.col -->
@@ -79,7 +79,7 @@
 							<div id="LoadF1" class="gauge"></div><!-- /.chart-responsive -->
 						</div>
 						<div class="overlay dark" id="LoadF1Overlay" style="display: flex;">
-							<h3 class="text-bold text-light bg-dark p-4">Dispositivo desconectado</h3>
+							<h3 class="text-bold text-center text-light bg-dark p-4">Dispositivo desconectado</h3>
 						</div>
 					</div> <!-- /.card -->
 				</div><!-- /.col -->
@@ -93,7 +93,7 @@
 							<div id="LoadF2" class="gauge"></div><!-- /.chart-responsive -->
 						</div><!-- /.card body -->
 						<div class="overlay dark" id="LoadF2Overlay" style="display: flex;">
-							<h3 class="text-bold text-light bg-dark p-4">Dispositivo desconectado</h3>
+							<h3 class="text-bold text-center text-light bg-dark p-4">Dispositivo desconectado</h3>
 						</div>
 					</div><!-- /.card -->
 				</div><!-- /.col -->
@@ -107,7 +107,7 @@
 							<div id="WattsF1"></div>
 						</div><!-- /.card body -->
 						<div class="overlay dark" id="PowerF1Overlay" style="display: flex;">
-							<h3 class="text-bold text-light bg-dark p-4">Dispositivo desconectado</h3>
+							<h3 class="text-bold text-center text-light bg-dark p-4">Dispositivo desconectado</h3>
 						</div>
 					</div><!-- /.card -->
 				</div><!-- /.col -->
@@ -121,7 +121,7 @@
 							<div id="WattsF2"></div><!-- /.chart-responsive -->
 						</div><!-- /.card body -->
 						<div class="overlay dark" id="PowerF2Overlay" style="display: flex;">
-							<h3 class="text-bold text-light bg-dark p-4">Dispositivo desconectado</h3>
+							<h3 class="text-bold text-center text-light bg-dark p-4">Dispositivo desconectado</h3>
 						</div>
 					</div><!-- /.card -->
 				</div><!-- /.col -->
@@ -703,6 +703,8 @@
 
 			if (batery >= 44) {
 				bLevel = ((100 / 9) * (batery - 44)).toFixed(0);
+			} else {
+				bLevel = 0;
 			}
 			graphic.updateNode(1, bLevel, dbi, "#00c853", 70);  // bateria a inversor
 		}

@@ -3,10 +3,10 @@
 const webpush         = require("web-push");
 
 const {PUBLIC_VAPID_KEY, PRIVATE_VAPID_KEY, PORT, NODE_ENV, SERIAL_CRYPTO_KEY}= require('./config/config');
-const { SessionStore, DevicesDataSchema } = require('./models/connection_models');
+const { SessionStore } = require('./models/connection_models');
 const controlers = require('./controllers/controllers');
 
-const { DevicesModel, UserModel } = require('./models/connection_models');
+const { DevicesModel, UserModel, DevicesDataSchema } = require('./models/connection_models');
 const webSocketServer = require('websocket').server;
 const CryptoJS        = require("crypto-js");
 const http            = require('http');
@@ -163,8 +163,8 @@ wsServer.on('request', (req) => {
     
                     // Guardar historial
                     
-                    let data_schema = mongoose.model('device-' + connection.serial, DevicesDataSchema);
-                    let newData = new data_schema();
+                    let dataModel = mongoose.model('device-' + connection.serial, DevicesDataSchema);
+                    let newData = new dataModel();
                     newData.registerDate = Date.now();
                     newData.data = data;
                     newData.save(function (err) {

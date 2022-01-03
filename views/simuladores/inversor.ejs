@@ -182,11 +182,11 @@
 		let isConnected = false;
 
 		function getRandomInt(min, max) {
-			return (Math.random() * (max - min) + min).toFixed(0);
+			return parseInt(Math.random() * (max - min) + min).toFixed(0);
 		}
 
 		function getRandomFloat(min, max) {
-			return (Math.random() * (max - min) + min).toFixed(1);
+			return parseFloat(Math.random() * (max - min) + min).toFixed(1);
 		}
 
 		function getValues() {
