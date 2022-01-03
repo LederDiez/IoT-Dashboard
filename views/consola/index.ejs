@@ -360,9 +360,7 @@
 
 		function logout() {
 			Pace.restart();
-			$.post("../api/user/", {
-				page : 'logout'
-			},
+			$.post("../logout", {},
 			function(response, status){
 				processResponse(response);
 			});

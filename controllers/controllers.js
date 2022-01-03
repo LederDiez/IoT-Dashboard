@@ -14,7 +14,7 @@ const data = require("./data-routers");
 const web = require('./web-routers');
 
 router.use("/api", admin_routers);
-router.use("/api", user_routers);
+router.use("/", user_routers);
 router.use("/user", device_routers);
 router.use("/api", notification_routers);
 

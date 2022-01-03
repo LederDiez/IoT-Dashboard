@@ -50,8 +50,7 @@
     
     let mail   = $('#mail_forgot').val();
     
-    $.post("../api/user", {
-      page  : 'forgot',
+    $.post("../forgot", {
       mail  : mail.replace(/ /g, "")
     }, function (response, status) {
       requestsProcess(status, response);

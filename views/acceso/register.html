@@ -83,12 +83,6 @@
           <!-- /.col -->
         </div>
 			</form>
-			<div class="social-auth-links text-center">
-        <a href="#" class="btn btn-block btn-danger disabled" tabindex="-1" role="button" aria-disabled="true">
-          <i class="fab fa-google mr-2"></i>
-          Regístrese con Google
-        </a>
-      </div>
 			<p class="text-center">
 				<small>¿Ya tienes una cuenta?</small>
 				<a class="text-center" onclick="loadView('login');">Inicia sesión</a>
@@ -122,8 +116,7 @@
 		let pass2 = $('#pass2_register').val();
 		
     if (pass1 === pass2) {
-    	$.post("../api/user", {
-				page  : 'register',
+    	$.post("../register", {
 				user  : user,
 				mail  : mail.replace(/ /g, ""),
 				pass1 : pass1,

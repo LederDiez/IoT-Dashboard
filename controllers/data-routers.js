@@ -4,7 +4,6 @@ const mongoose   = require('mongoose');
 const { DevicesDataSchema } = require('../models/connection_models');
 
 const express = require('express');
-const { route } = require('./devices-routers');
 const router  = express.Router();
 
 router.post('/:unixmin/:unixmax', function (req, res) {

@@ -13,7 +13,8 @@
 		<link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
 		<!-- Bootstrap 5 -->
 		<link rel="stylesheet" href="../plugins/bootstrap/css/bootstrap.min.css">
-
+		<!-- Toastr -->
+		<link rel="stylesheet" href="/plugins/toastr/toastr.min.css">
 		<!-- Generados CSS -->
 		<link rel="stylesheet" type="text/css" href="/css/styles.css">
 
@@ -48,7 +49,7 @@
 						<span class="mb-0 h1">PHS<br>soluciones</span>
 						<br>
 						<p>Sistemas de monitoreo y control a la medida de las necesidades.</p>
-						<a href="/acceso?demo=true" class="btn btn-success">Demos</a>
+						<a href="#" onclick="send_login()" class="btn btn-success">Demos</a>
 					</div>
 				</div>
 				<canvas class="particles-js-canvas-el"></canvas>
@@ -217,7 +218,6 @@
 						</div>
 					</form>
 				</div>
-
 				<div class=" col-12 col-sm-6 pt-5 text-center d-flex align-items-center justify-content-center">
 						<div class="">
 							<h2><strong>PHS</strong><br>soluciones</h2>
@@ -243,13 +243,61 @@
 		<script src="/plugins/particles/particles.min.js"></script>
 		<!-- Particles config -->
 		<script src="/plugins/particles/particles-home.js"></script>
+		<!-- Toastr -->
+		<script src="/plugins/toastr/toastr.min.js"></script>
 
 		<script type="text/javascript">
 			if ('serviceWorker' in navigator) {
 				navigator.serviceWorker.register('../service-worker.js');
 			}
-
 			$('.header').height($(window).height());
+
+			toastr.options = {
+				"closeButton": true,
+				"debug": false,
+				"newestOnTop": false,
+				"progressBar": false,
+				"positionClass": "toast-top-left",
+				"preventDuplicates": false,
+				"onclick": null,
+				"showDuration": "300",
+				"hideDuration": "1000",
+				"timeOut": "5000",
+				"extendedTimeOut": "1000"
+			};
+
+			function requestsProcess (status, response) {
+				if (response.status == "success") {
+					toastr.success(response.message, response.title);
+				} else if (response.status == "error") {
+					toastr.error(response.message, response.title);
+				} else {
+					toastr.error('Tenemos problemas para procesar las peticiones.', 'Error!');
+					return;
+				}
+				if (response.action == "show") {
+					setTimeout( function() {
+						loadView(response.toShow);
+					}, 1000);
+				} else if (response.action == "redirect") {
+					setTimeout( function() {
+						window.location.replace(response.redirectTo);
+					}, 1000);
+				} else if (response.action == "reload") {
+					setTimeout( function() {
+						window.location.reload();
+					}, 1000);
+				}
+			}
+
+			function send_login() {
+				$.post("/login", {
+					demo: true
+				},
+				function (response, status) {
+					requestsProcess(status, response);
+				});
+			}
 		</script>
 	</body>
 </html>

@@ -62,8 +62,7 @@
 		let pass2 = $('#pass2_recover').val();
     
     if (pass1 === pass2) {
-	    $.post("../api/user", {
-	      page  : 'forgot',
+	    $.post("../recover", {
 	      pass1 : pass1,
 				pass2 : pass2
 	    }, function (response, status) {

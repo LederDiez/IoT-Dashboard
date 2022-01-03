@@ -11,8 +11,7 @@
           <input 
           id="mail_login"
           class="form-control"
-          type="email" 
-          value="lederdiez00@gmail.com"
+          type="email"
           placeholder="Correo electronico"
           required>
           <div class="input-group-append">
@@ -27,7 +26,6 @@
 					id="password_login"
 					class="form-control"
 					type="password"
-					value="Lederdiez"
           placeholder="Contraseña"
           required>
           <div class="input-group-append">
@@ -52,14 +50,6 @@
           <!-- /.col -->
         </div>
       </form>
-      <div class="social-auth-links text-center mt-2 mb-3">
-        <a href="#" class="btn btn-block btn-danger disabled" tabindex="-1" role="button" aria-disabled="true">
-          <i class="fab fa-google mr-2"></i>
-          Iniciar sesión con Google
-        </a>
-      </div>
-      <!-- /.social-auth-links -->
-
       <p class="mb-1">
         <a onclick="loadView('forgot'); " class="text-center">¿Olvidaste la contraseña?</a>
       </p>
@@ -92,8 +82,7 @@
 		let password = $('#password_login').val();
 		
 		$("#password_login").prop('type', 'password');
-		$.post("../api/user", {
-			page  : 'login',
+		$.post("../login", {
 			mail  : mail.replace(/ /g, ""),
 			pass1 : password
 		}, function (response, status) {
