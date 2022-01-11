@@ -2,23 +2,23 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 		<div class="modal-header">
-			<h4 class="modal-title">Eliminar este dispositivo</h4>
+			<h4 class="modal-title">Eliminar el monitor "<%=deviceName%>"</h4>
 		</div>
 		<div class="modal-body">
 			<div class="alert alert-danger alert-dismissible">
 				<h5><i class="icon fas fa-ban"></i> Alerta!</h5>
-				Desvincular el dispositivo de su cuenta podría causar la perdida total de la comunicación con este.
+				Desvincular un monitor de su cuenta podría causar la perdida total de la comunicación con este.
 			</div>
 			<form role="form" id="fromDelete" onSubmit="deleteDevice(); return false;">
 				<div class="form-group">
-					<label>Serial del dispositivo</label>
-					<input required autocomplete="off" type="text" class="form-control rounded-0" placeholder="Serial" id="inputDeleteSerial">
+					<label>Serial del monitor</label>
+					<input required autocomplete="off" type="text" class="form-control rounded-0" id="inputDeleteSerial">
 				</div>
 			</form>
 		</div>
 		<div class="modal-footer justify-content-between">
-			<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-			<button type="submit" form="fromDelete" class="btn btn-danger">Eliminar</button>
+			<button type="button" class="btn btn-flat btn-default" data-dismiss="modal">Cancelar</button>
+			<button type="submit" class="btn btn-flat btn-danger" form="fromDelete">Eliminar</button>
 		</div>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->

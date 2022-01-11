@@ -9,16 +9,9 @@ const router = express.Router();
 const fs = require('fs');
 
 router.get("/", function(req, res) {
-	if (req.session.IsStarted != true) {
-		res.render("web/index");
-	} else {
-		if (req.session.type == 'client') {
-			res.redirect('./consola/'); 
-		} else {
-			res.redirect('./admin'); 
-		}
-		
-	}
+
+	res.render("web/index");
+
 });
 
 router.get("/acceso", function(req, res) {
@@ -77,9 +70,9 @@ router.get("/consola", function(req, res) {
 					req.session.deviceModel  = deviceModel;
 					req.session.deviceSerial = deviceSerial;
 
-					RenderData.deviceName	= deviceName,
-					RenderData.NDevices	 	= result.length,
-					RenderData.devices	  = JSON.stringify(result)
+					RenderData.deviceName	= deviceName;
+					RenderData.NDevices	 	= result.length;
+					RenderData.devices	  = result;
 
 				}
 
@@ -97,7 +90,7 @@ router.get("/consola", function(req, res) {
 router.post("/models", function(req, res) {
 	if (req.session.IsStarted == true) {
 
-		const viewName = req.body.viewName  || null;
+		const viewName = req.body.viewName || null;
 		const model = req.session.deviceModel;
 
 		if (viewName != null) {

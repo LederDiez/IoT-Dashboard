@@ -2,19 +2,19 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 		<div class="modal-header">
-			<h4 class="modal-title">Editar este dispositivo</h4>
+			<h4 class="modal-title">Editar el monitor "<%=deviceName%>"</h4>
 		</div>
 		<div class="modal-body">
 			<form role="form" id="fromEdit" onSubmit="editDevice(); return false;">
 				<div class="form-group">
-					<label>Nombre del dispositivo</label>
-					<input required autocomplete="off" type="text" class="form-control rounded-0" placeholder="Nombre" id="inputEditName">
+					<label>Nuevo nombre del monitor</label>
+					<input required autocomplete="off" type="text" class="form-control rounded-0" id="inputEditName">
 				</div>
 			</form>
 		</div>
 		<div class="modal-footer justify-content-between">
-			<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-			<button type="submit" form="fromEdit" class="btn btn-primary">Guardar</button>
+			<button type="button" class="btn btn-flat btn-default" data-dismiss="modal">Cancelar</button>
+			<button type="submit" class="btn btn-flat btn-primary" form="fromEdit">Guardar</button>
 		</div>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
