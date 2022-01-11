@@ -44,13 +44,14 @@ router.get("/consola", function(req, res) {
 		var deviceModel;
 		var deviceSerial;
 		var RenderData = {
-			user		 : user,
-			mail		 : mail,
-			check		: check,
-			NDevices	 : 0,
-			deviceName 	 : null,
-			deviceSerial : null,
-			devices		 : null
+			user			: user,
+			mail			: mail,
+			check			: check,
+			NDevices			: 0,
+			deviceName 		: null,
+			deviceSerial	: null,
+			modelName   	: null,
+			devices				: null
 		};
 
 		DevicesModel.find({'associatedUser' : userid}, function(err, result) {
@@ -71,6 +72,7 @@ router.get("/consola", function(req, res) {
 					req.session.deviceSerial = deviceSerial;
 
 					RenderData.deviceName	= deviceName;
+					RenderData.modelName	= deviceModel;
 					RenderData.NDevices	 	= result.length;
 					RenderData.devices	  = result;
 
