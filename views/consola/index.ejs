@@ -85,13 +85,13 @@
 			<!-- sidebar: style can be found in sidebar.less -->
 			<div class="sidebar os-host-overflow os-host-overflow-y">
 				<!-- Sidebar Menu -->
-				<%- include ./includes/sidebar_menu.ejs %>
+				<%- include ./complements/sidebar_menu.ejs %>
 			</div>
 			<!-- /.sidebar -->
 		</aside>
 		<!-- Content Wrapper. Contains page c0ntent -->
 		<div class="content-wrapper">
-			<%- include ./includes/devices.ejs   %> <!-- Lista de dispositivos cargada desde el inicio como parte de la consola -->
+			<%- include ./complements/devices.ejs   %> <!-- Lista de dispositivos cargada desde el inicio como parte de la consola -->
 		</div>
 		<!-- /.content-wrapper -->
 
@@ -105,10 +105,10 @@
 		<!-- Control Sidebar -->
 		<%- include('../models/configs/' + modelName + '/configs.ejs') %>
 
-		<%- include ./includes/edit_user.ejs %>
-		<%- include ./includes/edit_device.ejs %>
-		<%- include ./includes/delete_device.ejs %>
-		<%- include ./includes/add_device.ejs %>
+		<%- include ./complements/edit_user.ejs %>
+		<%- include ./complements/edit_device.ejs %>
+		<%- include ./complements/delete_device.ejs %>
+		<%- include ./complements/add_device.ejs %>
 	</div>
 	<!-- ./wrapper -->
 

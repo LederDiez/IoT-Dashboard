@@ -1,0 +1,39 @@
+<div class="modal fade" id="modal-edit-device">
+	<div class="modal-dialog">
+		<div class="modal-content">
+		<div class="modal-header">
+			<h4 class="modal-title">Editar el monitor "<%=deviceName%>"</h4>
+		</div>
+		<div class="modal-body">
+			<form role="form" id="fromEdit" onSubmit="editDevice(); return false;">
+				<div class="form-group">
+					<label>Nuevo nombre del monitor</label>
+					<input required autocomplete="off" type="text" class="form-control rounded-0" id="inputEditName">
+				</div>
+			</form>
+		</div>
+		<div class="modal-footer justify-content-between">
+			<button type="button" class="btn btn-flat btn-default" data-dismiss="modal">Cancelar</button>
+			<button type="submit" class="btn btn-flat btn-primary" form="fromEdit">Guardar</button>
+		</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<script>
+	function editDevice () {
+		Pace.restart();
+				
+		let editName   = document.getElementById("inputEditName").value;
+
+		if (editName != '') {
+			$.post("../user/device/edit", {
+				name   : editName,
+			},
+			function (response, status) {
+				processResponse(response);
+			});
+		} else {
+			toastr.error('Debe rellenar todos los campos.', 'Error!');
+		}
+	}
+</script>

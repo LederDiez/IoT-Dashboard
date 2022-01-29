@@ -1,0 +1,43 @@
+<div class="modal fade" id="modal-delete-device">
+	<div class="modal-dialog">
+		<div class="modal-content">
+		<div class="modal-header">
+			<h4 class="modal-title">Eliminar el monitor "<%=deviceName%>"</h4>
+		</div>
+		<div class="modal-body">
+			<div class="alert alert-danger alert-dismissible">
+				<h5><i class="icon fas fa-ban"></i> Alerta!</h5>
+				Desvincular un monitor de su cuenta podría causar la perdida total de la comunicación con este.
+			</div>
+			<form role="form" id="fromDelete" onSubmit="deleteDevice(); return false;">
+				<div class="form-group">
+					<label>Serial del monitor</label>
+					<input required autocomplete="off" type="text" class="form-control rounded-0" id="inputDeleteSerial">
+				</div>
+			</form>
+		</div>
+		<div class="modal-footer justify-content-between">
+			<button type="button" class="btn btn-flat btn-default" data-dismiss="modal">Cancelar</button>
+			<button type="submit" class="btn btn-flat btn-danger" form="fromDelete">Eliminar</button>
+		</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<script>
+	function deleteDevice () {
+		Pace.restart();
+
+		let deleteSerial = document.getElementById("inputDeleteSerial").value;
+
+		if (deleteSerial != '') {
+			$.post("../user/device/delete", {
+				serial : deleteSerial
+			},
+			function (response, status) {
+				processResponse(response);
+			});
+		} else {
+			toastr.error('Debe rellenar todos los campos.', 'Error!');
+		}
+	}
+</script>
