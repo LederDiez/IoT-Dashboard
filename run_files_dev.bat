@@ -1,1 +1,1 @@
-npm run dev_server
+heroku local
