@@ -17,6 +17,7 @@
     "https": "^1.0.0",
     "mongoose": "^6.0.5",
     "morgan": "^1.9.1",
+    "mqtt": "^4.3.7",
     "nodemailer": "^6.6.3",
     "uuid": "^7.0.2",
     "web-push": "^3.4.3",
