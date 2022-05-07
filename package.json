@@ -25,7 +25,8 @@
   },
   "devDependencies": {
     "nodemon": "^2.0.12",
-    "ansi-regex": ">=5.0.1"
+    "ansi-regex": ">=5.0.1",
+    "minimist": ">=1.2.6"
   },
   "scripts": {
     "start": "node app.js",

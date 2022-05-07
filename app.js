@@ -78,24 +78,6 @@ httpServer.listen(app.get('port'), () => {
     console.log("WEB SOCKET STARTED!!!".red)
 });
 
-const mqtt = require('mqtt')
-const client  = mqtt.connect('mqtt://192.168.2.110:1883', {
-    username : 'testuser',
-    password : 'testpass'})
-
-client.on('connect', function () {
-  client.subscribe('#', function (err) {
-    if (!err) {
-      client.publish('presence', 'Hello mqtt')
-    }
-  })
-})
-
-client.on('message', function (topic, message) {
-  // message is Buffer
-  console.log(message.toString())
-})
-
 //////////////////////////////////////////////////////////////////////////////////////
 
 var wsServer = new webSocketServer({

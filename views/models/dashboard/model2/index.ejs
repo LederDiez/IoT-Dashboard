@@ -721,7 +721,7 @@
 						window.WebSocket = window.WebSocket || window.MozWebSocket;
 						if (window.WebSocket) {
 
-							const hostname = "mqtt-leder.herokuapp.com";
+							const hostname = window.location.hostname;
 							const port = 1884;
 							const clientId = "WebMQTT" + new Date().getUTCMilliseconds();
 							const username = "testuser";
