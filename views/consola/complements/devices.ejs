@@ -19,19 +19,22 @@
 						</div>
 						<!-- /.card-header -->
 						<div class="card-body p-0">
-							
+
 							<div class="mb-3 mt-3 ml-3">
-								
+
 								<h6 class="mb-2">Vincular un nuevo monitor a su cuenta</h6>
-								<button type="button" class="btn bg-navy btn-flat mr-2" data-toggle="modal" data-target="#modal-add-device" data-backdrop="static" data-keyboard="false">
+								<button type="button" class="btn bg-navy btn-flat mr-2" data-toggle="modal"
+									data-target="#modal-add-device" data-backdrop="static" data-keyboard="false">
 									<i class="fas fa-plus mr-2"></i>Vincular
 								</button>
-								
+
 								<h6 class="mb-2 mt-2">Opciones para el monitor seleccionado "<%=deviceName%>"</h6>
-								<button type="button" class="btn bg-primary btn-flat mr-2" data-toggle="modal" data-target="#modal-edit-device" data-backdrop="static" data-keyboard="false">
+								<button type="button" class="btn bg-primary btn-flat mr-2" data-toggle="modal"
+									data-target="#modal-edit-device" data-backdrop="static" data-keyboard="false">
 									<i class="fas fa-edit mr-2"></i>Editar
 								</button>
-								<button type="button" class="btn btn-danger btn-flat mr-2" data-toggle="modal" data-target="#modal-delete-device" data-backdrop="static" data-keyboard="false">
+								<button type="button" class="btn btn-danger btn-flat mr-2" data-toggle="modal"
+									data-target="#modal-delete-device" data-backdrop="static" data-keyboard="false">
 									<i class="fas fa-trash-alt mr-2"></i>Desvincular
 								</button>
 							</div>
@@ -48,16 +51,14 @@
 										</tr>
 									</thead>
 									<tbody>
-										<% if (NDevices > 0) { %>
-											<% for(var i = 0; i < NDevices; i++) { %>
-											
+										<% if (devices.length> 0) { %>
+											<% for(var i=0; i < devices.length; i++) { %>
 										<tr data-device="<%= i %>">
 											<td><a href="#"><%= devices[i].name %></a></td>
 											<td><%= devices[i].serialNumber %></td> <!-- ¿Falla de seguridad? -->
 											<td><%= devices[i].modelName %></td>
 											<td>-</td>
 										</tr>
-	
 											<% } %>
 										<% } %>
 									</tbody>
@@ -72,44 +73,42 @@
 		</div><!-- /.container-fluid -->
 	</section>
 	<script type="text/javascript">
+		function changeDevice(deviceID) {
+
+			var protocol = window.location.protocol;
+			var hostname = window.location.hostname;
+			var pathname = window.location.pathname;
+
+			window.localStorage.setItem("localLastPage", "dashboard");
+
+			location.href = protocol + '//' + hostname + pathname + '?device=' + deviceID;
+		}
+
+		function addRowHandlers() {
+			var table = document.getElementById("devicesTable");
+			var rows = table.getElementsByTagName("tr");
+			for (i = 1; i < rows.length; i++) {
+
+				var row = table.rows[i];
+
+				var clickHandler = function () {
+					var deviceId = this.getAttribute("data-device");
+					changeDevice(deviceId);
+				};
+
+				row.onclick = clickHandler;
+			}
+		}
+		window.onload = addRowHandlers();
+		
 		(function () {
-
-			function changeDevice (deviceID) {
-
-				var protocol = window.location.protocol;
-				var hostname = window.location.hostname;
-				var pathname = window.location.pathname;
-
-				window.localStorage.setItem("localLastPage", "dashboard");
-
-				location.href = protocol + '//' + hostname + pathname + '?device=' + deviceID;
-			}
-
-			function addRowHandlers() {
-				var table = document.getElementById("devicesTable");
-				var rows = table.getElementsByTagName("tr");
-				for (i = 1; i < rows.length; i++) {
-
-					var row = table.rows[i];
-
-					var clickHandler = function() {
-						var deviceId = this.getAttribute("data-device");
-						changeDevice(deviceId);
-					};
-
-					row.onclick = clickHandler;
-				}
-			}
-			window.onload = addRowHandlers();
-
 			let view = document.getElementById("devices");
-			view.addEventListener("OnVisible", function () {
+			view.addEventListener("OnVisible", () => {
 				//viewport visible
 			});
-			view.addEventListener("OnInvisible", function () {
+			view.addEventListener("OnInvisible", () => {
 				//viewport invisible
 			});
-
 		})();
 	</script>
 </div>

@@ -1,37 +1,49 @@
 {
 	"name": "Administracion",
-	"short_name": "Administracion",
+	"short_name": "Admin",
 	"description": "Plataforma administrativa IoT",
 	"background_color": "#212121",
 	"theme_color": "#212121",
 	"orientation": "any",
 	"display": "fullscreen",
-	"start_url": "./consola?utm_source=web_app_manifest",
-	"scope": "./",
+	"id": "/?utm_source=1",
+	"start_url": "./consola/",
+	"scope": "/",
 	"lang": "es-ES",
 	"icons": [{
 		"src": "../images/app/ic_launcher48.png",
 		"sizes": "48x48",
-		"type": "image/png"
+		"type": "image/png",
+		"purpose": "any"
 	}, {
 		"src": "../images/app/ic_launcher72.png",
 		"sizes": "72x72",
-		"type": "image/png"
+		"type": "image/png",
+		"purpose": "any"
 	}, {
 		"src": "../images/app/ic_launcher96.png",
 		"sizes": "96x96",
-		"type": "image/png"
+		"type": "image/png",
+		"purpose": "any"
 	}, {
 		"src": "../images/app/ic_launcher144.png",
 		"sizes": "144x144",
-		"type": "image/png"
+		"type": "image/png",
+		"purpose": "any"
 	}, {
 		"src": "../images/app/ic_launcher168.png",
 		"sizes": "168x168",
-		"type": "image/png"
+		"type": "image/png",
+		"purpose": "any"
 	}, {
 		"src": "../images/app/ic_launcher192.png",
 		"sizes": "192x192",
-		"type": "image/png"
+		"type": "image/png",
+		"purpose": "any"
+	}, {
+		"src": "../images/app/ic_launcher512.png",
+		"sizes": "512x512",
+		"type": "image/png",
+		"purpose": "any"
 	}]
 }

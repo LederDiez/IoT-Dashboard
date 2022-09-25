@@ -2,16 +2,15 @@
   <div class="card card-outline card-primary">
   	<!-- /.logo -->
   	<div class="card-header text-center">
-			<a href="../" class="h1"><b>LOGO</b></a>
+			<a href="../../" class="h1"><b>LOGO</b></a>
 		</div>
 		<div class="card-body">
 			<p class="login-box-msg">Inicia sesión</p>
-			<form autocomplete="on" onSubmit="send_login(); return false">
+			<form onsubmit="send_login(); return false;" autocomplete="on">
         <div class="input-group mb-3">
           <input 
-          id="mail_login"
+          id="email_login"
           class="form-control"
-          type="email"
           placeholder="Correo electronico"
           required>
           <div class="input-group-append">
@@ -21,7 +20,6 @@
           </div>
         </div>
         <div class="input-group mb-3">
-          <!-- Valores solo para demostracion -->
           <input
 					id="password_login"
 					class="form-control"
@@ -37,7 +35,7 @@
         <div class="row">
           <div class="col-7">
             <div class="icheck-primary">
-              <input type="checkbox" id="check">
+              <input type="checkbox" id="check" onclick="showPass()">
               <label for="check">
                 Mostrar contraseña
               </label>
@@ -62,30 +60,32 @@
   <!-- /.card -->
 	<div class="text-center">
 		<p>
-			<small class="text-muted">Leder Diez © 2018 - 2021 | version 4.0</small>
+			<small class="text-muted">Leder Diez © 2018 - 2022 | version 4.1</small>
 		</p>
 	</div>
 </div>
 <!-- /.login-box -->
 <script>
-	$("#check").click(function () {
+	function showPass () {
 		if ($("#check").prop('checked')) {
 			$("#password_login").prop('type', 'text');
 		} else {
 			$("#password_login").prop('type', 'password');
 		}
-	})
+	}
+
   function send_login() {
     Pace.restart();
 		
-		let mail 	 = $('#mail_login').val();
+		let email 	 = $('#email_login').val();
 		let password = $('#password_login').val();
 		
 		$("#password_login").prop('type', 'password');
-		$.post("../login", {
-			mail  : mail.replace(/ /g, ""),
-			pass1 : password
-		}, function (response, status) {
+		$.post("../../v1/acceso/login", {
+			username: email,
+			password
+		}, (response, status) => {
+      console.log(response);
 			$("#password_login").val('');
 			requestsProcess(status, response);
 		});

@@ -220,7 +220,7 @@
 					}
 				},
 				tooltip: {
-					formatter: function () {
+					formatter: () => {
 						return '<span style="font-size:14px"><b>Consumo</b></span><br>' + 
 						'<span>' + this.x + '</span>: ' + this.y + this.point.series.name;
 					}
@@ -302,7 +302,7 @@
 					}
 				},
 				tooltip: {
-					formatter: function () {
+					formatter: () => {
 						return '<span style="font-size:14px"><b>Batería</b></span><br>' + 
 						'<span>' + this.x + '</span>: ' + this.y + this.point.series.name;
 					}
@@ -366,7 +366,7 @@
 				},
 
 				tooltip: {
-					formatter: function () {
+					formatter: () => {
 						return '<span style="font-size:14px"><b>Consumo</b></span><br>' + 
 						'<span>' + this.point.name + '</span>: ' + this.y + this.point.series.name;
 					}
@@ -686,7 +686,7 @@
 				datepicker.close();
 			});
 
-			BtnDatepicker.onclick = function () {
+			BtnDatepicker.onclick = () => {
 				datepicker.open();
 			}
 
@@ -699,12 +699,12 @@
 			});
 
 			let view = document.getElementById("<%= viewName %>");
-			view.addEventListener("OnVisible", function () {
+			view.addEventListener("OnVisible", () => {
 				if (!dateSelected) {
 					datepicker.open();
 				}
 			});
-			view.addEventListener("OnInvisible", function () {
+			view.addEventListener("OnInvisible", () => {
 				datepicker.close();
 			});
 

@@ -1,1 +1,1 @@
-npm run dev_server
+npm run start:dev

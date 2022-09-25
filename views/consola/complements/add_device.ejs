@@ -21,7 +21,7 @@
 				</div>
 			</div>
 			<div class="modal-footer justify-content-between">
-				<% if (NDevices > 0) { %>
+				<% if (devices.length > 0) { %>
 				<button type="button" class="btn btn-flat btn-default" data-dismiss="modal">Cancelar</button>
 				<% } else { %>
 				<div></div>
@@ -39,11 +39,10 @@
 		let addSerial = document.getElementById("inputAddSerial").value;
 
 		if (addName != '' && addSerial != '') {
-			$.post("../user/device/add", {
+			$.post("../v1/device/attach", {
 				name   : addName,
 				serial : addSerial
-			},
-			function (response, status) {
+			}, (response, status) => {
 				processResponse(response);
 			});
 		} else {

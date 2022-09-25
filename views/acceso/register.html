@@ -10,11 +10,11 @@
 				<div class="input-group mb-3">
           <input 
           id="user_register"
-          type="text" 
+          type="name" 
           class="form-control" 
           name="usuario"
-          placeholder="Nombre completo"
-          minlength="1" 
+          placeholder="nombre de usuario"
+          minlength="5" 
           maxlength="25" 
           required>
           <div class="input-group-append">
@@ -25,11 +25,11 @@
         </div>
         <div class="input-group mb-3">
           <input 
-          id="mail_register"
+          id="email_register"
           type="email" 
           class="form-control" 
           name="email"
-          placeholder="Correo electronico"
+          placeholder="correo electronico"
           required>
           <div class="input-group-append">
             <div class="input-group-text">
@@ -43,7 +43,7 @@
           type="password" 
           class="form-control"
           name="password"
-          placeholder="Contraseña"
+          placeholder="contraseña"
           minlength="6"
           required>
           <div class="input-group-append">
@@ -58,7 +58,7 @@
           type="password" 
           class="form-control"
           name="con_password"
-          placeholder="Confirmar contraseña"
+          placeholder="confirmar contraseña"
           minlength="6"
           required>
           <div class="input-group-append">
@@ -70,7 +70,7 @@
         <div class="row">
           <div class="col-7">
             <div class="icheck-primary">
-              <input type="checkbox" id="agreeTerms" name="terms" value="agree">
+              <input type="checkbox" id="agreeTerms" name="terms" value="agree" onclick="agreeTerms()">
               <label for="agreeTerms">
                Acepto los <a href="#">términos</a>
               </label>
@@ -94,33 +94,33 @@
   <!-- /.card -->
 	<div class="text-center">
 		<p>
-			<small class="text-muted">Leder Diez © 2018 - 2021 | version 4.0</small>
+			<small class="text-muted">Leder Diez © 2018 - 2022 | version 4.1</small>
 		</p>
 	</div>
 </div>
 <!-- /.login-box -->
 <script>
-	$("#agreeTerms").click(function () {
+  function agreeTerms() {
 		if ($("#agreeTerms").prop('checked')) {
 			$("#bt-register").attr("disabled", false);
 		} else {
 			$("#bt-register").attr("disabled", true);
 		}
-	})
+	}
+
 	function send_register() {
   	Pace.restart();
 		
-		let user  = $('#user_register').val();
-    let mail  = $('#mail_register').val();
+		let username  = $('#user_register').val();
+    let email  = $('#email_register').val();
     let pass1 = $('#pass1_register').val();
 		let pass2 = $('#pass2_register').val();
 		
     if (pass1 === pass2) {
-    	$.post("../register", {
-				user  : user,
-				mail  : mail.replace(/ /g, ""),
-				pass1 : pass1,
-				pass2 : pass2
+    	$.post("../../v1/acceso/register", {
+				username,
+				email  : email.replace(/ /g, ""),
+				password: pass1
 			}, function (response, status) {
 				requestsProcess(status, response);
 			});

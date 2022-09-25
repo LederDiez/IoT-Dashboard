@@ -25,10 +25,9 @@
 	<script>
 
 		function deleteNotifi(id) {
-			$.post("../api/notification/delete", {
+			$.post("../v1/notification/delete", {
 				id: id
-			},
-			function(response, status){
+			}, (response, status) => {
 				if (status == 'success') {
 					toastr.info('Notificación marcada como leída.', 'Mensaje');
 					getNotifications();
@@ -37,8 +36,7 @@
 		}
 
 		function getNotifications() {
-			$.post("../api/notifications", {},
-			function(response, status){
+			$.post("../v1/notifications/all", {}, (response, status) => {
 
 				let months = ['Ene.', 'Feb.', 'Mar.', 'Abr.', 'May.', 'Jun.', 'Jul.', 'Ago.', 'Sep.', 'Oct.', 'Nov.', 'Dic.'];
 
@@ -84,10 +82,10 @@
 			getNotifications();
 
 			let view = document.getElementById("<%= viewName %>");
-			view.addEventListener("OnVisible", function () {
+			view.addEventListener("OnVisible", () => {
 				//viewport visible
 			});
-			view.addEventListener("OnInvisible", function () {
+			view.addEventListener("OnInvisible", () => {
 				//viewport invisible
 			});
 

@@ -26,10 +26,9 @@
 		let editName   = document.getElementById("inputEditName").value;
 
 		if (editName != '') {
-			$.post("../user/device/edit", {
+			$.post("../v1/device/edit", {
 				name   : editName,
-			},
-			function (response, status) {
+			}, (response, status) => {
 				processResponse(response);
 			});
 		} else {

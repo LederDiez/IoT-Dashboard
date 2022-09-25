@@ -3,8 +3,6 @@
 <head>
 	<title><%= title %></title>
 
-  <link rel="manifest" href="../manifest.json">
-
 	<meta name="description" content="Plataforma administrativa IoT">
 	<meta name="keywords" content="Acceso, IoT, Internet Of Things, cloud, platform, esp8266, arduino, Leder Diez, Internet de las cosas">
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -46,8 +44,10 @@
 </head>
 <body class="user-select-none">
   <header id="particles-js" class="header">
-    <div class="hold-transition login-page viewport"></div>
-      <canvas class="particles-js-canvas-el"></canvas>
+    <div class="hold-transition login-page viewport">
+      <%- include('./login.html') %>
+    </div>
+    <canvas class="particles-js-canvas-el"></canvas>
   </header>
 
   <!-- jQuery -->
@@ -87,39 +87,42 @@
       return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
     }
 
-    let pages = [];
-    let lastPage = "something";
+    let loadedViews = ['login'];
+    let currentView = "login";
     
-    function loadView(page) {
+    function loadView(view) {
       let container = $('.viewport');
-      if ($("#" + page).length ) {
-        if (lastPage !== page) {
-          for (let i = 0; i < pages.length; i++) {
-            if (pages[i] !== page) {
-              $("#" + pages[i]).css( "display", "none" );
+      
+      // Si la vista solicitada existe y es diferente a las demas muestrala
+      // Si no entonces cargala y muestrala
+      if ($("#" + view).length ) {
+        if (currentView !== view) {
+          for (let i = 0; i < loadedViews.length; i++) {
+            if (loadedViews[i] !== view) {
+              $("#" + loadedViews[i]).css( "display", "none" );
             } else {
-              $("#" + pages[i]).css( "display", "block" );
+              $("#" + loadedViews[i]).css( "display", "block" );
             }
           }
-          $('.' + lastPage).parent().removeClass( "active" );
-          $('.' + page).parent().addClass( "active" );
-          lastPage = page;
+          $('.' + currentView).parent().removeClass( "active" );
+          $('.' + view).parent().addClass( "active" );
+          currentView = view;
         }
       } else {
         Pace.restart();
-        $.ajax({url: "/acceso/" + page + ".html",
-          success: function(result) {
+        $.get({url: "/acceso/" + view + ".html",
+          success: (result) => {
             $(container).append(result);
-            pages.push(page);
-            for (let i = 0; i < pages.length; i++) {
-              if (pages[i] !== page) {
-                $("#" + pages[i]).css( "display", "none" );
+            loadedViews.push(view);
+            for (let i = 0; i < loadedViews.length; i++) {
+              if (loadedViews[i] !== view) {
+                $("#" + loadedViews[i]).css( "display", "none" );
               }
             }
-            $('.' + lastPage).parent().removeClass( "active" );
-            $('.' + page).parent().addClass( "active" );
-            lastPage = page;
-          }, error: function () {
+            $('.' + currentView).parent().removeClass( "active" );
+            $('.' + view).parent().addClass( "active" );
+            currentView = view;
+          }, error: () => {
             toastr.error('Tenemos problemas para procesar las peticiones.', 'Error!');
             loadView("login");
           }
@@ -127,6 +130,7 @@
 			}
 		}
 
+    // carga una vista desde el inicio
     if (getParameterByName('view') != '') {
       loadView(getParameterByName('view'));
     } else {
@@ -143,22 +147,18 @@
         return;
       }
       if (response.action == "show") {
-        setTimeout( function() {
+        setTimeout(() => {
           loadView(response.toShow);
         }, 1000);
       } else if (response.action == "redirect") {
-        setTimeout( function() {
+        setTimeout(() => {
           window.location.replace(response.redirectTo);
         }, 1000);
       } else if (response.action == "reload") {
-        setTimeout( function() {
+        setTimeout(() => {
           window.location.reload();
         }, 1000);
       }
-    }
-
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('../service-worker.js');
     }
 
 	</script>

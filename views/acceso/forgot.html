@@ -39,7 +39,7 @@
   <!-- /.card -->
   <div class="text-center">
     <p>
-      <small class="text-muted">Leder Diez © 2018 - 2021 | version 4.0</small>
+      <small class="text-muted">Leder Diez © 2018 - 2022 | version 4.1</small>
     </p>
   </div>
 </div>
@@ -50,7 +50,7 @@
     
     let mail   = $('#mail_forgot').val();
     
-    $.post("../forgot", {
+    $.post("../../v1/acceso/forgot", {
       mail  : mail.replace(/ /g, "")
     }, function (response, status) {
       requestsProcess(status, response);

@@ -111,8 +111,6 @@
 			var hand = Snap.select("#svg-hand<%= viewName %>" );
 			var mask = Snap.select("#svg-mask<%= viewName %>" );
 
-			console.log();
-
 			function onSVGLoaded( ){
 				
 				function animOn(){
@@ -157,12 +155,12 @@
 		})();
 
     (function () {
-      let view = document.getElementById("<%= viewName %>");
 
-      view.addEventListener("OnVisible", function () {
+      let view = document.getElementById("<%= viewName %>");
+      view.addEventListener("OnVisible", () => {
 				//viewport visible
 			});
-			view.addEventListener("OnInvisible", function () {
+			view.addEventListener("OnInvisible", () => {
 				//viewport invisible
 			});
 

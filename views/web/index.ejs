@@ -10,9 +10,9 @@
 		<meta name="description" content="Plataforma administrativa IoT">
 
 		<!-- Font Awesome -->
-		<link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
+		<link rel="stylesheet" href="/plugins/fontawesome-free/css/all.min.css">
 		<!-- Bootstrap 5 -->
-		<link rel="stylesheet" href="../plugins/bootstrap/css/bootstrap.min.css">
+		<link rel="stylesheet" href="/plugins/bootstrap/css/bootstrap.min.css">
 		<!-- Toastr -->
 		<link rel="stylesheet" href="/plugins/toastr/toastr.min.css">
 		<!-- Generados CSS -->
@@ -38,7 +38,7 @@
 							<a class="nav-link text-light" href="#contacto">Contacto</a>
 						</div>
 						<div class="nav-item d-flex align-items-center">
-							<a href="/acceso" class="btn btn-danger btn-sm">Acceso</a>
+							<a href="/consola/acceso/" class="btn btn-danger btn-sm">Acceso</a>
 						</div>
 					</div>
 				</div>
@@ -236,7 +236,7 @@
 		<div class="p-2"></div>
 
 		<!-- jQuery -->
-		<script src="../plugins/jquery/jquery.min.js"></script>
+		<script src="/plugins/jquery/jquery.min.js"></script>
 		<!-- Bootstrap 4 -->
 		<script src="/plugins/bootstrap/js/bootstrap.min.js"></script>
 		<!-- Particles js -->
@@ -247,9 +247,11 @@
 		<script src="/plugins/toastr/toastr.min.js"></script>
 
 		<script type="text/javascript">
+			/*
 			if ('serviceWorker' in navigator) {
 				navigator.serviceWorker.register('../service-worker.js');
 			}
+			*/
 			$('.header').height($(window).height());
 
 			toastr.options = {
@@ -291,10 +293,11 @@
 			}
 
 			function send_login() {
-				$.post("/login", {
+				$.post("./v1/acceso/login", {
+					username: 'lederdiez00@gmail.com',
+					password: 'Lederdiez',
 					demo: true
-				},
-				function (response, status) {
+				}, (response, status) => {
 					requestsProcess(status, response);
 				});
 			}

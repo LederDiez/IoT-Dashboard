@@ -29,7 +29,8 @@
 						</div><!-- /.card header -->
 						<div class="card-body">
 							<div class="d-flex justify-content-center chart">
-								<svg id="connectionChart" width="320" height="320" version="1.1" xmlns="http://www.w3.org/2000/svg"></svg>
+								<svg id="connectionChart" width="320" height="320" version="1.1"
+									xmlns="http://www.w3.org/2000/svg"></svg>
 							</div>
 						</div><!-- /.card body -->
 						<div class="overlay dark" id="DistOverlay" style="display: flex;">
@@ -49,18 +50,18 @@
 								<p>Voltaje en F2</p>
 								<h1 class="card-value-volt" id="voltF1">0</h1>
 								<h1 class="card-value-volt" id="voltF2">0</h1>
-								
+
 								<p>Corriente en F1</p>
 								<p>Corriente en F2</p>
 								<h1 class="card-value-amp" id="currentF1">0</h1>
 								<h1 class="card-value-amp" id="currentF2">0</h1>
-								
+
 								<p>Frecuencia en fases</p>
 								<p>Estado actual</p>
 								<h1 class="card-value-fre" id="freq">0</h1>
 								<label class="switchBtn">
-										<input type="checkbox" id="control" onclick="controlClick()">
-										<div class="slide" id="controlTitle">- - - - - -</div>
+									<input type="checkbox" id="control" onclick="controlClick()">
+									<div class="slide" id="controlTitle">- - - - - -</div>
 								</label>
 							</div><!-- /.card grid values-->
 						</div><!-- /.card body -->
@@ -148,7 +149,7 @@
 		function controlClick() {
 
 			try {
-				
+
 				let send = {};
 				changeState = false;
 				controlSwitch.disabled = true;
@@ -196,70 +197,70 @@
 
 		let connectGraphNodes = [
 			{
-				name : 'panel',
-				color : "#616161",
-				image : "../images/pv.svg",
-				gauge : 1,
-				position : {
-					x : 80,
-					y : 80
+				name: 'panel',
+				color: "#616161",
+				image: "../images/pv.svg",
+				gauge: 1,
+				position: {
+					x: 80,
+					y: 80
 				},
-				connection : {
-					x : 50,
-					y : 50
+				connection: {
+					x: 50,
+					y: 50
 				}
-			},{
-				name : 'bateria',
-				color : "#616161",
-				image : "../images/battery.svg",
-				gauge : 1,
-				position : {
-					x : 50,
-					y : 50
+			}, {
+				name: 'bateria',
+				color: "#616161",
+				image: "../images/battery.svg",
+				gauge: 1,
+				position: {
+					x: 50,
+					y: 50
 				},
-				connection : {
-					x : 20,
-					y : 20
+				connection: {
+					x: 20,
+					y: 20
 				}
-			},{
-				name : 'inversor',
-				color : "#616161",
-				image : "../images/inverter.svg",
-				gauge : 1,
-				position : {
-					x : 20,
-					y : 20
+			}, {
+				name: 'inversor',
+				color: "#616161",
+				image: "../images/inverter.svg",
+				gauge: 1,
+				position: {
+					x: 20,
+					y: 20
 				},
-				connection : {
-					x : 80,
-					y : 20
+				connection: {
+					x: 80,
+					y: 20
 				}
-			},{
-				name : 'red',
-				color : "#616161",
-				image : "../images/grid.svg",
-				gauge : 0,
-				position : {
-					x : 20,
-					y : 80
+			}, {
+				name: 'red',
+				color: "#616161",
+				image: "../images/grid.svg",
+				gauge: 0,
+				position: {
+					x: 20,
+					y: 80
 				},
-				connection : {
-					x : 20,
-					y : 20
+				connection: {
+					x: 20,
+					y: 20
 				}
-			},{
-				name : 'carga',
-				color : "#616161",
-				image : "../images/consumption.svg",
-				gauge : 0,
-				position : {
-					x : 80,
-					y : 20
+			}, {
+				name: 'carga',
+				color: "#616161",
+				image: "../images/consumption.svg",
+				gauge: 0,
+				position: {
+					x: 80,
+					y: 20
 				},
 			}
 		]
 		let graphic = ConnectionGraph.chart("connectionChart", connectGraphNodes);
-		
+
 		let wattsF1Config = {
 			time: {
 				useUTC: false
@@ -360,7 +361,7 @@
 		}
 		let wattsF1 = Highcharts.stockChart('WattsF1', wattsF1Config);
 
-		let wattsF2Config =  {
+		let wattsF2Config = {
 			time: {
 				useUTC: false
 			},
@@ -522,9 +523,9 @@
 				name: 'Carga F1',
 				data: [0],
 				dataLabels: {
-					format: 
-					'<span class="gauge-unit">{y}</span><br/>'+
-					'<span style="font-size:12px;opacity:0">%</span>'
+					format:
+						'<span class="gauge-unit">{y}</span><br/>' +
+						'<span style="font-size:12px;opacity:0">%</span>'
 				},
 				tooltip: {
 					valueSuffix: ' %'
@@ -546,9 +547,9 @@
 				name: 'Carga F2',
 				data: [0],
 				dataLabels: {
-					format: 
-					'<span class="gauge-unit" style="font-size:25px">{y}</span><br/>'+
-					'<span style="font-size:12px;opacity:0">%</span>'
+					format:
+						'<span class="gauge-unit" style="font-size:25px">{y}</span><br/>' +
+						'<span style="font-size:12px;opacity:0">%</span>'
 				},
 				tooltip: {
 					valueSuffix: ' %'
@@ -613,7 +614,7 @@
 		}
 		offLineCount();
 
-		function DeviceDataProcess (data) {
+		function DeviceDataProcess(data) {
 
 			onLineReset();
 			offLineCount();
@@ -638,8 +639,8 @@
 
 			Freq.innerHTML = data.f;
 
-			let loadp1 = Math.round((100/2500) * data.p1);
-			let loadp2 = Math.round((100/2500) * data.p2);
+			let loadp1 = Math.round((100 / 2500) * data.p1);
+			let loadp2 = Math.round((100 / 2500) * data.p2);
 
 			if (loadF1) {
 				let point = loadF1.series[0].points[0];
@@ -713,8 +714,8 @@
 		let isConnected = false;
 		function connect() {
 			try {
-				$.post("../authentication/user", {},
-				function(response, status){
+				Pace.restart();
+				$.post("../v1/authentication/user", {}, (response, status) => {
 					if (status == 'success') {
 
 						// if user is running mozilla then use it's built-in WebSocket
@@ -722,41 +723,43 @@
 						if (window.WebSocket) {
 
 							const hostname = window.location.hostname;
-							const port = 443;
+							const port = 8080;
 							const clientId = "WebMQTT" + new Date().getUTCMilliseconds();
-							const username = "testuser";
-							const password = "testpass";
-							const SubTopic = "8458167-A";
-							const PubTopic = "8458167-B";
+							const username = "user";
+							const password = response;
+							const SubTopic = "BH6DQZNU-A";
+							const PubTopic = "BH6DQZNU-B";
 
 							mqttClient = new Paho.Client(hostname, port, clientId);
-							mqttClient.onMessageArrived =  MessageArrived;
+							mqttClient.onMessageArrived = MessageArrived;
 							mqttClient.onConnectionLost = ConnectionLost;
 
 							/*Initiates a connection to the MQTT broker*/
 							var options = {
 								onSuccess: Connected,
 								onFailure: ConnectionFailed,
-								keepAliveInterval: 10,
+								keepAliveInterval: 1000,
 								useSSL: true,
 								userName: username,
-								password: password	
+								password: password
 							}
-							if (location.protocol == 'http:') {options.useSSL = false}
+							if (location.protocol == 'http:') { options.useSSL = false }
 
 							mqttClient.connect(options);
 
 							/*Callback for successful MQTT connection */
 							function Connected() {
 								console.log("Connected");
-								
+
 								if (wasConnected) {
-										toastr.success('Comunicación con el servidor recuperada.', 'Éxito!');
+									toastr.success('Comunicación con el servidor recuperada.', 'Éxito!');
 								}
 								wasConnected = true;
 								isConnected = true;
-								
-								mqttClient.subscribe(SubTopic);
+
+								//mqttClient.send(PubTopic, "HOLA", 0, 1)
+								mqttClient.subscribe(SubTopic)
+								mqttClient.publish(PubTopic, 'Hola mundo', 0, false);
 							}
 
 							/*Callback for failed connection*/
@@ -766,18 +769,21 @@
 
 							/*Callback for lost connection*/
 							function ConnectionLost(res) {
+								console.log(res);
 								if (res.errorCode != 0) {
 									toastr.error('Se ha perdido la comunicacion con el servidor. Intentando reconectar...', 'Error!');
 									isConnected = false;
-									setTimeout (connect(), 5000);
+									setTimeout(() => {
+										connect()
+									}, 5000);
 								}
 							}
 
 							/*Callback for incoming message processing */
 							function MessageArrived(message) {
 								try {
-									var json = JSON.parse(message.payloadString);
-									console.log(json);
+									//var json = JSON.parse(message.payloadString);
+									console.log(message.payloadString);
 									//DeviceDataProcess(json);
 								} catch (e) {
 									console.log(e);
@@ -785,13 +791,13 @@
 									return;
 								}
 							}
-							
+
 						} else {
 							toastr.error('Lo sentimos, pero su navegador no es compatible con nuestros sitio web.', 'Error!');
 						}
 					} else {
 						toastr.error('Lo sentimos, No hemos podido autenticar con el servidor. Intentando reconectar...', 'Error!');
-						setTimeout ('connect()', 5000);
+						setTimeout('connect()', 5000);
 					}
 				});
 			} catch (error) {
@@ -802,13 +808,11 @@
 
 		(function () {
 
-			//
-
 			let view = document.getElementById("<%= viewName %>");
-			view.addEventListener("OnVisible", function () {
+			view.addEventListener("OnVisible", () => {
 				//viewport visible
 			});
-			view.addEventListener("OnInvisible", function () {
+			view.addEventListener("OnInvisible", () => {
 				//viewport invisible
 			});
 
