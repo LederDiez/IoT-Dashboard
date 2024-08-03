@@ -40,6 +40,9 @@
     "start": "node ./src/app.js",
     "start:dev": "nodemon ./src/app.js"
   },
+  "engines": {
+    "node": ">=18.18.0 <=20.16.0"
+  },
   "keywords": [
     "Dashboard",
     "Iot"
