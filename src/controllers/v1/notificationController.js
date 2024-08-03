@@ -1,15 +1,15 @@
-//const webPush = require('web-push')
+const webPush = require('web-push')
 
 const configs = require('../../config/configs')
 
 const NotificationModel = require('../../models/NotificationsModel')
-/*
+
 webPush.setVapidDetails(
   'mailto:lederdiez00@gmail.com',
   configs.PUBLIC_VAPID_KEY,
   configs.PRIVATE_VAPID_KEY
 )
-*/
+
 // let pushSubscripton
 
 const getAllNotifications = (req, res) => {
