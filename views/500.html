@@ -13,6 +13,10 @@
 	<link rel="stylesheet" href="/plugins/fontawesome-free/css/all.min.css">
 	<!-- Theme style -->
 	<link rel="stylesheet" href="/adminlte/css/adminlte.min.css">
+	<!-- Pace progress -->
+	<link rel="stylesheet" href="/plugins/pace-progress/themes/red/pace-theme-minimal.css">
+	<!-- Toastr -->
+	<link rel="stylesheet" href="/plugins/toastr/toastr.min.css">
 
 </head>
 <body class="hold-transition lockscreen">
@@ -27,7 +31,7 @@
 						<h3><i class="fa fa-warning text-red"></i> Oops! Algo salió mal.</h3>
 						<p>
 							Trabajaremos para solucionarlo de inmediato.
-							Mientras tanto, puedes <a href="/">ir al inicio</a>
+							Mientras tanto, puede <a href="/">ir al inicio</a> o <a href="#" onclick="logout()">cerrar sesión.</a>
 						</p>
 					</div>
 				</div>
@@ -38,5 +42,61 @@
 	<script src="/plugins/jquery/jquery.min.js"></script>
 	<!-- Bootstrap 4 -->
 	<script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<!-- Pace progress -->
+	<script src="/plugins/pace-progress/pace.min.js"></script>
+	<!-- Toastr -->
+	<script src="/plugins/toastr/toastr.min.js"></script>
+	<script>
+
+		toastr.options = {
+			"closeButton": true,
+			"debug": false,
+			"newestOnTop": true,
+			"progressBar": false,
+			"positionClass": "toast-bottom-right",
+			"preventDuplicates": false,
+			"onclick": null,
+			"showDuration": "10000",
+			"hideDuration": "1000",
+			"timeOut": "10000",
+			"extendedTimeOut": "1000"
+		};
+
+		// Muestra mensajes y aplica respuestas enviadas desde el servidor.
+		function processResponse(response) {
+			if (response.status == "success") {
+				toastr.success(response.message, response.title);
+			} else if (response.status == "error") {
+				toastr.error(response.message, response.title);
+			} else {
+				toastr.error('Tenemos problemas para procesar las peticiones.', 'Error!');
+				return;
+			}
+			if (response.action == "show") {
+				setTimeout(() => {
+					loadView(response.toShow);
+				}, 2000);
+			} else if (response.action == "redirect") {
+				setTimeout(() => {
+					window.location.replace(response.redirectTo);
+				}, 2000);
+			} else if (response.action == "reload") {
+				setTimeout(() => {
+					window.location.reload();
+				}, 2000);
+			} else if (response.action == "logout") {
+				setTimeout(() => {
+					logout();
+				}, 2000);
+			}
+		}
+
+		function logout() {
+			Pace.restart();
+			$.post("../v1/acceso/logout", {}, (response, status) => {
+				processResponse(response);
+			});
+		}
+	</script>
 </body>
 </html>

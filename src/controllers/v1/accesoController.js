@@ -12,7 +12,7 @@ const loginUser = (req, res) => {
       title: 'Error!',
       message: 'Sesión ya iniciada.',
       action: 'redirect',
-      redirectTo: '../'
+      redirectTo: '/consola/'
     })
     return
   }
@@ -21,58 +21,7 @@ const loginUser = (req, res) => {
   const password = req.body.password || null
   // const demo = req.body.demo || false
 
-  if (username != null && password != null) {
-    passport.authenticate('local', (err, user, info) => {
-      if (err) {
-        console.log(err)
-        res.status(200).send({
-          status: 'error',
-          code: 2,
-          title: 'Error!',
-          message: 'No se puede iniciar sesión, error de autenticación.'
-        })
-      } else {
-        if (!user) {
-          res.status(200).send({
-            status: 'error',
-            code: 3,
-            title: 'Error!',
-            message: 'Email o contraseña incorrecta.'
-          })
-        } else {
-          req.login(user, (err) => {
-            if (err) {
-              res.status(200).send({
-                status: 'error',
-                code: 4,
-                title: 'Error!',
-                message: 'No se puede iniciar sesión, error de inicio de sesión.'
-              })
-            } else {
-              if (user.type === 'admin') {
-                res.status(200).send({
-                  status: 'success',
-                  title: 'Éxito',
-                  message: 'Sesion iniciada.',
-                  action: 'redirect',
-                  redirectTo: '../../admin/'
-                })
-              } else {
-                // Redirect to consola
-                res.status(200).send({
-                  status: 'success',
-                  title: 'Éxito',
-                  message: 'Sesion iniciada.',
-                  action: 'redirect',
-                  redirectTo: '../consola'
-                })
-              }
-            }
-          })
-        }
-      }
-    })(req, res)
-  } else {
+  if (username == null || password == null) {
     res.status(200).send({
       status: 'error',
       code: 5,
@@ -80,47 +29,102 @@ const loginUser = (req, res) => {
       message: 'Datos no validos.',
       action: 'reload'
     })
+    return
   }
-}
 
-const logoutUser = (req, res) => {
-  if (req.isAuthenticated()) {
-    req.logout((err) => {
-      if (err) {
-        console.log(err)
+  passport.authenticate('local', (auth_err, user, info) => {
+    if (auth_err) {
+      console.log(auth_err)
+      res.status(200).send({
+        status: 'error',
+        code: 2,
+        title: 'Error!',
+        message: 'No se puede iniciar sesión, error de autenticación.'
+      })
+      return
+    }
+
+    if (!user) {
+      res.status(200).send({
+        status: 'error',
+        code: 3,
+        title: 'Error!',
+        message: 'Email o contraseña incorrecta.'
+      })
+      return
+    }
+
+    req.login(user, (login_err) => {
+
+      if (login_err) {
         res.status(200).send({
           status: 'error',
-          code: 1,
+          code: 4,
           title: 'Error!',
-          message: 'No se pudo cerrar sesión, error del servidor'
+          message: 'No se puede iniciar sesión, error de inicio de sesión.'
         })
         return
       }
-
-      res.status(200).send({
-        status: 'success',
-        title: 'Éxito',
-        message: 'Sesión destruida.',
-        action: 'redirect',
-        redirectTo: './acceso'
-      })
+      
+      if (user.type === 'admin') {
+        res.status(200).send({
+          status: 'success',
+          title: 'Éxito',
+          message: 'Sesion iniciada.',
+          action: 'redirect',
+          redirectTo: '../admin/'
+        })
+      } else {
+        // Redirect to consola
+        res.status(200).send({
+          status: 'success',
+          title: 'Éxito',
+          message: 'Sesion iniciada.',
+          action: 'redirect',
+          redirectTo: '../consola'
+        })
+      }
     })
-  } else {
+  })(req, res)
+}
+
+const logoutUser = (req, res) => {
+
+  if (!req.isAuthenticated()) {
     res.status(200).send({
       status: 'error',
       code: 2,
       title: 'Error!',
       message: 'Sesión ya destruida.',
       action: 'redirect',
-      redirectTo: './acceso'
+      redirectTo: '../acceso'
     })
+    return
   }
+
+  req.logout((err) => {
+    if (err) {
+      console.log(err)
+      res.status(200).send({
+        status: 'error',
+        code: 1,
+        title: 'Error!',
+        message: 'No se pudo cerrar sesión, error del servidor'
+      })
+      return
+    }
+
+    res.status(200).send({
+      status: 'success',
+      title: 'Éxito',
+      message: 'Sesión destruida.',
+      action: 'redirect',
+      redirectTo: '../acceso'
+    })
+  })
 }
 
 const registerUser = (req, res) => {
-  const username = req.body.username || null
-  const email = req.body.email || null
-  const password = req.body.password || null
 
   // Comprobar que la secion no este iniciada
   if (req.isAuthenticated()) {
@@ -130,59 +134,17 @@ const registerUser = (req, res) => {
       title: 'Error!',
       message: 'Sesión ya iniciada.',
       action: 'redirect',
-      redirectTo: '../'
+      redirectTo: '../consola/'
     })
     return
   }
 
+  const username = req.body.username || null
+  const email = req.body.email || null
+  const password = req.body.password || null
+
   // Comprobar que esten todos los datos
-  if (username != null && email != null && password != null) {
-    if (validator.validate(email)) {
-      const User = new UserModel({
-        type: 'client',
-        username,
-        email,
-        active: true
-      })
-
-      UserModel.register(User, password, (err) => {
-        if (err) {
-          if (err.name === 'UserExistsError') {
-            res.status(200).send({
-              status: 'error',
-              code: 2,
-              title: 'Error!',
-              message: 'Email ya registado.'
-            })
-          } else {
-            res.status(200).send({
-              status: 'error',
-              code: 3,
-              title: 'Error!',
-              message: 'El usuario no pudo ser registrado, server error.'
-            })
-          }
-          return
-        }
-
-        res.status(200).send({
-          status: 'success',
-          title: 'Éxito',
-          message: 'Usuario registrado con éxito.',
-          action: 'show',
-          toShow: 'login'
-        })
-      })
-    } else {
-      res.status(200).send({
-        status: 'error',
-        code: 4,
-        title: 'Error!',
-        message: 'Correo invalido.',
-        action: 'reload'
-      })
-    }
-  } else {
+  if (username == null || email == null || password == null) {
     res.status(200).send({
       status: 'error',
       code: 5,
@@ -190,22 +152,70 @@ const registerUser = (req, res) => {
       message: 'Datos no validos.',
       action: 'reload'
     })
+    return
   }
+
+  if (!validator.validate(email)) {
+    res.status(200).send({
+      status: 'error',
+      code: 4,
+      title: 'Error!',
+      message: 'Correo invalido.',
+      action: 'reload'
+    })
+    return
+  }
+
+
+  const User = new UserModel({
+    type: 'client',
+    username,
+    email,
+    active: true
+  })
+
+  UserModel.register(User, password, (register_err) => {
+    if (register_err) {
+      if (register_err.name === 'UserExistsError') {
+        res.status(200).send({
+          status: 'error',
+          code: 2,
+          title: 'Error!',
+          message: 'Email ya registado.'
+        })
+      } else {
+        res.status(200).send({
+          status: 'error',
+          code: 3,
+          title: 'Error!',
+          message: 'El usuario no pudo ser registrado, server error.'
+        })
+      }
+      return
+    }
+
+    res.status(200).send({
+      status: 'success',
+      title: 'Éxito',
+      message: 'Usuario registrado con éxito.',
+      action: 'show',
+      toShow: 'login'
+    })
+  })
+
 }
 
 const recoverUser = (req, res) => {
-  const session = req.session
-  const IsStarted = session.IsStarted || false
 
   // Comprobar que la secion no este iniciada
-  if (IsStarted) {
+  if (req.isAuthenticated()) {
     res.status(200).send({
       status: 'error',
       code: 5,
       title: 'Error!',
       message: 'Sesión ya iniciada.',
       action: 'redirect',
-      redirectTo: '../'
+      redirectTo: '../consola/'
     })
     return
   }
@@ -213,7 +223,7 @@ const recoverUser = (req, res) => {
   res.status(200).send({
     status: 'success',
     title: 'Exito!',
-    message: 'Pero no disponible de momento.'
+    message: 'Accion no disponible.'
   })
 }
 
@@ -229,7 +239,7 @@ const forgotUser = (req, res) => {
       title: 'Error!',
       message: 'Sesión ya iniciada.',
       action: 'redirect',
-      redirectTo: '../'
+      redirectTo: '../consola/'
     })
     return
   }
@@ -253,7 +263,7 @@ const editUser = (req, res) => {
       title: 'Error!',
       message: 'Sesión ya iniciada.',
       action: 'redirect',
-      redirectTo: '../'
+      redirectTo: '../consola/'
     })
     return
   }

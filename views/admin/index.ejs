@@ -309,7 +309,7 @@
 	function logout() {
     Pace.restart();
     console.log("Cosas que pasan");
-    $.post("../logout", {},
+    $.post("../v1/acceso/logout", {},
     function(response, status){
       requestsProcess("", response);
     });

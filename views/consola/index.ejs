@@ -101,8 +101,8 @@
 		</aside>
 		<!-- Content Wrapper. Contains page content -->
 		<div class="content-wrapper">
+			<!-- Lista de dispositivos cargada desde el inicio como parte de la consola -->
 			<%- include('./complements/devices.ejs') %>
-				<!-- Lista de dispositivos cargada desde el inicio como parte de la consola -->
 		</div>
 		<!-- /.content-wrapper -->
 
@@ -297,21 +297,20 @@
 		}
 
 		(function () {
-			if (parseInt("<%=devices.length%>", 10) > 0) {
-				var localLastPage = 'devices'
-				if (window.localStorage.getItem("localLastPage") != null) {
-					localLastPage = window.localStorage.getItem("localLastPage");
-				}
-				loadView(localLastPage);
-			} else {
-				$("#modal-add-device").modal({ backdrop: 'static', keyboard: true });
+		'<% if (associatedDevices > 0) { %>'
+			var localLastPage = 'devices'
+			if (window.localStorage.getItem("localLastPage") != null) {
+				localLastPage = window.localStorage.getItem("localLastPage");
 			}
-
+			loadView(localLastPage);
+			
 			checkNotifications();
-
 			setInterval(() => {
 				checkNotifications();
 			}, 60000); //Cada minuto?
+		'<% } else { %>'
+			$("#modal-add-device").modal({ backdrop: 'static', keyboard: true });			
+		'<% } %>'
 		})();
 
 		function urlB64ToUint8Array(base64String) {

@@ -6,6 +6,7 @@ const configs = require('../config/configs')
 
 // mongo
 const MONGO = configs.MONGO_PRODUCTION
+db.set('strictQuery', true);
 db.connect(MONGO).then(() => {
   console.log('Success to establish connection with mongodb'.bgGreen)
 }).catch((err) => {

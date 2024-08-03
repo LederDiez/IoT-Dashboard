@@ -11,6 +11,8 @@ const accesoController = require('../../controllers/v1/accesoController')
 * edit *
 **********************************************/
 
+// Accesible from localhost/v1/acceso/*
+
 userRouters.post('/login', accesoController.loginUser)
 
 userRouters.post('/logout', accesoController.logoutUser)
