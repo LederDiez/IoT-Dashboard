@@ -296,13 +296,13 @@
 					text: ''
 				},
 				plotLines: [{
-					value: 75,
+					value: 1600,
 					color: 'red',
 					dashStyle: 'shortdash',
 					width: 2,
 					label: { text: 'Limite de consumo maximo' }
 				}, {
-					value: 50,
+					value: 1400,
 					color: 'yellow',
 					dashStyle: 'shortdash',
 					width: 2,
@@ -396,13 +396,13 @@
 					text: null
 				},
 				plotLines: [{
-					value: 75,
+					value: 600,
 					color: 'red',
 					dashStyle: 'shortdash',
 					width: 2,
 					label: { text: 'Limite de consumo maximo' }
 				}, {
-					value: 50,
+					value: 400,
 					color: 'yellow',
 					dashStyle: 'shortdash',
 					width: 2,
@@ -806,7 +806,110 @@
 		}
 		connect();
 
+		function simulate() {
+
+			onLineReset();
+			offLineCount();
+			changeOverlay('none');
+
+			if (!changeState) {
+				toastr.success('Orden confirmada.');
+			}
+			changeState = true; // se cambia a verdadero para permitir controlar de nuevo
+
+			controlState("on");
+
+			voltF1.innerHTML = (Math.random() * (13 - 12.7) + 12.7).toFixed(1);
+			voltF2.innerHTML = (Math.random() * (118 - 115) + 115).toFixed(1);
+
+			currentF1.innerHTML = (Math.random() * (5 - 4) + 4).toFixed(1);
+			currentF2.innerHTML = (Math.random() * (4 - 3) + 3).toFixed(1);
+
+			Freq.innerHTML = (Math.random() * (60 - 59.9) + 59.9).toFixed(1);
+
+			w1 = (Math.random() * (1500 - 1400) + 1400);
+			w2 = (Math.random() * (500 - 400) + 400);
+
+			let loadp1 = Math.round((100 / 2500) * w1);
+			let loadp2 = Math.round((100 / 2500) * w2);
+
+			if (loadF1) {
+				let point = loadF1.series[0].points[0];
+				point.update(loadp1);
+			}
+
+			if (loadF2) {
+				let point = loadF2.series[0].points[0];
+				point.update(loadp2);
+			}
+
+			if (wattsF1) {
+				let series = wattsF1.series[0];
+				let x = Date.now();
+				let y = parseInt(w1, 10);
+				series.addPoint([x, y], true, true);
+			}
+
+			if (wattsF2) {
+				let series = wattsF2.series[0];
+				let x = Date.now();
+				let y = parseInt(w2, 10);
+				series.addPoint([x, y], true, true);
+			}
+
+			//c = "#00c853"; Verde
+			//c = "#9e9e9e"; Gris
+			//c = "#616161"; Gris oscuro
+			//c = "#d50000"; Rojo
+			// id valor direccion color-circulos radio-circulos color-centro
+			// stop circles animation / direccion = -1
+
+			let rPower = parseInt(w2);
+			let prPower = ((100 / 2500) * rPower).toFixed(0); // Porcentaje de potencia regulador
+
+			let tPower = parseInt(w2) + parseInt(w1);
+			let piPower = ((100 / 5000) * tPower).toFixed(0); // Porcentaje de potencia inversor
+
+			w3 = (Math.random() * (50 - 48) + 48).toFixed(1);
+
+			let bLevel = 0;
+			let batery = parseFloat(w3);
+
+			let dbi = 1; //direccion bateria inversor
+
+			if (1 == 1) {
+				graphic.updateNode(0, prPower, 1, "#00c853", 70);  // Panel a bateria
+			} else {
+				graphic.updateNode(0, 0, -1, "#00c853", 70);  // Panel a bateria
+			}
+
+			if (1 == 1) {
+				graphic.updateNode(2, piPower, 1, "#FFD300", 90, "#00c853");  // Inversor a carga
+				//graphic.updateNode(3, 0, -1, "#d50000", 70);// red a inversor
+				graphic.updateNode(3, 0, 1, "#d50000", 25);// red a inversor
+
+				dbi = 1;
+			} else {
+				graphic.updateNode(2, 0, 1, "#d50000", 70, "#d50000");  // Inversor a carga
+				graphic.updateNode(3, 0, 1, "#d50000", 70);// red a inversor
+
+				dbi = -1;
+			}
+
+			if (batery >= 44) {
+				bLevel = ((100 / 9) * (batery - 44)).toFixed(0);
+			} else {
+				bLevel = 0;
+			}
+			graphic.updateNode(1, bLevel, dbi, "#00c853", 70, "#FFD300");  // bateria a inversor
+		}
+
+
 		(function () {
+
+			setInterval(() => {
+				simulate()
+			}, 1000);
 
 			let view = document.getElementById("<%= viewName %>");
 			view.addEventListener("OnVisible", () => {

@@ -263,7 +263,7 @@
 
 		function connect() {
 			try {
-				$.post("../authentication/device", {
+				$.post("../v1/authentication/device", {
 					DeviceKey: 'ASDFGHJKLZXCVBNM'
 				},
 				function(response, status){
@@ -275,7 +275,7 @@
 							let protocol = 'wss'
 							if (location.protocol == 'http:') {protocol = 'ws'}
 
-							connection = new WebSocket(protocol +'://'+ window.location.hostname + '?type=device');
+							connection = new WebSocket('https://mqtt-broker-hx3f.onrender.com?type=device');
 							connection.onopen = () => {
 								connection.send(response);
 								if (wasConnected) {
